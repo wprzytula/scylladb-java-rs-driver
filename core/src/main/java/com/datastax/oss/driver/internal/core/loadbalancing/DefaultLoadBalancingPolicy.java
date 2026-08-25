@@ -28,8 +28,6 @@ import com.datastax.oss.driver.api.core.session.Request;
 import com.datastax.oss.driver.api.core.session.Session;
 import com.datastax.oss.driver.api.core.tracker.RequestTracker;
 import com.datastax.oss.driver.internal.core.loadbalancing.helper.MandatoryLocalDcHelper;
-import com.datastax.oss.driver.internal.core.pool.ChannelPool;
-import com.datastax.oss.driver.internal.core.session.DefaultSession;
 import com.datastax.oss.driver.internal.core.util.ArrayUtils;
 import com.datastax.oss.driver.internal.core.util.collection.QueryPlan;
 import com.datastax.oss.driver.internal.core.util.collection.SimpleQueryPlan;
@@ -104,10 +102,25 @@ public class DefaultLoadBalancingPolicy extends BasicLoadBalancingPolicy impleme
   protected final Map<Node, Long> upTimes = new ConcurrentHashMap<>();
   private final boolean avoidSlowReplicas;
 
+  /**
+   * Whether {@link #getInFlight} can report real numbers.
+   *
+   * <p>TODO(java-rs): flip to true once in-flight request counts are bridged back from the Rust
+   * core. Slow-replica avoidance is built entirely on them — {@link #isBusy} compares against
+   * {@link #MAX_IN_FLIGHT_THRESHOLD}, and the final reorder compares two counts — so with counts
+   * unavailable the feature cannot demote anything. It is switched off here rather than left
+   * running on zeros, which would keep the per-request response-time bookkeeping and the
+   * per-query-plan replica walk while never changing an ordering.
+   */
+  private static final boolean IN_FLIGHT_COUNTS_AVAILABLE = false;
+
   public DefaultLoadBalancingPolicy(@NonNull DriverContext context, @NonNull String profileName) {
     super(context, profileName);
+    // Note: the profile is read first, so a configuration reload still sees the option, and the
+    // DRIVER_CONFIG report describes the ordering actually in force.
     this.avoidSlowReplicas =
-        profile.getBoolean(DefaultDriverOption.LOAD_BALANCING_POLICY_SLOW_AVOIDANCE, true);
+        profile.getBoolean(DefaultDriverOption.LOAD_BALANCING_POLICY_SLOW_AVOIDANCE, true)
+            && IN_FLIGHT_COUNTS_AVAILABLE;
     this.responseTimes = new MapMaker().weakKeys().makeMap();
   }
 
@@ -324,12 +337,10 @@ public class DefaultLoadBalancingPolicy extends BasicLoadBalancingPolicy impleme
   }
 
   protected int getInFlight(@NonNull Node node, @NonNull Session session) {
-    // The cast will always succeed because there's no way to replace the internal session impl
-    ChannelPool pool = ((DefaultSession) session).getPools().get(node);
-    // Note: getInFlight() includes orphaned ids, which is what we want as we need to account
-    // for requests that were cancelled or timed out (since the node is likely to still be
-    // processing them).
-    return (pool == null) ? 0 : pool.getInFlight();
+    // TODO(java-rs): in-flight request counts are owned by the Rust core. Unreachable from this
+    // class while IN_FLIGHT_COUNTS_AVAILABLE is false, since slow-replica avoidance is the only
+    // caller; kept for subclasses that override it.
+    return 0;
   }
 
   protected class NodeResponseRateSample {

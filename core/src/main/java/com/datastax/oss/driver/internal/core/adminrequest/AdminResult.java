@@ -18,6 +18,7 @@
 package com.datastax.oss.driver.internal.core.adminrequest;
 
 import com.datastax.oss.driver.api.core.ProtocolVersion;
+import com.datastax.oss.driver.internal.core.util.NotYetImplemented;
 import com.datastax.oss.driver.internal.core.util.concurrent.CompletableFutures;
 import com.datastax.oss.driver.shaded.guava.common.collect.AbstractIterator;
 import com.datastax.oss.driver.shaded.guava.common.collect.ImmutableList;
@@ -38,11 +39,9 @@ public class AdminResult implements Iterable<AdminRow> {
 
   private final Queue<List<ByteBuffer>> data;
   private final Map<String, ColumnSpec> columnSpecs;
-  private final AdminRequestHandler<AdminResult> nextHandler;
   private final ProtocolVersion protocolVersion;
 
-  public AdminResult(
-      Rows rows, AdminRequestHandler<AdminResult> nextHandler, ProtocolVersion protocolVersion) {
+  public AdminResult(Rows rows, ProtocolVersion protocolVersion) {
     this.data = rows.getData();
 
     ImmutableMap.Builder<String, ColumnSpec> columnSpecsBuilder = ImmutableMap.builder();
@@ -53,7 +52,6 @@ public class AdminResult implements Iterable<AdminRow> {
     // changes, build() will fail and we'll have to do things differently)
     this.columnSpecs = columnSpecsBuilder.build();
 
-    this.nextHandler = nextHandler;
     this.protocolVersion = protocolVersion;
   }
 
@@ -79,13 +77,14 @@ public class AdminResult implements Iterable<AdminRow> {
   }
 
   public boolean hasNextPage() {
-    return nextHandler != null;
+    // TODO(java-rs): paging of admin queries will be driven by the Rust core. Nothing constructs
+    // an AdminResult while schema queries are unbridged, but the schema parsers still consume the
+    // type, so it stays.
+    return false;
   }
 
   public CompletionStage<AdminResult> nextPage() {
-    return (nextHandler == null)
-        ? CompletableFutures.failedFuture(
-            new AssertionError("No next page, use hasNextPage() before you call this method"))
-        : nextHandler.start();
+    return CompletableFutures.failedFuture(
+        NotYetImplemented.error("paging of admin query results"));
   }
 }

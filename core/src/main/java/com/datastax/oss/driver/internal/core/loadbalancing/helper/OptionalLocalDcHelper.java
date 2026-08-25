@@ -19,13 +19,10 @@ package com.datastax.oss.driver.internal.core.loadbalancing.helper;
 
 import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverExecutionProfile;
-import com.datastax.oss.driver.api.core.metadata.EndPoint;
 import com.datastax.oss.driver.api.core.metadata.Node;
-import com.datastax.oss.driver.internal.core.channel.DriverChannel;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -150,32 +147,8 @@ public class OptionalLocalDcHelper implements LocalDcHelper {
    */
   @NonNull
   protected Optional<String> inferDcFromControlConnection(@NonNull Map<UUID, Node> nodes) {
-    Node controlNode = context.getControlConnection().controlNode();
-    if (controlNode != null && controlNode.getHostId() != null) {
-      Node metadataNode = nodes.get(controlNode.getHostId());
-      if (metadataNode != null && metadataNode.getDatacenter() != null) {
-        return Optional.of(metadataNode.getDatacenter());
-      }
-    }
-    DriverChannel channel = context.getControlConnection().channel();
-    if (channel != null) {
-      EndPoint controlEndpoint = channel.getEndPoint();
-      Set<String> candidateDcs = new HashSet<>();
-      for (Node node : nodes.values()) {
-        if (node.getDatacenter() != null && Objects.equals(controlEndpoint, node.getEndPoint())) {
-          candidateDcs.add(node.getDatacenter());
-        }
-      }
-      if (candidateDcs.size() == 1) {
-        return Optional.of(candidateDcs.iterator().next());
-      } else if (candidateDcs.size() > 1) {
-        LOG.warn(
-            "[{}] Control endpoint {} matches nodes in multiple DCs: {}, skipping inference",
-            logPrefix,
-            controlEndpoint,
-            candidateDcs);
-      }
-    }
+    // TODO(java-rs): the control connection is owned by the Rust core; there is nothing to infer
+    // the local datacenter from yet.
     return Optional.empty();
   }
 

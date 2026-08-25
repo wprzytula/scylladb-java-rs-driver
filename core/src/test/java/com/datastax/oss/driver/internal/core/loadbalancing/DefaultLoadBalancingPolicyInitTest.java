@@ -173,24 +173,6 @@ public class DefaultLoadBalancingPolicyInitTest extends LoadBalancingPolicyTestB
   }
 
   @Test
-  public void should_infer_local_dc_from_control_node_hostId() {
-    // Given — DC not configured, but controlNode returns a node whose hostId is in the nodes map
-    when(defaultProfile.isDefined(DefaultDriverOption.LOAD_BALANCING_LOCAL_DATACENTER))
-        .thenReturn(false);
-    UUID node1HostId = UUID.randomUUID();
-    when(node1.getHostId()).thenReturn(node1HostId);
-    when(controlConnection.controlNode()).thenReturn(node1);
-
-    DefaultLoadBalancingPolicy policy = createPolicy();
-
-    // When
-    policy.init(ImmutableMap.of(node1HostId, node1), distanceReporter);
-
-    // Then — DC should be inferred from the control node's hostId lookup
-    assertThat(policy.getLocalDatacenter()).isEqualTo("dc1");
-  }
-
-  @Test
   public void should_warn_if_configured_dc_matches_no_node() {
     // Given — DC is configured as "dc1" but nodes are all in "dc2"
     when(metadataManager.getContactPoints()).thenReturn(ImmutableSet.of(node1));

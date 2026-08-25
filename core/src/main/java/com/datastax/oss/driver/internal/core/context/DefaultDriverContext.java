@@ -50,14 +50,7 @@ import com.datastax.oss.driver.internal.core.DefaultConsistencyLevelRegistry;
 import com.datastax.oss.driver.internal.core.DefaultProtocolVersionRegistry;
 import com.datastax.oss.driver.internal.core.ProtocolVersionRegistry;
 import com.datastax.oss.driver.internal.core.addresstranslation.PassThroughAddressTranslator;
-import com.datastax.oss.driver.internal.core.channel.ChannelFactory;
-import com.datastax.oss.driver.internal.core.channel.DefaultWriteCoalescer;
-import com.datastax.oss.driver.internal.core.channel.WriteCoalescer;
 import com.datastax.oss.driver.internal.core.config.typesafe.TypesafeDriverConfig;
-import com.datastax.oss.driver.internal.core.control.ControlConnection;
-import com.datastax.oss.driver.internal.core.metadata.ClientRoutesTopologyMonitor;
-import com.datastax.oss.driver.internal.core.metadata.CloudTopologyMonitor;
-import com.datastax.oss.driver.internal.core.metadata.DefaultTopologyMonitor;
 import com.datastax.oss.driver.internal.core.metadata.LoadBalancingPolicyWrapper;
 import com.datastax.oss.driver.internal.core.metadata.MetadataManager;
 import com.datastax.oss.driver.internal.core.metadata.MultiplexingNodeStateListener;
@@ -68,7 +61,6 @@ import com.datastax.oss.driver.internal.core.metadata.schema.NoopSchemaChangeLis
 import com.datastax.oss.driver.internal.core.metadata.schema.TabletMapSchemaChangeListener;
 import com.datastax.oss.driver.internal.core.metadata.schema.parsing.DefaultSchemaParserFactory;
 import com.datastax.oss.driver.internal.core.metadata.schema.parsing.SchemaParserFactory;
-import com.datastax.oss.driver.internal.core.metadata.schema.queries.DefaultSchemaQueriesFactory;
 import com.datastax.oss.driver.internal.core.metadata.schema.queries.SchemaQueriesFactory;
 import com.datastax.oss.driver.internal.core.metadata.token.DefaultReplicationStrategyFactory;
 import com.datastax.oss.driver.internal.core.metadata.token.DefaultTokenFactoryRegistry;
@@ -76,13 +68,9 @@ import com.datastax.oss.driver.internal.core.metadata.token.ReplicationStrategyF
 import com.datastax.oss.driver.internal.core.metadata.token.TokenFactoryRegistry;
 import com.datastax.oss.driver.internal.core.metrics.MetricIdGenerator;
 import com.datastax.oss.driver.internal.core.metrics.MetricsFactory;
-import com.datastax.oss.driver.internal.core.pool.ChannelPoolFactory;
-import com.datastax.oss.driver.internal.core.protocol.BuiltInCompressors;
-import com.datastax.oss.driver.internal.core.protocol.ByteBufPrimitiveCodec;
 import com.datastax.oss.driver.internal.core.servererrors.DefaultWriteTypeRegistry;
 import com.datastax.oss.driver.internal.core.servererrors.WriteTypeRegistry;
 import com.datastax.oss.driver.internal.core.session.BuiltInRequestProcessors;
-import com.datastax.oss.driver.internal.core.session.PoolManager;
 import com.datastax.oss.driver.internal.core.session.RequestProcessor;
 import com.datastax.oss.driver.internal.core.session.RequestProcessorRegistry;
 import com.datastax.oss.driver.internal.core.ssl.JdkSslHandlerFactory;
@@ -92,23 +80,15 @@ import com.datastax.oss.driver.internal.core.tracker.NoopRequestTracker;
 import com.datastax.oss.driver.internal.core.tracker.RequestLogFormatter;
 import com.datastax.oss.driver.internal.core.type.codec.registry.DefaultCodecRegistry;
 import com.datastax.oss.driver.internal.core.util.DefaultDependencyChecker;
+import com.datastax.oss.driver.internal.core.util.NotYetImplemented;
 import com.datastax.oss.driver.internal.core.util.Reflection;
 import com.datastax.oss.driver.internal.core.util.concurrent.CycleDetector;
 import com.datastax.oss.driver.internal.core.util.concurrent.LazyReference;
-import com.datastax.oss.protocol.internal.Compressor;
-import com.datastax.oss.protocol.internal.FrameCodec;
-import com.datastax.oss.protocol.internal.PrimitiveCodec;
-import com.datastax.oss.protocol.internal.ProtocolV3ClientCodecs;
-import com.datastax.oss.protocol.internal.ProtocolV4ClientCodecs;
-import com.datastax.oss.protocol.internal.ProtocolV5ClientCodecs;
-import com.datastax.oss.protocol.internal.ProtocolV6ClientCodecs;
-import com.datastax.oss.protocol.internal.SegmentCodec;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigList;
 import com.typesafe.config.ConfigObject;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import io.netty.buffer.ByteBuf;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,14 +150,6 @@ public class DefaultDriverContext implements InternalDriverContext {
 
   private final LazyReference<EventBus> eventBusRef =
       new LazyReference<>("eventBus", this::buildEventBus, cycleDetector);
-  private final LazyReference<Compressor<ByteBuf>> compressorRef =
-      new LazyReference<>("compressor", this::buildCompressor, cycleDetector);
-  private final LazyReference<PrimitiveCodec<ByteBuf>> primitiveCodecRef =
-      new LazyReference<>("primitiveCodec", this::buildPrimitiveCodec, cycleDetector);
-  private final LazyReference<FrameCodec<ByteBuf>> frameCodecRef =
-      new LazyReference<>("frameCodec", this::buildFrameCodec, cycleDetector);
-  private final LazyReference<SegmentCodec<ByteBuf>> segmentCodecRef =
-      new LazyReference<>("segmentCodec", this::buildSegmentCodec, cycleDetector);
   private final LazyReference<ProtocolVersionRegistry> protocolVersionRegistryRef =
       new LazyReference<>(
           "protocolVersionRegistry", this::buildProtocolVersionRegistry, cycleDetector);
@@ -188,12 +160,8 @@ public class DefaultDriverContext implements InternalDriverContext {
       new LazyReference<>("writeTypeRegistry", this::buildWriteTypeRegistry, cycleDetector);
   private final LazyReference<NettyOptions> nettyOptionsRef =
       new LazyReference<>("nettyOptions", this::buildNettyOptions, cycleDetector);
-  private final LazyReference<WriteCoalescer> writeCoalescerRef =
-      new LazyReference<>("writeCoalescer", this::buildWriteCoalescer, cycleDetector);
   private final LazyReference<Optional<SslHandlerFactory>> sslHandlerFactoryRef =
       new LazyReference<>("sslHandlerFactory", this::buildSslHandlerFactory, cycleDetector);
-  private final LazyReference<ChannelFactory> channelFactoryRef =
-      new LazyReference<>("channelFactory", this::buildChannelFactory, cycleDetector);
   private final LazyReference<Optional<ClientRoutesConfig>> clientRoutesConfigRef =
       new LazyReference<>("clientRoutesConfig", this::buildClientRoutesConfig, cycleDetector);
   private final LazyReference<TopologyMonitor> topologyMonitorRef =
@@ -203,8 +171,6 @@ public class DefaultDriverContext implements InternalDriverContext {
   private final LazyReference<LoadBalancingPolicyWrapper> loadBalancingPolicyWrapperRef =
       new LazyReference<>(
           "loadBalancingPolicyWrapper", this::buildLoadBalancingPolicyWrapper, cycleDetector);
-  private final LazyReference<ControlConnection> controlConnectionRef =
-      new LazyReference<>("controlConnection", this::buildControlConnection, cycleDetector);
   private final LazyReference<RequestProcessorRegistry> requestProcessorRegistryRef =
       new LazyReference<>(
           "requestProcessorRegistry", this::buildRequestProcessorRegistry, cycleDetector);
@@ -217,8 +183,6 @@ public class DefaultDriverContext implements InternalDriverContext {
   private final LazyReference<ReplicationStrategyFactory> replicationStrategyFactoryRef =
       new LazyReference<>(
           "replicationStrategyFactory", this::buildReplicationStrategyFactory, cycleDetector);
-  private final LazyReference<PoolManager> poolManagerRef =
-      new LazyReference<>("poolManager", this::buildPoolManager, cycleDetector);
   private final LazyReference<MetricsFactory> metricsFactoryRef =
       new LazyReference<>("metricsFactory", this::buildMetricsFactory, cycleDetector);
   private final LazyReference<MetricIdGenerator> metricIdGeneratorRef =
@@ -239,7 +203,6 @@ public class DefaultDriverContext implements InternalDriverContext {
 
   private final DriverConfig config;
   private final DriverConfigLoader configLoader;
-  private final ChannelPoolFactory channelPoolFactory = new ChannelPoolFactory();
   private final CodecRegistry codecRegistry;
   private final String sessionName;
   private final NodeStateListener nodeStateListenerFromBuilder;
@@ -596,31 +559,6 @@ public class DefaultDriverContext implements InternalDriverContext {
     return new EventBus(getSessionName());
   }
 
-  protected Compressor<ByteBuf> buildCompressor() {
-    DriverExecutionProfile defaultProfile = getConfig().getDefaultProfile();
-    String name = defaultProfile.getString(DefaultDriverOption.PROTOCOL_COMPRESSION, "none");
-    assert name != null : "should use default value";
-    return BuiltInCompressors.newInstance(name, this);
-  }
-
-  protected PrimitiveCodec<ByteBuf> buildPrimitiveCodec() {
-    return new ByteBufPrimitiveCodec(getNettyOptions().allocator());
-  }
-
-  protected FrameCodec<ByteBuf> buildFrameCodec() {
-    return new FrameCodec<>(
-        getPrimitiveCodec(),
-        getCompressor(),
-        new ProtocolV3ClientCodecs(),
-        new ProtocolV4ClientCodecs(),
-        new ProtocolV5ClientCodecs(),
-        new ProtocolV6ClientCodecs());
-  }
-
-  protected SegmentCodec<ByteBuf> buildSegmentCodec() {
-    return new SegmentCodec<>(getPrimitiveCodec(), getCompressor());
-  }
-
   protected ProtocolVersionRegistry buildProtocolVersionRegistry() {
     return new DefaultProtocolVersionRegistry(getSessionName());
   }
@@ -645,25 +583,13 @@ public class DefaultDriverContext implements InternalDriverContext {
     // extend DefaultDriverContext and override this method
   }
 
-  protected WriteCoalescer buildWriteCoalescer() {
-    return new DefaultWriteCoalescer(this);
-  }
-
-  protected ChannelFactory buildChannelFactory() {
-    return new ChannelFactory(this);
-  }
-
   protected TopologyMonitor buildTopologyMonitor() {
     ClientRoutesConfig clientRoutesConfig = resolveClientRoutesConfig();
     validateClientRoutesConfiguration(clientRoutesConfig);
 
-    if (cloudProxyAddress != null) {
-      return new CloudTopologyMonitor(this, cloudProxyAddress);
-    }
-    if (clientRoutesConfig != null) {
-      return new ClientRoutesTopologyMonitor(this, clientRoutesConfig);
-    }
-    return new DefaultTopologyMonitor(this);
+    // TODO(java-rs): topology is discovered by the Rust core; this will become a view over its
+    // cluster state.
+    throw NotYetImplemented.error("topology monitoring");
   }
 
   private void validateClientRoutesConfiguration(ClientRoutesConfig clientRoutesConfig) {
@@ -710,10 +636,6 @@ public class DefaultDriverContext implements InternalDriverContext {
     return new LoadBalancingPolicyWrapper(this, getLoadBalancingPolicies());
   }
 
-  protected ControlConnection buildControlConnection() {
-    return new ControlConnection(this);
-  }
-
   protected RequestProcessorRegistry buildRequestProcessorRegistry() {
     List<RequestProcessor<?, ?>> processors =
         BuiltInRequestProcessors.createDefaultProcessors(this);
@@ -731,7 +653,8 @@ public class DefaultDriverContext implements InternalDriverContext {
   }
 
   protected SchemaQueriesFactory buildSchemaQueriesFactory() {
-    return new DefaultSchemaQueriesFactory(this);
+    // TODO(java-rs): schema will be read through the Rust core.
+    throw NotYetImplemented.error("schema queries");
   }
 
   protected SchemaParserFactory buildSchemaParserFactory() {
@@ -744,10 +667,6 @@ public class DefaultDriverContext implements InternalDriverContext {
 
   protected ReplicationStrategyFactory buildReplicationStrategyFactory() {
     return new DefaultReplicationStrategyFactory(this);
-  }
-
-  protected PoolManager buildPoolManager() {
-    return new PoolManager(this);
   }
 
   protected MetricsFactory buildMetricsFactory() {
@@ -1015,30 +934,6 @@ public class DefaultDriverContext implements InternalDriverContext {
 
   @NonNull
   @Override
-  public Compressor<ByteBuf> getCompressor() {
-    return compressorRef.get();
-  }
-
-  @NonNull
-  @Override
-  public PrimitiveCodec<ByteBuf> getPrimitiveCodec() {
-    return primitiveCodecRef.get();
-  }
-
-  @NonNull
-  @Override
-  public FrameCodec<ByteBuf> getFrameCodec() {
-    return frameCodecRef.get();
-  }
-
-  @NonNull
-  @Override
-  public SegmentCodec<ByteBuf> getSegmentCodec() {
-    return segmentCodecRef.get();
-  }
-
-  @NonNull
-  @Override
   public ProtocolVersionRegistry getProtocolVersionRegistry() {
     return protocolVersionRegistryRef.get();
   }
@@ -1063,26 +958,8 @@ public class DefaultDriverContext implements InternalDriverContext {
 
   @NonNull
   @Override
-  public WriteCoalescer getWriteCoalescer() {
-    return writeCoalescerRef.get();
-  }
-
-  @NonNull
-  @Override
   public Optional<SslHandlerFactory> getSslHandlerFactory() {
     return sslHandlerFactoryRef.get();
-  }
-
-  @NonNull
-  @Override
-  public ChannelFactory getChannelFactory() {
-    return channelFactoryRef.get();
-  }
-
-  @NonNull
-  @Override
-  public ChannelPoolFactory getChannelPoolFactory() {
-    return channelPoolFactory;
   }
 
   @NonNull
@@ -1101,12 +978,6 @@ public class DefaultDriverContext implements InternalDriverContext {
   @Override
   public LoadBalancingPolicyWrapper getLoadBalancingPolicyWrapper() {
     return loadBalancingPolicyWrapperRef.get();
-  }
-
-  @NonNull
-  @Override
-  public ControlConnection getControlConnection() {
-    return controlConnectionRef.get();
   }
 
   @NonNull
@@ -1137,12 +1008,6 @@ public class DefaultDriverContext implements InternalDriverContext {
   @Override
   public ReplicationStrategyFactory getReplicationStrategyFactory() {
     return replicationStrategyFactoryRef.get();
-  }
-
-  @NonNull
-  @Override
-  public PoolManager getPoolManager() {
-    return poolManagerRef.get();
   }
 
   @NonNull
@@ -1221,7 +1086,8 @@ public class DefaultDriverContext implements InternalDriverContext {
   @NonNull
   @Override
   public ProtocolVersion getProtocolVersion() {
-    return getChannelFactory().getProtocolVersion();
+    // TODO(java-rs): the negotiated protocol version is owned by the Rust core.
+    throw NotYetImplemented.error("protocol version negotiation");
   }
 
   @NonNull

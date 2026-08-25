@@ -54,11 +54,6 @@ public final class DriverBlockHoundIntegration implements BlockHoundIntegration 
     builder.allowBlockingCallsInside(
         "com.datastax.oss.driver.internal.core.metadata.LoadBalancingPolicyWrapper$SinglePolicyDistanceReporter",
         "setDistance");
-    builder.allowBlockingCallsInside(
-        "com.datastax.oss.driver.internal.core.pool.ChannelSet", "add");
-    builder.allowBlockingCallsInside(
-        "com.datastax.oss.driver.internal.core.pool.ChannelSet", "remove");
-
     // never called directly by the driver; locks that usually operate with low thread contention
 
     builder.allowBlockingCallsInside(

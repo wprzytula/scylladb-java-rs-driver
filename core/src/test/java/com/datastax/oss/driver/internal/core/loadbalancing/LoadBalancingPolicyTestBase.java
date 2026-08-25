@@ -29,7 +29,6 @@ import com.datastax.oss.driver.api.core.config.DriverExecutionProfile;
 import com.datastax.oss.driver.api.core.loadbalancing.LoadBalancingPolicy;
 import com.datastax.oss.driver.internal.core.DefaultConsistencyLevelRegistry;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
-import com.datastax.oss.driver.internal.core.control.ControlConnection;
 import com.datastax.oss.driver.internal.core.metadata.DefaultEndPoint;
 import com.datastax.oss.driver.internal.core.metadata.DefaultNode;
 import com.datastax.oss.driver.internal.core.metadata.MetadataManager;
@@ -55,7 +54,6 @@ public abstract class LoadBalancingPolicyTestBase {
   @Mock protected LoadBalancingPolicy.DistanceReporter distanceReporter;
   @Mock protected Appender<ILoggingEvent> appender;
   @Mock protected MetadataManager metadataManager;
-  @Mock protected ControlConnection controlConnection;
 
   @Captor protected ArgumentCaptor<ILoggingEvent> loggingEventCaptor;
 
@@ -86,8 +84,6 @@ public abstract class LoadBalancingPolicyTestBase {
         .thenReturn("REGULAR");
 
     when(context.getMetadataManager()).thenReturn(metadataManager);
-    when(context.getControlConnection()).thenReturn(controlConnection);
-    when(controlConnection.channel()).thenReturn(null);
 
     logger =
         (Logger) LoggerFactory.getLogger("com.datastax.oss.driver.internal.core.loadbalancing");

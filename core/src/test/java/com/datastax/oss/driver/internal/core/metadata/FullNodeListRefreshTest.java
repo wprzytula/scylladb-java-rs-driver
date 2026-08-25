@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 
 import com.datastax.oss.driver.api.core.metadata.EndPoint;
 import com.datastax.oss.driver.api.core.uuid.Uuids;
-import com.datastax.oss.driver.internal.core.channel.ChannelFactory;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
 import com.datastax.oss.driver.internal.core.metrics.MetricsFactory;
 import com.datastax.oss.driver.shaded.guava.common.collect.ImmutableList;
@@ -40,7 +39,6 @@ public class FullNodeListRefreshTest {
 
   @Mock private InternalDriverContext context;
   @Mock protected MetricsFactory metricsFactory;
-  @Mock private ChannelFactory channelFactory;
 
   private DefaultNode node1;
   private DefaultNode node2;
@@ -50,7 +48,6 @@ public class FullNodeListRefreshTest {
   @Before
   public void setup() {
     when(context.getMetricsFactory()).thenReturn(metricsFactory);
-    when(context.getChannelFactory()).thenReturn(channelFactory);
 
     node1 = TestNodeFactory.newNode(1, context);
     node2 = TestNodeFactory.newNode(2, context);

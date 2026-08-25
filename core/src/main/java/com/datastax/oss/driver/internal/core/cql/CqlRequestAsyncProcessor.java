@@ -24,6 +24,7 @@ import com.datastax.oss.driver.api.core.type.reflect.GenericType;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
 import com.datastax.oss.driver.internal.core.session.DefaultSession;
 import com.datastax.oss.driver.internal.core.session.RequestProcessor;
+import com.datastax.oss.driver.internal.core.util.NotYetImplemented;
 import com.datastax.oss.driver.internal.core.util.concurrent.CompletableFutures;
 import java.util.concurrent.CompletionStage;
 import net.jcip.annotations.ThreadSafe;
@@ -43,7 +44,8 @@ public class CqlRequestAsyncProcessor
       DefaultSession session,
       InternalDriverContext context,
       String sessionLogPrefix) {
-    return new CqlRequestHandler(request, session, context, sessionLogPrefix).handle();
+    // TODO(java-rs): statement execution goes through the Rust core.
+    throw NotYetImplemented.error("statement execution");
   }
 
   @Override
