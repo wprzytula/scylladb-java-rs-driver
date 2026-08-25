@@ -383,7 +383,6 @@ for (ColumnDefinitions.Definition definition : row.getColumnDefinitions()) {
    reconnection/*
    request_tracker/*
    retries/*
-   shaded_jar/*
    speculative_execution/*
    ssl/*
    statements/*

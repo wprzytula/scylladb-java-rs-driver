@@ -21,6 +21,19 @@ under the License.
 
 ### java-rs-driver (Rust-core fork)
 
+#### The shaded core artifact is discontinued
+
+`java-driver-core-shaded` is no longer built or published. Its purpose was to relocate Netty and
+Jackson away from the application's own copies; with the networking layer moving to the Rust core,
+Netty is on its way out of the driver entirely. Applications depending on it must switch to
+`java-driver-core`.
+
+Be aware of what that gives up: applications that used the shaded artifact precisely *because* they
+pin a different Netty or Jackson major version will now see the driver's versions on the classpath,
+and have to pin compatible versions or shade the driver themselves. Jackson is the easier one to
+miss — config reporting is enabled by default and detects Jackson reflectively, so an incompatible
+application copy is what the driver will find.
+
 #### OSGi is no longer supported
 
 The driver jars are no longer OSGi bundles: their manifests do not declare

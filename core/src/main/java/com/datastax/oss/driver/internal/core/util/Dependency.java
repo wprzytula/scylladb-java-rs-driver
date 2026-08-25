@@ -28,10 +28,6 @@ import java.util.List;
  * <p>We use the given fully-qualified names of classes to test the presence of the whole dependency
  * on the classpath, including its transitive dependencies if applicable. This assumes that if these
  * classes are present, then the entire library is present and functional, and vice versa.
- *
- * <p>Note: some of the libraries declared here may be shaded; in these cases the shade plugin will
- * replace the package names listed above with names starting with {@code
- * com.datastax.oss.driver.shaded.*}, but the presence check would still work as expected.
  */
 public enum Dependency {
   SNAPPY("org.xerial.snappy.Snappy"),

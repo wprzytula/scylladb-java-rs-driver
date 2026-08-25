@@ -35,7 +35,6 @@
   <inceptionYear>2017</inceptionYear>
   <modules>
     <module>core</module>
-    <module>core-shaded</module>
     <module>query-builder</module>
     <module>mapper-runtime</module>
     <module>mapper-processor</module>
@@ -157,11 +156,6 @@
       <dependency>
         <groupId>com.scylladb</groupId>
         <artifactId>java-driver-bom</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.scylladb</groupId>
-        <artifactId>java-driver-core-shaded</artifactId>
         <version>${project.version}</version>
       </dependency>
       <!-- Regular dependencies     -->

@@ -47,17 +47,6 @@ right dependencies:
 </tr>
 <tr>
   <td>
-    Same as the above, but without explicit dependencies to <a href="#netty">Netty</a> or
-    <a href="#jackson">Jackson</a>. 
-  </td>
-  <td><code>java&#8209;driver&#8209;core&#8209;shaded</code></td>
-  <td>
-    Replaces <code>java&#8209;driver&#8209;core</code>.<br/>
-    See <a href="../shaded_jar/">this page</a>.
-  </td>
-</tr>
-<tr>
-  <td>
     <a href="../../query_builder">Query builder</a>: generating CQL query strings programmatically. 
   </td>
   <td><code>java&#8209;driver&#8209;query&#8209;builder</code></td>
@@ -357,9 +346,7 @@ Here's a rundown of what you can customize:
 
 [Netty](https://netty.io/) is the NIO framework that powers the driver's networking layer.
 
-It is a required dependency, but we provide a a [shaded JAR](../shaded_jar/) that relocates it to a
-different Java package; this is useful to avoid dependency hell if you already use Netty in another
-part of your application.
+It is a required dependency.
 
 #### Typesafe config
 
