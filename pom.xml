@@ -38,8 +38,6 @@
     <module>query-builder</module>
     <module>mapper-runtime</module>
     <module>mapper-processor</module>
-    <module>metrics/micrometer</module>
-    <module>metrics/microprofile</module>
     <module>guava-shaded</module>
     <module>test-infra</module>
     <module>integration-tests</module>
@@ -138,18 +136,6 @@
         <artifactId>java-driver-core</artifactId>
         <scope>test</scope>
         <type>test-jar</type>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.scylladb</groupId>
-        <artifactId>java-driver-metrics-micrometer</artifactId>
-        <scope>test</scope>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.scylladb</groupId>
-        <artifactId>java-driver-metrics-microprofile</artifactId>
-        <scope>test</scope>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -400,21 +386,6 @@
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
         <version>2.25.0</version>
-      </dependency>
-      <dependency>
-        <groupId>io.micrometer</groupId>
-        <artifactId>micrometer-core</artifactId>
-        <version>1.15.12</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.microprofile.metrics</groupId>
-        <artifactId>microprofile-metrics-api</artifactId>
-        <version>3.0.1</version>
-      </dependency>
-      <dependency>
-        <groupId>io.smallrye</groupId>
-        <artifactId>smallrye-metrics</artifactId>
-        <version>3.0.5</version>
       </dependency>
       <dependency>
         <groupId>io.projectreactor</groupId>

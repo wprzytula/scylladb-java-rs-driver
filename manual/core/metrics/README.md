@@ -29,8 +29,7 @@ under the License.
 -----
 
 The driver is able to report measurements of its internal behavior to a variety of metrics
-libraries, and ships with bindings for three popular ones: [Dropwizard Metrics] , [Micrometer
-Metrics] and [MicroProfile Metrics].
+libraries, and ships with bindings for [Dropwizard Metrics].
 
 ### Selecting a Metrics Library
 
@@ -39,92 +38,12 @@ Metrics] and [MicroProfile Metrics].
 Dropwizard is the driver's default metrics library; there is no additional configuration nor any
 extra dependency to add if you wish to use Dropwizard.
 
-#### Micrometer
+#### Micrometer and MicroProfile Metrics
 
-To use Micrometer you must:
-
-1. Define `MicrometerMetricsFactory` as the metrics factory to use in the driver configuration: 
-
-```
-datastax-java-driver.advanced.metrics {
-  factory.class = MicrometerMetricsFactory
-}
-```
-
-2. Add a dependency to `java-driver-metrics-micrometer` in your application. This separate driver
-module contains the actual bindings for Micrometer, and depends itself on the Micrometer library:
-
-```xml
-<dependency>
-  <groupId>com.scylladb</groupId>
-  <artifactId>java-driver-metrics-micrometer</artifactId>
-  <version>${driver.version}</version>
-</dependency>
-```
-
-3. You should also exclude Dropwizard and HdrHistogram, which are two transitive dependencies of the
-driver, because they are not relevant when using Micrometer:
-
-```xml
-<dependency>
-  <groupId>com.scylladb</groupId>
-  <artifactId>java-driver-core</artifactId>
-  <exclusions>
-    <exclusion>
-      <groupId>io.dropwizard.metrics</groupId>
-      <artifactId>metrics-core</artifactId>
-    </exclusion>
-    <exclusion>
-      <groupId>org.hdrhistogram</groupId>
-      <artifactId>HdrHistogram</artifactId>
-    </exclusion>
-  </exclusions>
-</dependency>
-```
-
-#### MicroProfile Metrics
-
-To use MicroProfile Metrics you must:
-
-1. Define `MicroProfileMetricsFactory` as the metrics factory to use in the driver configuration:
-
-```
-datastax-java-driver.advanced.metrics {
-  factory.class = MicroProfileMetricsFactory
-}
-```
-
-2. Add a dependency to `java-driver-metrics-microprofile` in your application. This separate driver
-module contains the actual bindings for MicroProfile, and depends itself on the MicroProfile Metrics
-library:
-
-```xml
-<dependency>
-  <groupId>com.scylladb</groupId>
-  <artifactId>java-driver-metrics-microprofile</artifactId>
-  <version>${driver.version}</version>
-</dependency>
-```
-
-3. You should also exclude Dropwizard and HdrHistogram, which are two transitive dependencies of the
-driver, because they are not relevant when using MicroProfile Metrics:
-
-```xml
-<dependency>
-  <groupId>com.scylladb</groupId>
-  <artifactId>java-driver-core</artifactId>
-  <exclusions>
-    <exclusion>
-      <groupId>io.dropwizard.metrics</groupId>
-      <artifactId>metrics-core</artifactId>
-    </exclusion>
-    <exclusion>
-      <groupId>org.hdrhistogram</groupId>
-      <artifactId>HdrHistogram</artifactId>
-    </exclusion>
-  </exclusions>
-</dependency>
-```
+The `java-driver-metrics-micrometer` and `java-driver-metrics-microprofile` modules are **not
+shipped** by this driver for now: they bind to internals that the Rust core replaces. They will come
+back once metrics are bridged from the Rust core. Until then, only Dropwizard (or a custom factory,
+see below) is available.
 
 #### Other Metrics libraries
 

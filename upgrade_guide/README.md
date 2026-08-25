@@ -21,6 +21,14 @@ under the License.
 
 ### java-rs-driver (Rust-core fork)
 
+#### The Micrometer and MicroProfile metrics modules are temporarily gone
+
+`java-driver-metrics-micrometer` and `java-driver-metrics-microprofile` are not built or published
+for now. They are pure backends over the driver's internal metrics SPI, which has no data source
+until metrics are bridged out of the Rust core; they are expected to return then. The public metrics
+API (`Session.getMetrics()`, `advanced.metrics.*`, `MetricsFactory`) and the default Dropwizard
+binding are unaffected.
+
 #### GraalVM native images are no longer supported
 
 The driver no longer ships GraalVM native-image support: the substitution classes (compressors,
