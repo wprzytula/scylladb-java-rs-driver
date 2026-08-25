@@ -17,15 +17,13 @@
  */
 package com.datastax.oss.driver.internal.core.cql.reactive;
 
-import static com.datastax.dse.driver.DseTestFixtures.singleDseRow;
-import static com.datastax.dse.driver.api.core.DseProtocolVersion.DSE_V1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.datastax.dse.driver.DseTestDataProviders;
-import com.datastax.dse.driver.DseTestFixtures;
+import com.datastax.oss.driver.TestDataProviders;
+import com.datastax.oss.driver.api.core.DefaultProtocolVersion;
 import com.datastax.oss.driver.api.core.ProtocolVersion;
 import com.datastax.oss.driver.api.core.cql.AsyncResultSet;
 import com.datastax.oss.driver.api.core.cql.ColumnDefinitions;
@@ -40,9 +38,20 @@ import com.datastax.oss.driver.internal.core.cql.CqlRequestHandlerTestBase;
 import com.datastax.oss.driver.internal.core.cql.PoolBehavior;
 import com.datastax.oss.driver.internal.core.cql.RequestHandlerTestHarness;
 import com.datastax.oss.driver.internal.core.session.DefaultSession;
+import com.datastax.oss.driver.shaded.guava.common.collect.ImmutableList;
+import com.datastax.oss.protocol.internal.ProtocolConstants;
+import com.datastax.oss.protocol.internal.response.result.ColumnSpec;
+import com.datastax.oss.protocol.internal.response.result.DefaultRows;
+import com.datastax.oss.protocol.internal.response.result.RawType;
+import com.datastax.oss.protocol.internal.response.result.Rows;
+import com.datastax.oss.protocol.internal.response.result.RowsMetadata;
+import com.datastax.oss.protocol.internal.util.Bytes;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import io.reactivex.Flowable;
+import java.nio.ByteBuffer;
+import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import org.junit.Test;
 
@@ -61,7 +70,7 @@ public class CqlRequestReactiveProcessorTest extends CqlRequestHandlerTestBase {
   @Test
   public void should_create_request_handler() {
     RequestHandlerTestHarness.Builder builder =
-        RequestHandlerTestHarness.builder().withProtocolVersion(DSE_V1);
+        RequestHandlerTestHarness.builder().withProtocolVersion(DefaultProtocolVersion.V4);
     try (RequestHandlerTestHarness harness = builder.build()) {
       CqlRequestReactiveProcessor processor =
           new CqlRequestReactiveProcessor(new CqlRequestAsyncProcessor());
@@ -76,12 +85,12 @@ public class CqlRequestReactiveProcessorTest extends CqlRequestHandlerTestBase {
   }
 
   @Test
-  @UseDataProvider(value = "allDseAndOssProtocolVersions", location = DseTestDataProviders.class)
+  @UseDataProvider(value = "allOssProtocolVersions", location = TestDataProviders.class)
   public void should_complete_single_page_result(ProtocolVersion version) {
     try (RequestHandlerTestHarness harness =
         RequestHandlerTestHarness.builder()
             .withProtocolVersion(version)
-            .withResponse(node1, defaultFrameOf(singleDseRow()))
+            .withResponse(node1, defaultFrameOf(singleRow()))
             .build()) {
 
       DefaultSession session = harness.getSession();
@@ -120,7 +129,7 @@ public class CqlRequestReactiveProcessorTest extends CqlRequestHandlerTestBase {
   }
 
   @Test
-  @UseDataProvider(value = "allDseAndOssProtocolVersions", location = DseTestDataProviders.class)
+  @UseDataProvider(value = "allOssProtocolVersions", location = TestDataProviders.class)
   public void should_complete_multi_page_result(ProtocolVersion version) {
     RequestHandlerTestHarness.Builder builder =
         RequestHandlerTestHarness.builder().withProtocolVersion(version);
@@ -144,15 +153,12 @@ public class CqlRequestReactiveProcessorTest extends CqlRequestHandlerTestBase {
       rowsPublisher.subscribe();
 
       // emulate arrival of page 1
-      node1Behavior.setResponseSuccess(defaultFrameOf(DseTestFixtures.tenDseRows(1, false)));
+      node1Behavior.setResponseSuccess(defaultFrameOf(tenRows(1, false)));
 
       // emulate arrival of page 2 following the call to session.executeAsync()
       page2Future.complete(
           Conversions.toResultSet(
-              DseTestFixtures.tenDseRows(2, true),
-              mockInfo,
-              harness.getSession(),
-              harness.getContext()));
+              tenRows(2, true), mockInfo, harness.getSession(), harness.getContext()));
 
       List<ReactiveRow> rows = rowsPublisher.toList().blockingGet();
       assertThat(rows).hasSize(20);
@@ -184,5 +190,26 @@ public class CqlRequestReactiveProcessorTest extends CqlRequestHandlerTestBase {
       Flowable<Boolean> wasAppliedFlowable = Flowable.fromPublisher(publisher.wasApplied());
       assertThat(wasAppliedFlowable.toList().blockingGet()).containsExactly(first.wasApplied());
     }
+  }
+
+  // Returns 10 rows, each with a single "message" column with the value "hello, world"
+  private static Rows tenRows(int page, boolean last) {
+    RowsMetadata metadata =
+        new RowsMetadata(
+            ImmutableList.of(
+                new ColumnSpec(
+                    "ks",
+                    "table",
+                    "message",
+                    0,
+                    RawType.PRIMITIVES.get(ProtocolConstants.DataType.VARCHAR))),
+            last ? null : ByteBuffer.wrap(new byte[] {(byte) page}),
+            new int[] {},
+            null);
+    Queue<List<ByteBuffer>> data = new ArrayDeque<>();
+    for (int i = 0; i < 10; i++) {
+      data.add(ImmutableList.of(Bytes.fromHexString("0x68656C6C6F2C20776F726C64")));
+    }
+    return new DefaultRows(metadata, data);
   }
 }

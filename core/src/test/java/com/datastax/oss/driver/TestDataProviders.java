@@ -17,11 +17,17 @@
  */
 package com.datastax.oss.driver;
 
+import com.datastax.oss.driver.api.core.DefaultProtocolVersion;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import java.util.Arrays;
 import java.util.Locale;
 
 public class TestDataProviders {
+
+  @DataProvider
+  public static Object[][] allOssProtocolVersions() {
+    return fromList((Object[]) DefaultProtocolVersion.values());
+  }
 
   public static Object[][] fromList(Object... l) {
     Object[][] result = new Object[l.length][];

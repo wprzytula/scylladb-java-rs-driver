@@ -17,7 +17,6 @@
  */
 package com.datastax.oss.driver.api.core.auth;
 
-import com.datastax.dse.driver.api.core.auth.BaseDseAuthenticator;
 import com.datastax.oss.driver.api.core.metadata.EndPoint;
 import com.datastax.oss.driver.api.core.session.Session;
 import com.datastax.oss.driver.shaded.guava.common.base.Charsets;
@@ -102,8 +101,8 @@ public abstract class PlainTextAuthProviderBase implements AuthProvider {
      * Builds an instance for username/password authentication, and proxy authentication with the
      * given authorizationId.
      *
-     * <p>This feature is only available with DataStax Enterprise. If the target server is Apache
-     * Cassandra, the authorizationId will be ignored.
+     * <p>Proxy authentication was a DataStax Enterprise feature. The authorizationId is still
+     * encoded into the SASL payload, but Apache Cassandra and ScyllaDB ignore it.
      */
     public Credentials(
         @NonNull char[] username, @NonNull char[] password, @NonNull char[] authorizationId) {
@@ -153,12 +152,7 @@ public abstract class PlainTextAuthProviderBase implements AuthProvider {
     }
   }
 
-  // Implementation note: BaseDseAuthenticator is backward compatible with Cassandra authenticators.
-  // This will work with both Cassandra (as long as no authorizationId is set) and DSE.
-  protected static class PlainTextAuthenticator extends BaseDseAuthenticator {
-
-    private static final ByteBuffer MECHANISM =
-        ByteBuffer.wrap("PLAIN".getBytes(StandardCharsets.UTF_8)).asReadOnlyBuffer();
+  protected static class PlainTextAuthenticator implements SyncAuthenticator {
 
     private static final ByteBuffer SERVER_INITIAL_CHALLENGE =
         ByteBuffer.wrap("PLAIN-START".getBytes(StandardCharsets.UTF_8)).asReadOnlyBuffer();
@@ -185,10 +179,9 @@ public abstract class PlainTextAuthProviderBase implements AuthProvider {
         @NonNull Credentials credentials,
         @NonNull EndPoint endPoint,
         @NonNull String serverAuthenticator) {
-      super(serverAuthenticator);
-
       Objects.requireNonNull(credentials);
       Objects.requireNonNull(endPoint);
+      Objects.requireNonNull(serverAuthenticator);
 
       ByteBuffer authorizationId = toUtf8Bytes(credentials.getAuthorizationId());
       ByteBuffer username = toUtf8Bytes(credentials.getUsername());
@@ -217,15 +210,8 @@ public abstract class PlainTextAuthProviderBase implements AuthProvider {
      */
     @Deprecated
     protected PlainTextAuthenticator(@NonNull Credentials credentials) {
-      this(
-          credentials,
-          // It's unlikely that this class was ever extended by third parties, but if it was, assume
-          // that it was not written for DSE:
-          // - dummy end point because we should never need to build an auth exception
-          DUMMY_END_POINT,
-          // - default OSS authenticator name (the only thing that matters is how this string
-          //   compares to "DseAuthenticator")
-          "org.apache.cassandra.auth.PasswordAuthenticator");
+      // dummy end point because we should never need to build an auth exception
+      this(credentials, DUMMY_END_POINT, "org.apache.cassandra.auth.PasswordAuthenticator");
     }
 
     private static ByteBuffer toUtf8Bytes(char[] charArray) {
@@ -240,17 +226,25 @@ public abstract class PlainTextAuthProviderBase implements AuthProvider {
       }
     }
 
+    /**
+     * Returns a byte buffer containing the expected successful server challenge.
+     *
+     * <p>This must be either a {@linkplain ByteBuffer#asReadOnlyBuffer() read-only} buffer, or a
+     * new instance every time.
+     */
     @NonNull
-    @Override
-    public ByteBuffer getMechanism() {
-      return MECHANISM;
-    }
-
-    @NonNull
-    @Override
     public ByteBuffer getInitialServerChallenge() {
       return SERVER_INITIAL_CHALLENGE;
     }
+
+    @Nullable
+    @Override
+    public ByteBuffer initialResponseSync() {
+      return evaluateChallengeSync(getInitialServerChallenge());
+    }
+
+    @Override
+    public void onAuthenticationSuccessSync(@Nullable ByteBuffer token) {}
 
     @Nullable
     @Override

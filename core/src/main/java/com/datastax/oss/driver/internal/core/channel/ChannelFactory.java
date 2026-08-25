@@ -78,7 +78,7 @@ public class ChannelFactory {
 
   /**
    * A value for {@link #productType} that indicates that we are connected to DataStax Cloud. This
-   * value matches the one defined at DSE DB server side at {@code ProductType.java}.
+   * value matches the one defined server-side at {@code ProductType.java}.
    */
   private static final String DATASTAX_CLOUD_PRODUCT_TYPE = "DATASTAX_APOLLO";
 

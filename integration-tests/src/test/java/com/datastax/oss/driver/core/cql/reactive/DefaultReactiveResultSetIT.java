@@ -142,7 +142,7 @@ public class DefaultReactiveResultSetIT {
 
     List<ExecutionInfo> execInfos =
         Flowable.<ExecutionInfo>fromPublisher(rs.getExecutionInfos()).toList().blockingGet();
-    // DSE may send an empty page as it can't always know if it's done paging or not yet.
+    // The server may send an empty page as it can't always know if it's done paging or not yet.
     // See: CASSANDRA-8871. In this case, this page's execution info appears in
     // rs.getExecutionInfos(), but is not present in expectedExecInfos since the page did not
     // contain any rows.

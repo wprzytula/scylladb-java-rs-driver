@@ -19,6 +19,45 @@ under the License.
 
 ## Upgrade guide
 
+### java-rs-driver (Rust-core fork)
+
+#### All DataStax Enterprise (DSE) support has been removed
+
+This driver does not support DataStax Enterprise. All DSE-specific features were deliberately and
+completely removed, including their public API (`com.datastax.dse.**`):
+
+* DSE graph (Apache TinkerPop integration) and DSE geometry types;
+* continuous paging (`executeContinuously*`, `advanced.continuous-paging.*` options);
+* DSE authentication: GSSAPI/Kerberos (`DseGssApiAuthProvider`) and proxy authentication
+  (`authorization-id`; the `withAuthCredentials(username, password, authorizationId)` overloads
+  remain source-compatible, and the authorization id is still encoded into the SASL payload, but
+  Apache Cassandra and ScyllaDB ignore it server-side);
+* DSE protocol versions (`DSE_V1`, `DSE_V2`) and DSE-specific protocol negotiation;
+* DSE Insights monitoring (`advanced.monitor-reporting.*`);
+* DSE-specific node metadata (`DseNodeProperties` node extras), schema parsing, and metrics
+  (`graph-requests`, `graph-messages`, `continuous-cql-requests`, `graph-client-timeouts`);
+* the deprecated `DseLoadBalancingPolicy`/`DseDcInferringLoadBalancingPolicy` aliases (use
+  `DefaultLoadBalancingPolicy`/`DcInferringLoadBalancingPolicy` instead).
+
+HCD (DataStax's Hyper-Converged Database) is not supported either: it inherits DataStax's
+`DseAuthenticator`, so supporting it would have meant keeping DSE's SASL mechanism negotiation in
+plaintext auth. This is a source-incompatible change for test suites built on the published
+`java-driver-test-infra` artifact: `BackendType.HCD` is gone, so a
+`@BackendRequirement(type = BackendType.HCD, ...)` no longer compiles, and there is no deprecation
+cycle. Removed with it: the HCD entry in `DistributionCassandraVersions`, the `CcmBridge.V4_0_11`
+and now-unused `CcmBridge.V4_0_0` constants, the `DescribeIT/hcd` fixtures, and the HCD branches in
+`DescribeIT` and `DirectCompressionIT`.
+
+One exception: the **reactive execution API** (`CqlSession.executeReactive`, `ReactiveResultSet`,
+`ReactiveRow`, and the mapper's `MappedReactiveResultSet`) is not DSE-specific and was kept, but
+relocated from the historical `com.datastax.dse.driver` packages to the corresponding
+`com.datastax.oss.driver` packages (`api.core.cql.reactive`, `api.mapper.reactive`, ...). Reactive
+users only need to update their imports.
+
+The `basic.application.name`/`basic.application.version` options (and
+`withApplicationName`/`withApplicationVersion`) were kept: they are still sent in the `STARTUP`
+message. Their `DseDriverOption` constants moved to `DefaultDriverOption`.
+
 ### 4.19.2.1
 
 #### The driver reports a session identifier, and its configuration, at connection time
