@@ -19,9 +19,9 @@ package com.datastax.dse.driver.internal.core.graph.reactive;
 
 import com.datastax.dse.driver.api.core.graph.AsyncGraphResultSet;
 import com.datastax.dse.driver.api.core.graph.reactive.ReactiveGraphNode;
-import com.datastax.dse.driver.internal.core.cql.reactive.ReactiveOperators;
-import com.datastax.dse.driver.internal.core.util.concurrent.BoundedConcurrentQueue;
 import com.datastax.oss.driver.api.core.cql.ExecutionInfo;
+import com.datastax.oss.driver.internal.core.cql.reactive.ReactiveOperators;
+import com.datastax.oss.driver.internal.core.util.concurrent.BoundedConcurrentQueue;
 import com.datastax.oss.driver.internal.core.util.concurrent.CompletableFutures;
 import com.datastax.oss.driver.shaded.guava.common.collect.Iterators;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is very similar to {@link
- * com.datastax.dse.driver.internal.core.cql.reactive.ReactiveResultSetSubscription}. It exists
+ * com.datastax.oss.driver.internal.core.cql.reactive.ReactiveResultSetSubscription}. It exists
  * merely because {@link AsyncGraphResultSet} is not a subtype of {@link
  * com.datastax.oss.driver.api.core.AsyncPagingIterable} and thus it would be difficult to re-use
  * ReactiveResultSetSubscription for graph result sets.

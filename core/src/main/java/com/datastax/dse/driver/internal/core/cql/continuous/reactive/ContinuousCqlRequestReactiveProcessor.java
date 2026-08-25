@@ -19,11 +19,11 @@ package com.datastax.dse.driver.internal.core.cql.continuous.reactive;
 
 import com.datastax.dse.driver.api.core.cql.continuous.reactive.ContinuousReactiveResultSet;
 import com.datastax.dse.driver.internal.core.cql.continuous.ContinuousCqlRequestAsyncProcessor;
-import com.datastax.dse.driver.internal.core.cql.reactive.FailedReactiveResultSet;
 import com.datastax.oss.driver.api.core.cql.Statement;
 import com.datastax.oss.driver.api.core.session.Request;
 import com.datastax.oss.driver.api.core.type.reflect.GenericType;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
+import com.datastax.oss.driver.internal.core.cql.reactive.FailedReactiveResultSet;
 import com.datastax.oss.driver.internal.core.session.DefaultSession;
 import com.datastax.oss.driver.internal.core.session.RequestProcessor;
 import net.jcip.annotations.ThreadSafe;
