@@ -48,12 +48,6 @@
       </exclusions>
       <optional>true</optional>
     </dependency>
-    <dependency>
-      <groupId>org.graalvm.nativeimage</groupId>
-      <artifactId>svm</artifactId>
-      <version>20.3.17</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -97,10 +91,10 @@
       </plugin>
       <plugin>
         <!--
-          Cleaning up target directory is required, because module's Java source files
-          (e.g. LexicographicalComparatorHolderSubstitution) will be left with
-          their original Java package AND eventually shaded one. This plugin removes
-          the Java class from its unshaded package.
+          Wipe target/classes between the shade and unpack executions below: dependency:unpack
+          overwrites entries but never deletes them, so on a build that skips clean (after a Guava
+          version bump, say) a class removed upstream would survive here and be packed into the
+          final jar by the assembly fileSet.
         -->
         <artifactId>maven-clean-plugin</artifactId>
         <executions>

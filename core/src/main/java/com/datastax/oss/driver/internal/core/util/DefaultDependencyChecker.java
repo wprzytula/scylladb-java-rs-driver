@@ -21,11 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * A checker for the presence of various {@link Dependency} instances at runtime. Predicate tests
- * for Graal substitutions should NOT use this class; see {@link GraalDependencyChecker} for more
- * information.
- */
+/** A checker for the presence of various {@link Dependency} instances at runtime. */
 public class DefaultDependencyChecker {
 
   private static final Logger LOG = LoggerFactory.getLogger(DefaultDependencyChecker.class);

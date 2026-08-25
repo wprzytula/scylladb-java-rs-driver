@@ -83,7 +83,6 @@
     <json-schema-validator.version>1.5.9</json-schema-validator.version>
     <apacheds.version>2.0.0-M19</apacheds.version>
     <surefire.version>3.5.5</surefire.version>
-    <graalapi.version>22.0.0.2</graalapi.version>
     <skipTests>false</skipTests>
     <skipUnitTests>${skipTests}</skipUnitTests>
     <release.autopublish>false</release.autopublish>
@@ -401,16 +400,6 @@
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
         <version>2.25.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.graalvm.sdk</groupId>
-        <artifactId>graal-sdk</artifactId>
-        <version>${graalapi.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.graalvm.nativeimage</groupId>
-        <artifactId>svm</artifactId>
-        <version>${graalapi.version}</version>
       </dependency>
       <dependency>
         <groupId>io.micrometer</groupId>

@@ -365,7 +365,6 @@ for (ColumnDefinitions.Definition definition : row.getColumnDefinitions()) {
    control_connection/*
    custom_codecs/*
    detachable_types/*
-   graalvm/*
    idempotence/*
    integration/*
    load_balancing/*

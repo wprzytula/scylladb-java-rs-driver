@@ -21,6 +21,22 @@ under the License.
 
 ### java-rs-driver (Rust-core fork)
 
+#### GraalVM native images are no longer supported
+
+The driver no longer ships GraalVM native-image support: the substitution classes (compressors,
+metrics factory, libc access, the request processors, the Guava `Unsafe` comparators in the shaded
+Guava artifact), the Graal dependency checker, the
+`org.graalvm` build dependencies, the GraalVM manual page and the `META-INF/native-image/**`
+configuration are all gone. The configuration had to go with the classes: `native-image`
+auto-applies the `Args=` line of every `native-image.properties` on the classpath, so leaving it
+behind would have kept configuring downstream native-image builds — reflection config, dynamic-proxy
+config, `--initialize-at-build-time` — while the substitutions that kept optional dependencies such
+as jnr-posix and Snappy out of the closed-world analysis no longer existed. Deleting only the Java
+half is worse than deleting neither. The `.snyk` policy file went too: all three of its ignores were
+`graal-sdk` CVEs. Bundling a native library
+into a native image is a different problem from the one those substitutions solved, and will be
+designed separately.
+
 #### The shaded core artifact is discontinued
 
 `java-driver-core-shaded` is no longer built or published. Its purpose was to relocate Netty and
@@ -317,7 +333,8 @@ If you were building a native image for your application, please verify your nat
 configuration. Most of the extra configuration required until now is likely to not be necessary
 anymore.
 
-Refer to this [manual page](../manual/core/graalvm) for details.
+(The GraalVM manual page this entry linked to is gone: native images are no longer supported, see
+the java-rs-driver section above.)
 
 #### Registration of multiple listeners and trackers
 

@@ -97,8 +97,6 @@ Dependency:
 </dependency>
 ```
 
-**Important: Snappy is not supported when building a [GraalVM native image](../graalvm).**
-
 Always double-check the exact Snappy version needed; you can find it in the driver's [parent POM].
 
 [parent POM]: https://search.maven.org/search?q=g:com.datastax.oss%20AND%20a:java-driver-parent&core=gav
