@@ -30,8 +30,6 @@ import java.util.List;
  * classes are present, then the entire library is present and functional, and vice versa.
  */
 public enum Dependency {
-  SNAPPY("org.xerial.snappy.Snappy"),
-  LZ4("net.jpountz.lz4.LZ4Compressor"),
   REACTIVE_STREAMS("org.reactivestreams.Publisher"),
   JACKSON(
       // jackson-core

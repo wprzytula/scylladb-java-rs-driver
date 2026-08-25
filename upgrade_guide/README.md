@@ -21,6 +21,24 @@ under the License.
 
 ### java-rs-driver (Rust-core fork)
 
+#### The driver's own transport layer is gone (work in progress)
+
+The Netty-based transport — connection pooling, the control connection, frame codecs, protocol
+negotiation and request handling — was removed; it is being replaced by the Rust driver. In this
+state the driver builds and its public API is intact, but nothing that needs a server works:
+building a session, executing or preparing a statement, and reading topology or schema metadata
+fail with `UnsupportedOperationException("NOT YET IMPLEMENTED (java-rs)")`.
+
+Two consequences that outlive the transition:
+
+* frame compression (`advanced.protocol.compression`) is the Rust core's business, so
+  `java-driver-core` no longer depends on `lz4-java` or `snappy-java`;
+* `InternalDriverContext` no longer exposes the transport components (`getChannelFactory`,
+  `getChannelPoolFactory`, `getControlConnection`, `getPoolManager`, `getWriteCoalescer`,
+  `getCompressor`, `getPrimitiveCodec`, `getFrameCodec`, `getSegmentCodec`), and neither do the
+  `DefaultDriverContext.build*` methods behind them. Code that overrode
+  `SessionBuilder.buildContext()` to customize any of these has nothing to hook into any more.
+
 #### The Micrometer and MicroProfile metrics modules are temporarily gone
 
 `java-driver-metrics-micrometer` and `java-driver-metrics-microprofile` are not built or published
