@@ -32,7 +32,6 @@ Common topics:
 
 * [API conventions](api_conventions/)
 * [Case sensitivity](case_sensitivity/)
-* [OSGi](osgi/)
 
 ```{eval-rst}
 .. toctree::
@@ -44,6 +43,5 @@ Common topics:
    core/*
    developer/*
    mapper/*
-   osgi/*
    query_builder/*
 ```

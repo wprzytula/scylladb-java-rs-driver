@@ -21,6 +21,14 @@ under the License.
 
 ### java-rs-driver (Rust-core fork)
 
+#### OSGi is no longer supported
+
+The driver jars are no longer OSGi bundles: their manifests do not declare
+`Bundle-SymbolicName`/`Import-Package`/`Export-Package` any more, and the `osgi-tests` module and
+OSGi manual page are gone. Deploying the driver in an OSGi container (Eclipse, Apache Karaf, ...) is
+not supported. The `ClassLoader`-taking API (`SessionBuilder.withClassLoader`,
+`DriverConfigLoader.fromClasspath(String, ClassLoader)`, ...) is unaffected and still available.
+
 #### All DataStax Enterprise (DSE) support has been removed
 
 This driver does not support DataStax Enterprise. All DSE-specific features were deliberately and

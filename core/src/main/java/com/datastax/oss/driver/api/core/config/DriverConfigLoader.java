@@ -56,8 +56,8 @@ public interface DriverConfigLoader extends AutoCloseable {
    *
    * <p>The class loader used to locate application-specific classpath resources is {@linkplain
    * Thread#getContextClassLoader() the current thread's context class loader}. This might not be
-   * suitable for OSGi deployments, which should use {@link #fromClasspath(String, ClassLoader)}
-   * instead.
+   * suitable for containers with layered class loaders (web applications, application servers),
+   * which should use {@link #fromClasspath(String, ClassLoader)} instead.
    *
    * <p>More precisely, configuration properties are loaded and merged from the following
    * (first-listed are higher priority):
@@ -249,8 +249,8 @@ public interface DriverConfigLoader extends AutoCloseable {
    *
    * <p>The class loader used to locate application-specific classpath resources is {@linkplain
    * Thread#getContextClassLoader() the current thread's context class loader}. This might not be
-   * suitable for OSGi deployments, which should use {@link #programmaticBuilder(ClassLoader)}
-   * instead.
+   * suitable for containers with layered class loaders (web applications, application servers),
+   * which should use {@link #programmaticBuilder(ClassLoader)} instead.
    *
    * <p>The resulting configuration is expected to contain a {@code datastax-java-driver} section.
    *

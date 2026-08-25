@@ -612,8 +612,8 @@ public abstract class SessionBuilder<SelfT extends SessionBuilder, SessionT> {
    *
    * This is generally the right thing to do.
    *
-   * <p>Defining a different class loader is typically only needed in web or OSGi environments where
-   * there are complex class loading requirements.
+   * <p>Defining a different class loader is typically only needed in web or application-server
+   * environments where there are complex class loading requirements.
    *
    * <p>For example, if the driver jar is loaded by the web server's system class loader (that is,
    * the driver jar was placed in the "/lib" folder of the web server), but the application tries to
@@ -633,13 +633,13 @@ public abstract class SessionBuilder<SelfT extends SessionBuilder, SessionT> {
    * This class loader is thus capable of loading both the implemented interface and the
    * implementing class, in spite of them being declared in different places.
    *
-   * <p>For OSGi deployments, it is usually not necessary to use this method. Even if the
-   * implemented interface and the implementing class are located in different bundles, the right
-   * class loader to use should be the default one (the driver bundle's class loader). In
-   * particular, it is not advised to rely on {@code Thread.currentThread().getContextClassLoader()}
-   * in OSGi environments, so you should never pass that class loader to this method. See <a
-   * href="https://docs.datastax.com/en/developer/java-driver/latest/manual/osgi/#using-a-custom-class-loader">Using
-   * a custom ClassLoader</a> in our OSGi online docs for more information.
+   * <p>The two uses of this class loader do not behave the same way when it cannot resolve
+   * something. Reflective class loading retries with the driver's own class loader, so a loader
+   * that resolves only part of the application's classes still works. Configuration resources are
+   * located with the given loader alone: if it cannot see the application's {@code
+   * application.conf}, that file is silently ignored and the session starts on the driver's {@code
+   * reference.conf} defaults. Pass a loader that can see both, or configure the session with a
+   * custom {@link #configLoader}.
    */
   @NonNull
   public SelfT withClassLoader(@Nullable ClassLoader classLoader) {

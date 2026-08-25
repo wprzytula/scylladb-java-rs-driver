@@ -31,7 +31,7 @@
     <version>4.19.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>java-driver-test-infra</artifactId>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
   <name>Java driver for Scylla and Apache Cassandra(R) - test infrastructure tools</name>
   <description>Supporting utilities and fixtures used by ScyllaDB Java Driver integration and performance tests.</description>
   <url>https://github.com/scylladb/java-driver</url>
@@ -102,18 +102,6 @@
               <Automatic-Module-Name>com.datastax.oss.driver.tests.infrastructure</Automatic-Module-Name>
             </manifestEntries>
           </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <configuration>
-          <instructions>
-            <Bundle-SymbolicName>com.datastax.oss.driver.testinfra</Bundle-SymbolicName>
-            <!-- allow SessionUtils to instantiate sessions by reflection -->
-            <DynamicImport-Package>*</DynamicImport-Package>
-            <Export-Package>com.datastax.oss.driver.*.testinfra.*, com.datastax.oss.driver.assertions, com.datastax.oss.driver.categories</Export-Package>
-          </instructions>
         </configuration>
       </plugin>
     </plugins>
