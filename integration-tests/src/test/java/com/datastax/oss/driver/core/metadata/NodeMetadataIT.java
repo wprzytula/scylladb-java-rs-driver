@@ -26,7 +26,6 @@ package com.datastax.oss.driver.core.metadata;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import com.datastax.dse.driver.api.core.metadata.DseNodeProperties;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.loadbalancing.NodeDistance;
 import com.datastax.oss.driver.api.core.metadata.Node;
@@ -73,7 +72,7 @@ public class NodeMetadataIT {
         assertThat(node.getRack()).isEqualTo("r1");
       }
       if (CcmBridge.isDistributionOf(BackendType.CASSANDRA)) {
-        // CcmBridge does not report accurate C* versions for other distributions (e.g. DSE), only
+        // CcmBridge does not report accurate C* versions for other distributions, only
         // approximated values
         assertThat(node.getCassandraVersion()).isEqualTo(ccmRule.getCassandraVersion());
       }
@@ -100,26 +99,6 @@ public class NodeMetadataIT {
           .atMost(60, TimeUnit.SECONDS)
           .until(() -> node.getState() == NodeState.UP);
       assertThat(node.getUpSinceMillis()).isGreaterThan(upTime1);
-    }
-  }
-
-  @Test
-  @BackendRequirement(type = BackendType.DSE, minInclusive = "5.1")
-  public void should_expose_dse_node_properties() {
-    try (CqlSession session = SessionUtils.newSession(ccmRule)) {
-
-      Node node = getUniqueNode(session);
-
-      // Basic checks as we want something that will work with a large range of DSE versions:
-      assertThat(node.getExtras())
-          .containsKeys(
-              DseNodeProperties.DSE_VERSION,
-              DseNodeProperties.DSE_WORKLOADS,
-              DseNodeProperties.SERVER_ID);
-      assertThat(node.getExtras().get(DseNodeProperties.DSE_VERSION))
-          .isEqualTo(ccmRule.getDistributionVersion());
-      assertThat(node.getExtras().get(DseNodeProperties.SERVER_ID)).isInstanceOf(String.class);
-      assertThat(node.getExtras().get(DseNodeProperties.DSE_WORKLOADS)).isInstanceOf(Set.class);
     }
   }
 

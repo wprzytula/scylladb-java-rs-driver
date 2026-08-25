@@ -28,5 +28,4 @@
     <appender-ref ref="STDOUT"/>
   </root>
   <logger name="com.datastax.oss.driver" level="${ossDriverLevel:-WARN}"/>
-  <logger name="com.datastax.dse.driver" level="${dseDriverLevel:-WARN}"/>
 </configuration>

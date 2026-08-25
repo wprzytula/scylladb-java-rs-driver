@@ -38,8 +38,8 @@ import org.reactivestreams.Publisher;
  * the driver and impact performance. Instead, they should asynchronously dispatch received signals
  * to their processing logic.
  *
- * <p>This type is located in a {@code dse} package for historical reasons; reactive result sets
- * work with both Cassandra and DSE.
+ * <p>In the upstream DataStax driver, this type is located under {@code com.datastax.dse} for
+ * historical reasons; it was relocated here because reactive result sets are not DSE-specific.
  *
  * @see ReactiveResultSet
  */

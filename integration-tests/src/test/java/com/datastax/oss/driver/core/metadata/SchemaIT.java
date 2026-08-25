@@ -62,9 +62,6 @@ import org.junit.rules.TestRule;
 @Category(ParallelizableTests.class)
 public class SchemaIT {
 
-  private static final Version DSE_MIN_VIRTUAL_TABLES =
-      Objects.requireNonNull(Version.parse("6.7.0"));
-
   private final CcmRule ccmRule = CcmRule.getInstance();
 
   private final SessionRule<CqlSession> sessionRule = SessionRule.builder(ccmRule).build();
@@ -200,8 +197,6 @@ public class SchemaIT {
       description = "virtual tables introduced in 4.0")
   @Test
   public void should_get_virtual_metadata() {
-    skipIfDse60();
-
     DriverConfigLoader loader =
         SessionUtils.configLoaderBuilder()
             .withStringList(
@@ -238,7 +233,7 @@ public class SchemaIT {
       assertThat(tm).isNotNull();
       assertThat(tm.getName().toString()).isEqualTo("sstable_tasks");
       assertThat(tm.isVirtual()).isTrue();
-      // DSE 6.8+ reports 7 columns, Cassandra 4+ reports 8 columns
+      // Some servers report 7 columns, Cassandra 4+ reports 8 columns
       assertThat(tm.getColumns().size()).isGreaterThanOrEqualTo(7);
       assertThat(tm.getIndexes().size()).isEqualTo(0);
       assertThat(tm.getPartitionKey().size()).isEqualTo(1);
@@ -249,17 +244,6 @@ public class SchemaIT {
       assertThat(tm.getKeyspace()).isEqualTo(kmd.getName());
       assertThat(tm.describe(true))
           .isIn(
-              // DSE 6.8+
-              "/* VIRTUAL TABLE system_views.sstable_tasks (\n"
-                  + "    keyspace_name text,\n"
-                  + "    table_name text,\n"
-                  + "    task_id uuid,\n"
-                  + "    kind text,\n"
-                  + "    progress bigint,\n"
-                  + "    total bigint,\n"
-                  + "    unit text,\n"
-                  + "    PRIMARY KEY (keyspace_name, table_name, task_id)\n"
-                  + "); */",
               // Cassandra 4.0
               "/* VIRTUAL TABLE system_views.sstable_tasks (\n"
                   + "    keyspace_name text,\n"
@@ -314,8 +298,6 @@ public class SchemaIT {
       description = "virtual tables introduced in 4.0")
   @Test
   public void should_exclude_virtual_keyspaces_from_token_map() {
-    skipIfDse60();
-
     DriverConfigLoader loader =
         SessionUtils.configLoaderBuilder()
             .withStringList(
@@ -339,11 +321,4 @@ public class SchemaIT {
     }
   }
 
-  private void skipIfDse60() {
-    // Special case: DSE 6.0 reports C* 4.0 but does not support virtual tables
-    if (!ccmRule.isDistributionOf(
-        BackendType.DSE, (dist, cass) -> dist.compareTo(DSE_MIN_VIRTUAL_TABLES) >= 0)) {
-      throw new AssumptionViolatedException("DSE 6.0 does not support virtual tables");
-    }
-  }
 }

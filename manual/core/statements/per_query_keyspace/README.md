@@ -23,7 +23,7 @@ under the License.
 
 Specify the keyspace separately instead of hardcoding it in the query string.
 
-* Cassandra 4+ / DSE 6+.
+* requires Cassandra 4+ (native protocol v5 or above).
 * only works with simple statements.
 
 -----

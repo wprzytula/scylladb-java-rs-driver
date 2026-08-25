@@ -69,9 +69,9 @@ public class ProgrammaticPlainTextAuthProvider extends PlainTextAuthProviderBase
    * Builds an instance for username/password authentication, and proxy authentication with the
    * given authorizationId.
    *
-   * <p>This feature is only available with DataStax Enterprise. If the target server is Apache
-   * Cassandra, use {@link #ProgrammaticPlainTextAuthProvider(String, String)} instead, or set the
-   * authorizationId to an empty string.
+   * <p>Proxy authentication was a DataStax Enterprise feature and is not supported by this driver:
+   * the authorizationId is ignored. Use {@link #ProgrammaticPlainTextAuthProvider(String, String)}
+   * instead, or set the authorizationId to an empty string.
    */
   public ProgrammaticPlainTextAuthProvider(
       @NonNull String username, @NonNull String password, @NonNull String authorizationId) {
@@ -111,8 +111,8 @@ public class ProgrammaticPlainTextAuthProvider extends PlainTextAuthProviderBase
    *
    * <p>The new credentials will be used for all connections initiated after this method was called.
    *
-   * <p>This feature is only available with DataStax Enterprise. If the target server is Apache
-   * Cassandra, this method should not be used.
+   * <p>Proxy authentication was a DataStax Enterprise feature and is not supported by this driver:
+   * the authorizationId is ignored and this method should not be used.
    *
    * @param authorizationId the new authorization id.
    */

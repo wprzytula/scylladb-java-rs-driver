@@ -371,10 +371,10 @@ public abstract class SessionBuilder<SelfT extends SessionBuilder, SessionT> {
   }
 
   /**
-   * Configures the session to use DSE plaintext authentication with the given username and
-   * password, and perform proxy authentication with the given authorization id.
+   * Configures the session to use plaintext authentication with the given username and password,
+   * and perform proxy authentication with the given authorization id.
    *
-   * <p>This feature is only available in DataStax Enterprise. If connecting to Apache Cassandra,
+   * <p>Proxy authentication was a DataStax Enterprise feature and is not supported by this driver:
    * the authorization id will be ignored; it is recommended to use {@link
    * #withAuthCredentials(String, String)} instead.
    *
