@@ -87,7 +87,18 @@ Per-package plan for `com.datastax.oss.driver.internal.core.*` (packages verifie
 ### Delete (pure transport/protocol; no public type depends on them)
 - `channel`, `protocol`, `pool`, `control`, `adminrequest` — Netty pipeline, frame codecs,
   connection pooling, control connection, admin queries. All replaced by the Rust core.
-- Dependencies removed from `core/pom.xml`: Netty, `java-driver-native-protocol`.
+- Dependencies removed from `core/pom.xml`: the LZ4 and Snappy compressors. **Two corrections made
+  while executing this step:**
+  - `java-driver-native-protocol` **stays**. 18 files under `api/**` use it (`ProtocolConstants`,
+    `RawType`, `ProtocolVersion` codes, protocol-level enums behind `ConsistencyLevel`, `WriteType`,
+    the data types), so removing it would break public API — which the API-preservation rule
+    forbids. It is a pure data/constants library with no I/O, so keeping it costs nothing.
+  - **Netty stays for now.** Deleting the pipeline removed most of it, but ~20 files still use it as
+    the *scheduling* layer (`NettyOptions.adminEventExecutorGroup()`, `RunOrSchedule`, `Debouncer`,
+    `Reconnection`, throttlers, metrics timers, config reload) plus `FastThreadLocal` in two codecs
+    and the BlockHound integration. What replaces that admin executor is the threading question the
+    `nativebridge` PoC (§8.5) settles — where the Rust core's callback threads are defined — so the
+    swap belongs there rather than to a guess made now.
 - GraalVM substitution classes (`protocol/CompressorSubstitutions.java`, graal-specific parts of
   `Uuids` support) go with them (D6).
 
@@ -176,10 +187,15 @@ Measured baseline: unit tests — 226 files under `oss/driver/internal/core`, 21
 ## 8. Task sequence (starts now; each step one commit on `rust-poc`)
 
 1. **Delete DSE** — `com.datastax.dse.**` from `core` main/test/resources, `integration-tests`,
-   `query-builder`/`mapper` DSE parts, `examples`, pom references.
-2. **Delete OSGi + GraalVM machinery, drop `metrics/*` and `core-shaded` from the reactor.**
-3. **Cut transport**: remove Netty/native-protocol deps; delete packages per §4; stub survivors
-   until `core` compiles on JDK 25.
+   `query-builder`/`mapper` DSE parts, `examples`, pom references. (Done; the reactive API was
+   relocated to the `oss` namespace rather than deleted.)
+2. **Delete OSGi + GraalVM machinery, drop `metrics/*` and `core-shaded` from the reactor.** (Done.)
+3. **Cut transport**: delete packages per §4; stub survivors until `core` compiles.
+   (Done. Netty and `native-protocol` deliberately kept — see the corrections in §4.)
+   *Correction to D3's timing:* the toolchain stays on **JDK 17 with `<release>11</release>`** for
+   now. The Error Prone bump that JDK 25 needs was reverted in review, because the CI matrix still
+   builds on 11 and 17; the move to a JDK 25 floor (and `<release>25</release>`) belongs to step 5,
+   together with the CI matrix change.
 4. **Test triage** per §7; quarantine mechanism in place; `mvn test` green.
 5. **PoC handoff point**: `nativebridge` interface skeleton + empty `rust/` crate layout.
    → Wojciech writes the PoC (connect + execute + paged select through the Rust core, TCB async
