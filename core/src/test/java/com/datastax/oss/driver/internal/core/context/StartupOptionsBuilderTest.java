@@ -18,7 +18,6 @@
 package com.datastax.oss.driver.internal.core.context;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -62,31 +61,27 @@ public class StartupOptionsBuilderTest {
   }
 
   @Test
+  @DataProvider({"none", "lz4", "snappy", "foobar"})
+  public void should_not_report_compression(String compression) {
+
+    // TODO(java-rs): compression is negotiated by the Rust core, which owns the STARTUP message,
+    // so the configured algorithm is neither reported here nor validated any more - not even an
+    // unsupported one like "foobar", which used to be rejected while building the compressor.
+    // Validation moves to the config translation layer in front of the Rust core. One case covers
+    // every input because the option is read by nothing.
+    DefaultDriverContext ctx = buildMockedContext(compression);
+    Startup startup = new Startup(ctx.getStartupOptions());
+    assertThat(startup.options).doesNotContainKey(Startup.COMPRESSION_KEY);
+    assertDefaultStartupOptions(startup);
+  }
+
+  @Test
   public void should_build_startup_options_with_no_compression_if_undefined() {
 
+    // The option absent entirely, rather than set to something inert.
     DefaultDriverContext ctx = MockedDriverContextFactory.defaultDriverContext();
     Startup startup = new Startup(ctx.getStartupOptions());
     assertThat(startup.options).doesNotContainKey(Startup.COMPRESSION_KEY);
-    assertDefaultStartupOptions(startup);
-  }
-
-  @Test
-  public void should_build_startup_options_with_no_compression_if_defined_as_none() {
-
-    DefaultDriverContext ctx = buildMockedContext("none");
-    Startup startup = new Startup(ctx.getStartupOptions());
-    assertThat(startup.options).doesNotContainKey(Startup.COMPRESSION_KEY);
-    assertDefaultStartupOptions(startup);
-  }
-
-  @Test
-  @DataProvider({"lz4", "snappy"})
-  public void should_build_startup_options(String compression) {
-
-    DefaultDriverContext ctx = buildMockedContext(compression);
-    Startup startup = new Startup(ctx.getStartupOptions());
-    // assert the compression option is present
-    assertThat(startup.options).containsEntry(Startup.COMPRESSION_KEY, compression);
     assertDefaultStartupOptions(startup);
   }
 
@@ -117,16 +112,5 @@ public class StartupOptionsBuilderTest {
     DefaultDriverContext ctx = MockedDriverContextFactory.defaultDriverContext();
     assertThat(ctx.getStartupOptions().get(StartupOptionsBuilder.SESSION_ID_KEY))
         .isNotEqualTo(ctx.getStartupOptions().get(StartupOptionsBuilder.CLIENT_ID_KEY));
-  }
-
-  @Test
-  public void should_fail_to_build_startup_options_with_invalid_compression() {
-
-    assertThatIllegalArgumentException()
-        .isThrownBy(
-            () -> {
-              DefaultDriverContext ctx = buildMockedContext("foobar");
-              new Startup(ctx.getStartupOptions());
-            });
   }
 }
