@@ -19,7 +19,7 @@ package com.datastax.oss.driver.internal.mapper.processor.dao;
 
 import static com.datastax.oss.driver.api.mapper.MapperBuilder.SCHEMA_VALIDATION_ENABLED_SETTING;
 
-import com.datastax.dse.driver.internal.mapper.reactive.ReactiveDaoBase;
+import com.datastax.oss.driver.internal.mapper.reactive.ReactiveDaoBase;
 import com.datastax.oss.driver.api.core.cql.PreparedStatement;
 import com.datastax.oss.driver.api.mapper.MapperContext;
 import com.datastax.oss.driver.api.mapper.annotations.Dao;

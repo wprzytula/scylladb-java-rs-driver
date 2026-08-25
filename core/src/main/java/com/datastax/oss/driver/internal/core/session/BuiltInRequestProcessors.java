@@ -23,7 +23,7 @@ import static com.datastax.oss.driver.internal.core.util.Dependency.TINKERPOP;
 import com.datastax.dse.driver.internal.core.cql.continuous.ContinuousCqlRequestAsyncProcessor;
 import com.datastax.dse.driver.internal.core.cql.continuous.ContinuousCqlRequestSyncProcessor;
 import com.datastax.dse.driver.internal.core.cql.continuous.reactive.ContinuousCqlRequestReactiveProcessor;
-import com.datastax.dse.driver.internal.core.cql.reactive.CqlRequestReactiveProcessor;
+import com.datastax.oss.driver.internal.core.cql.reactive.CqlRequestReactiveProcessor;
 import com.datastax.dse.driver.internal.core.graph.GraphRequestAsyncProcessor;
 import com.datastax.dse.driver.internal.core.graph.GraphRequestSyncProcessor;
 import com.datastax.dse.driver.internal.core.graph.GraphSupportChecker;

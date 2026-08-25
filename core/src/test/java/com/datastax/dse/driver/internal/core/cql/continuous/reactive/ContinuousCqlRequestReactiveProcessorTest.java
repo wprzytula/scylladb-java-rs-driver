@@ -24,7 +24,7 @@ import com.datastax.dse.driver.DseTestDataProviders;
 import com.datastax.dse.driver.DseTestFixtures;
 import com.datastax.dse.driver.api.core.DseProtocolVersion;
 import com.datastax.dse.driver.api.core.cql.continuous.reactive.ContinuousReactiveResultSet;
-import com.datastax.dse.driver.api.core.cql.reactive.ReactiveRow;
+import com.datastax.oss.driver.api.core.cql.reactive.ReactiveRow;
 import com.datastax.dse.driver.internal.core.cql.continuous.ContinuousCqlRequestAsyncProcessor;
 import com.datastax.dse.driver.internal.core.cql.continuous.ContinuousCqlRequestHandlerTestBase;
 import com.datastax.oss.driver.api.core.cql.ColumnDefinitions;

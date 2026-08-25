@@ -178,7 +178,7 @@ entity class and the [naming strategy](../../entities/#naming-strategy)).
 [ResultSet]:              https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/ResultSet.html
 [ResultSet#wasApplied()]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/ResultSet.html#wasApplied--
 [BoundStatement]:         https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/BoundStatement.html
-[ReactiveResultSet]:      https://docs.datastax.com/en/drivers/java/4.17/com/datastax/dse/driver/api/core/cql/reactive/ReactiveResultSet.html
+[ReactiveResultSet]:      https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/reactive/ReactiveResultSet.html
 
 
 [CompletionStage]: https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html

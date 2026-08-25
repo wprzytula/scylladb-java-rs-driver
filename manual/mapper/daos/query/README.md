@@ -142,8 +142,8 @@ Then:
 [PagingIterable.spliterator]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/PagingIterable.html#spliterator--
 [Row]:                       https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/Row.html
 [BoundStatement]:            https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/BoundStatement.html
-[ReactiveResultSet]:         https://docs.datastax.com/en/drivers/java/4.17/com/datastax/dse/driver/api/core/cql/reactive/ReactiveResultSet.html
-[MappedReactiveResultSet]:   https://docs.datastax.com/en/drivers/java/4.17/com/datastax/dse/driver/api/mapper/reactive/MappedReactiveResultSet.html
+[ReactiveResultSet]:         https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/reactive/ReactiveResultSet.html
+[MappedReactiveResultSet]:   https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/mapper/reactive/MappedReactiveResultSet.html
 
 [CompletionStage]: https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html
 [CompletableFuture]: https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html

@@ -17,7 +17,7 @@
  */
 package com.datastax.oss.driver.internal.osgi.service.reactive;
 
-import com.datastax.dse.driver.api.mapper.reactive.MappedReactiveResultSet;
+import com.datastax.oss.driver.api.mapper.reactive.MappedReactiveResultSet;
 import com.datastax.oss.driver.api.mapper.annotations.Dao;
 import com.datastax.oss.driver.api.mapper.annotations.DefaultNullSavingStrategy;
 import com.datastax.oss.driver.api.mapper.annotations.Select;

@@ -192,7 +192,7 @@ entity class and the [naming strategy](../../entities/#naming-strategy)).
 [MappedAsyncPagingIterable]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/MappedAsyncPagingIterable.html
 [PagingIterable]:            https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/PagingIterable.html
 [PagingIterable.spliterator]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/PagingIterable.html#spliterator--
-[MappedReactiveResultSet]:   https://docs.datastax.com/en/drivers/java/4.17/com/datastax/dse/driver/api/mapper/reactive/MappedReactiveResultSet.html
+[MappedReactiveResultSet]:   https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/mapper/reactive/MappedReactiveResultSet.html
 
 [CompletionStage]: https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html
 [CompletableFuture]: https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html

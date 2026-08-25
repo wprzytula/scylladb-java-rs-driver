@@ -19,7 +19,7 @@ package com.datastax.oss.driver.api.core;
 
 import com.datastax.dse.driver.api.core.cql.continuous.ContinuousSession;
 import com.datastax.dse.driver.api.core.cql.continuous.reactive.ContinuousReactiveSession;
-import com.datastax.dse.driver.api.core.cql.reactive.ReactiveSession;
+import com.datastax.oss.driver.api.core.cql.reactive.ReactiveSession;
 import com.datastax.dse.driver.api.core.graph.GraphSession;
 import com.datastax.dse.driver.api.core.graph.reactive.ReactiveGraphSession;
 import com.datastax.oss.driver.api.core.cql.AsyncCqlSession;

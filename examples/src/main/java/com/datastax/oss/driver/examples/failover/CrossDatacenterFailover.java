@@ -17,7 +17,7 @@
  */
 package com.datastax.oss.driver.examples.failover;
 
-import com.datastax.dse.driver.api.core.cql.reactive.ReactiveRow;
+import com.datastax.oss.driver.api.core.cql.reactive.ReactiveRow;
 import com.datastax.oss.driver.api.core.AllNodesFailedException;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.DriverException;

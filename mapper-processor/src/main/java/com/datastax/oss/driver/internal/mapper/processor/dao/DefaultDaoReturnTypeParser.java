@@ -17,8 +17,8 @@
  */
 package com.datastax.oss.driver.internal.mapper.processor.dao;
 
-import com.datastax.dse.driver.api.core.cql.reactive.ReactiveResultSet;
-import com.datastax.dse.driver.api.mapper.reactive.MappedReactiveResultSet;
+import com.datastax.oss.driver.api.core.cql.reactive.ReactiveResultSet;
+import com.datastax.oss.driver.api.mapper.reactive.MappedReactiveResultSet;
 import com.datastax.oss.driver.api.core.MappedAsyncPagingIterable;
 import com.datastax.oss.driver.api.core.PagingIterable;
 import com.datastax.oss.driver.api.core.cql.AsyncResultSet;

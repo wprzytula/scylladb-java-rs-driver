@@ -19,7 +19,7 @@ package com.datastax.dse.driver.internal.core.graph.reactive;
 
 import com.datastax.dse.driver.api.core.graph.reactive.ReactiveGraphNode;
 import com.datastax.dse.driver.api.core.graph.reactive.ReactiveGraphResultSet;
-import com.datastax.dse.driver.internal.core.cql.reactive.FailedPublisher;
+import com.datastax.oss.driver.internal.core.cql.reactive.FailedPublisher;
 import com.datastax.oss.driver.api.core.cql.ExecutionInfo;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.reactivestreams.Publisher;

@@ -17,7 +17,7 @@
  */
 package com.datastax.dse.driver.api.core.cql.continuous.reactive;
 
-import com.datastax.dse.driver.api.core.cql.reactive.ReactiveResultSet;
+import com.datastax.oss.driver.api.core.cql.reactive.ReactiveResultSet;
 import com.datastax.oss.driver.api.core.cql.Statement;
 
 /**

@@ -95,7 +95,7 @@ Otherwise, it uses the default table name for the entity (which is determined by
 entity class and the naming convention).
 
 [@Increment]:        https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/mapper/annotations/Increment.html
-[ReactiveResultSet]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/dse/driver/api/core/cql/reactive/ReactiveResultSet.html
+[ReactiveResultSet]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/reactive/ReactiveResultSet.html
 [default keyspace]:  https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/session/SessionBuilder.html#withKeyspace-com.datastax.oss.driver.api.core.CqlIdentifier-
 [@ClusteringColumn]:      https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/mapper/annotations/ClusteringColumn.html
 [@PartitionKey]:          https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/mapper/annotations/PartitionKey.html

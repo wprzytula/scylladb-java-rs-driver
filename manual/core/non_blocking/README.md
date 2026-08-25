@@ -82,8 +82,8 @@ The same applies to the methods declared in [`ReactiveSession`] such as [`execut
 returned publisher will never block when subscribed to, until the final results are delivered to 
 the subscriber.
 
-[`ReactiveSession`]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/dse/driver/api/core/cql/reactive/ReactiveSession.html
-[`executeReactive`]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/dse/driver/api/core/cql/reactive/ReactiveSession.html#executeReactive-com.datastax.oss.driver.api.core.cql.Statement-
+[`ReactiveSession`]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/reactive/ReactiveSession.html
+[`executeReactive`]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/reactive/ReactiveSession.html#executeReactive-com.datastax.oss.driver.api.core.cql.Statement-
 
 There is one exception though: continuous paging queries (a feature specific to DSE) have a special
 execution model which uses internal locks for coordination. Although such locks are only held for 
