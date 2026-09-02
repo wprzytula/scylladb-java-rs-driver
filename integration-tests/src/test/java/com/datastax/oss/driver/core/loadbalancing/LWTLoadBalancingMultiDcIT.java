@@ -47,6 +47,7 @@ import com.datastax.oss.driver.api.testinfra.ccm.CustomCcmRule;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendType;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.HashSet;
@@ -55,9 +56,11 @@ import java.util.concurrent.TimeUnit;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
+@Category(BrokenTests.class)
 public class LWTLoadBalancingMultiDcIT {
   private static final String LOCAL_DC = "dc1";
   private static final String KEYSPACE = "test";

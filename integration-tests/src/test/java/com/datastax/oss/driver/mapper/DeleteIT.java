@@ -42,6 +42,7 @@ import com.datastax.oss.driver.api.testinfra.ccm.CcmRule;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendRequirement;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendType;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.driver.internal.core.util.concurrent.CompletableFutures;
 import java.util.UUID;
@@ -56,7 +57,7 @@ import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
 // Do not run LWT tests in parallel because they may interfere. Tests operate on the same row.
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 @BackendRequirement(
     type = BackendType.CASSANDRA,
     minInclusive = "3.0",

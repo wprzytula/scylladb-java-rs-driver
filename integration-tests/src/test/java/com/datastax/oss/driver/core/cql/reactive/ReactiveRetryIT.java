@@ -43,6 +43,7 @@ import com.datastax.oss.driver.api.testinfra.loadbalancing.NodeComparator;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
 import com.datastax.oss.driver.api.testinfra.simulacron.SimulacronRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.driver.core.retry.PerProfileRetryPolicyIT.NoRetryPolicy;
 import com.datastax.oss.simulacron.common.cluster.ClusterSpec;
@@ -70,7 +71,7 @@ import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
 /** Small test to validate the application-level retry behavior explained in the manual. */
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class ReactiveRetryIT {
 
   private static final SimulacronRule SIMULACRON_RULE =

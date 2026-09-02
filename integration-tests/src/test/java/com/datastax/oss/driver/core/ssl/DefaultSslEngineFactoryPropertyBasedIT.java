@@ -29,6 +29,7 @@ import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.datastax.oss.driver.api.testinfra.ccm.CcmBridge;
 import com.datastax.oss.driver.api.testinfra.ccm.CustomCcmRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.IsolatedTests;
 import com.datastax.oss.driver.internal.core.ssl.DefaultSslEngineFactory;
 import org.junit.ClassRule;
@@ -36,7 +37,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-@Category(IsolatedTests.class)
+@Category({IsolatedTests.class, BrokenTests.class})
 public class DefaultSslEngineFactoryPropertyBasedIT {
 
   @ClassRule

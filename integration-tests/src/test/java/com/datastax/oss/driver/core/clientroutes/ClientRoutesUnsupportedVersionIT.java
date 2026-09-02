@@ -38,6 +38,7 @@ import com.datastax.oss.driver.api.testinfra.ccm.CustomCcmRule;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendRequirementRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.IsolatedTests;
 import java.time.Duration;
 import java.util.UUID;
@@ -74,7 +75,7 @@ import org.slf4j.LoggerFactory;
  * versions that <em>do</em> support the feature (it would have nothing meaningful to assert there,
  * and the positive tests in {@link ClientRoutesIT} cover that range).
  */
-@Category(IsolatedTests.class)
+@Category({IsolatedTests.class, BrokenTests.class})
 @ScyllaOnly(description = "system.client_routes is a ScyllaDB Enterprise-only feature")
 @ScyllaRequirement(
     maxEnterprise = "2026.1",

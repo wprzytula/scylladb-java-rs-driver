@@ -34,6 +34,7 @@ import com.datastax.oss.driver.api.testinfra.ccm.CustomCcmRule;
 import com.datastax.oss.driver.api.testinfra.ccm.SchemaChangeSynchronizer;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.IsolatedTests;
 import com.datastax.oss.driver.internal.core.context.DefaultDriverContext;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
@@ -74,7 +75,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 // These tests must be isolated because setup modifies SessionUtils.SESSION_BUILDER_CLASS_PROPERTY
-@Category(IsolatedTests.class)
+@Category({IsolatedTests.class, BrokenTests.class})
 public class PreparedStatementCachingIT {
 
   private CustomCcmRule ccmRule = CustomCcmRule.builder().build();

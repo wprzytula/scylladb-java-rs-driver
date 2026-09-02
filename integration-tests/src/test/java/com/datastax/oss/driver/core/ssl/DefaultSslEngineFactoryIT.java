@@ -32,11 +32,14 @@ import com.datastax.oss.driver.api.testinfra.ccm.CcmBridge;
 import com.datastax.oss.driver.api.testinfra.ccm.CustomCcmRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
 import com.datastax.oss.driver.assertions.Assertions;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.internal.core.ssl.DefaultSslEngineFactory;
 import java.net.InetSocketAddress;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+@Category(BrokenTests.class)
 public class DefaultSslEngineFactoryIT {
 
   @ClassRule public static final CustomCcmRule CCM_RULE = CustomCcmRule.builder().withSsl().build();

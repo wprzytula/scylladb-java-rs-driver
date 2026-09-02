@@ -39,6 +39,16 @@ Two consequences that outlive the transition:
   `DefaultDriverContext.build*` methods behind them. Code that overrode
   `SessionBuilder.buildContext()` to customize any of these has nothing to hook into any more.
 
+#### The integration tests are quarantined
+
+Every class in `integration-tests` now carries the JUnit category
+`com.datastax.oss.driver.categories.BrokenTests`, which the three failsafe executions in
+`integration-tests/pom.xml` list under `<excludedGroups>`. The suite still compiles, but runs no
+tests and starts no CCM cluster, because nothing that needs a server can pass until the Rust core is
+bridged. The GitHub Actions integration-test jobs are gated on `workflow_dispatch` for the same
+reason. Tests will lose the category a group at a time as functionality is bridged, so the set of
+classes still carrying it is the compatibility-progress metric.
+
 #### The Micrometer and MicroProfile metrics modules are temporarily gone
 
 `java-driver-metrics-micrometer` and `java-driver-metrics-microprofile` are not built or published

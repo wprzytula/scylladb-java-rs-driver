@@ -32,6 +32,7 @@ import com.datastax.oss.driver.api.core.cql.reactive.ReactiveRow;
 import com.datastax.oss.driver.api.core.uuid.Uuids;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
 import com.datastax.oss.driver.api.testinfra.simulacron.SimulacronRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.IsolatedTests;
 import com.datastax.oss.simulacron.common.cluster.ClusterSpec;
 import java.util.UUID;
@@ -53,7 +54,7 @@ import reactor.test.StepVerifier;
  * This test exercises the driver with BlockHound installed and tests that the rules defined in
  * {@link DriverBlockHoundIntegration} are being applied.
  */
-@Category(IsolatedTests.class)
+@Category({IsolatedTests.class, BrokenTests.class})
 public class DriverBlockHoundIntegrationIT {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DriverBlockHoundIntegrationIT.class);

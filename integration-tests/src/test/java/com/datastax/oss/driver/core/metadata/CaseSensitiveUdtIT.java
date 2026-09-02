@@ -37,6 +37,7 @@ import com.datastax.oss.driver.api.testinfra.requirement.BackendRequirement;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendType;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import java.time.Duration;
 import org.junit.ClassRule;
@@ -54,7 +55,7 @@ import org.junit.rules.TestRule;
  *
  * @see <a href="https://datastax-oss.atlassian.net/browse/JAVA-2028">JAVA-2028</a>
  */
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 @ScyllaSkip(description = "java-based UDFs are not supported")
 @BackendRequirement(type = BackendType.CASSANDRA)
 public class CaseSensitiveUdtIT {

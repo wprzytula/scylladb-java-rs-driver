@@ -12,6 +12,7 @@ import com.datastax.oss.driver.api.testinfra.ScyllaRequirement;
 import com.datastax.oss.driver.api.testinfra.ccm.CcmBridge;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendRequirementRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Collection;
@@ -21,7 +22,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+@Category(BrokenTests.class)
 @ScyllaRequirement(minOSS = "6.2.0", minEnterprise = "2025.1.0")
 public class ZeroTokenNodesIT {
   // For tests to pick up @ScyllaRequirement annotation

@@ -38,6 +38,7 @@ import com.datastax.oss.driver.api.testinfra.requirement.BackendRequirement;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendType;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.driver.internal.SerializationHelper;
 import com.datastax.oss.driver.internal.core.metadata.schema.DefaultKeyspaceMetadata;
@@ -63,7 +64,7 @@ import org.junit.rules.TestRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 @ScyllaSkip(description = "scylladb/java-driver#566 - needs to be adopted to scylla")
 @BackendRequirement(type = BackendType.CASSANDRA)
 public class DescribeIT {

@@ -21,6 +21,7 @@ import com.datastax.oss.driver.api.testinfra.ccm.CcmBridge;
 import com.datastax.oss.driver.api.testinfra.ccm.CustomCcmRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.internal.core.protocol.TabletInfo;
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -40,6 +41,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 import org.slf4j.Logger;
@@ -49,6 +51,7 @@ import org.slf4j.LoggerFactory;
     minOSS = "6.0.0",
     minEnterprise = "2024.2",
     description = "Needs to support tablets")
+@Category(BrokenTests.class)
 @ScyllaOnly(description = "Tablets are ScyllaDB-only extension")
 public class DefaultMetadataTabletMapIT {
   private static final Logger LOG = LoggerFactory.getLogger(DefaultMetadataTabletMapIT.class);

@@ -24,10 +24,12 @@ import com.datastax.oss.driver.api.testinfra.requirement.BackendRequirement;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendType;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.internal.core.metadata.token.ByteOrderedToken;
 import java.time.Duration;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
@@ -37,6 +39,7 @@ import org.junit.rules.TestRule;
     description =
         "Token allocation is not compatible with this partitioner, "
             + "but is enabled by default in C* 4.0 (see CASSANDRA-7032 and CASSANDRA-13701)")
+@Category(BrokenTests.class)
 public class ByteOrderedTokenIT extends TokenITBase {
 
   private static final CustomCcmRule CCM_RULE =

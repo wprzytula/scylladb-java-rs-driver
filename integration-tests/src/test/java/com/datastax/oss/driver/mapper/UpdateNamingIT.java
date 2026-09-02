@@ -35,6 +35,7 @@ import com.datastax.oss.driver.api.mapper.annotations.Update;
 import com.datastax.oss.driver.api.mapper.entity.naming.NamingConvention;
 import com.datastax.oss.driver.api.testinfra.ccm.CcmRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -47,7 +48,7 @@ import org.junit.rules.TestRule;
  * For JAVA-2367: ensure that PK column names are properly handled in the WHERE clause of a
  * generated UPDATE query.
  */
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class UpdateNamingIT {
   private static final CcmRule CCM_RULE = CcmRule.getInstance();
   private static final SessionRule<CqlSession> SESSION_RULE = SessionRule.builder(CCM_RULE).build();

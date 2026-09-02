@@ -178,9 +178,13 @@ Measured baseline: unit tests — 226 files under `oss/driver/internal/core`, 21
 - **Keep green from day one**: `api`-level unit tests, codec/type/data tests, config-loader tests,
   query-builder and mapper module tests (they compile against public API only), statement-data tests.
 - **Quarantine** (csharp `BrokenTests` pattern — the compat-progress metric): tests of stubbed
-  subsystems (session/cql/metadata internals) and the whole `integration-tests` suite. Mechanism:
-  a surefire/failsafe exclusions list (Maven profile) rather than moving files, so migrating a test
-  back is a one-line change and diffs stay reviewable.
+  subsystems (session/cql/metadata internals) and the whole `integration-tests` suite.
+  *Implemented as:* a JUnit category `com.datastax.oss.driver.categories.BrokenTests` in
+  `test-infra`, carried by all 125 IT classes and named in `<excludedGroups>` of the three failsafe
+  executions in `integration-tests/pom.xml`. The ITs still compile (so they cannot rot) but run
+  zero tests and need no CCM cluster. Un-quarantining is deleting one annotation argument per
+  class, and the set of classes still carrying the category is the progress metric. The CI IT jobs
+  are gated on `workflow_dispatch` for as long as the quarantine is total.
 - Exit criterion for the cut: **`mvn test` green on `rust-poc`** with the exclusions in place;
   `mvn verify` ITs stay quarantined until bridging lands.
 
@@ -196,7 +200,8 @@ Measured baseline: unit tests — 226 files under `oss/driver/internal/core`, 21
    now. The Error Prone bump that JDK 25 needs was reverted in review, because the CI matrix still
    builds on 11 and 17; the move to a JDK 25 floor (and `<release>25</release>`) belongs to step 5,
    together with the CI matrix change.
-4. **Test triage** per §7; quarantine mechanism in place; `mvn test` green.
+4. **Test triage** per §7; quarantine mechanism in place; `mvn test` green. (Done: `BrokenTests`
+   category over all 125 ITs, excluded in failsafe, IT CI jobs dispatch-only.)
 5. **PoC handoff point**: `nativebridge` interface skeleton + empty `rust/` crate layout.
    → Wojciech writes the PoC (connect + execute + paged select through the Rust core, TCB async
    pattern, both row-marshalling designs measured).

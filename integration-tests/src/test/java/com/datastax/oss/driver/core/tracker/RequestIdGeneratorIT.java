@@ -32,6 +32,7 @@ import com.datastax.oss.driver.api.testinfra.ccm.CcmRule;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendRequirement;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendType;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.protocol.internal.util.collection.NullAllowingImmutableMap;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -50,7 +51,7 @@ import org.junit.rules.TestRule;
 @BackendRequirement(
     type = BackendType.CASSANDRA,
     description = "Custom payload (request ID) not supported on Scylla")
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class RequestIdGeneratorIT {
   private static CcmRule ccmRule = CcmRule.getInstance();
 

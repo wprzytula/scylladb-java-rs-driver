@@ -42,6 +42,7 @@ import com.datastax.oss.driver.api.testinfra.ccm.CustomCcmRule;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendType;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import java.nio.ByteBuffer;
 import java.util.HashSet;
 import java.util.List;
@@ -49,6 +50,7 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
@@ -56,6 +58,7 @@ import org.junit.rules.TestRule;
     minEnterprise = "2021.0.0",
     minOSS = "4.3.rc0",
     description = "Requires LWT_ADD_METADATA_MARK extension")
+@Category(BrokenTests.class)
 public class LWTLoadBalancingIT {
   private static final CustomCcmRule CCM_RULE = CustomCcmRule.builder().withNodes(3).build();
 
