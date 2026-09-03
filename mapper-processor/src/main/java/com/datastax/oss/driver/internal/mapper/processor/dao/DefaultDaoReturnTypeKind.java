@@ -17,10 +17,10 @@
  */
 package com.datastax.oss.driver.internal.mapper.processor.dao;
 
-import com.datastax.dse.driver.internal.core.cql.reactive.FailedReactiveResultSet;
-import com.datastax.dse.driver.internal.mapper.reactive.FailedMappedReactiveResultSet;
+import com.datastax.oss.driver.internal.core.cql.reactive.FailedReactiveResultSet;
 import com.datastax.oss.driver.internal.core.util.concurrent.CompletableFutures;
 import com.datastax.oss.driver.internal.mapper.processor.util.generation.GeneratedCodePatterns;
+import com.datastax.oss.driver.internal.mapper.reactive.FailedMappedReactiveResultSet;
 import com.datastax.oss.driver.shaded.guava.common.base.Throwables;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeName;

@@ -26,8 +26,6 @@ package com.datastax.oss.driver.core.cql.reactive;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
-import com.datastax.dse.driver.api.core.cql.reactive.ReactiveResultSet;
-import com.datastax.dse.driver.api.core.cql.reactive.ReactiveRow;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverExecutionProfile;
@@ -38,6 +36,8 @@ import com.datastax.oss.driver.api.core.cql.DefaultBatchType;
 import com.datastax.oss.driver.api.core.cql.ExecutionInfo;
 import com.datastax.oss.driver.api.core.cql.PreparedStatement;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
+import com.datastax.oss.driver.api.core.cql.reactive.ReactiveResultSet;
+import com.datastax.oss.driver.api.core.cql.reactive.ReactiveRow;
 import com.datastax.oss.driver.api.testinfra.ccm.CcmBridge;
 import com.datastax.oss.driver.api.testinfra.ccm.CcmRule;
 import com.datastax.oss.driver.api.testinfra.ccm.SchemaChangeSynchronizer;
@@ -142,7 +142,7 @@ public class DefaultReactiveResultSetIT {
 
     List<ExecutionInfo> execInfos =
         Flowable.<ExecutionInfo>fromPublisher(rs.getExecutionInfos()).toList().blockingGet();
-    // DSE may send an empty page as it can't always know if it's done paging or not yet.
+    // The server may send an empty page as it can't always know if it's done paging or not yet.
     // See: CASSANDRA-8871. In this case, this page's execution info appears in
     // rs.getExecutionInfos(), but is not present in expectedExecInfos since the page did not
     // contain any rows.

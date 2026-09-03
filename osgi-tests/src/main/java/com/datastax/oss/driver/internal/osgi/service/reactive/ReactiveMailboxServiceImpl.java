@@ -17,9 +17,9 @@
  */
 package com.datastax.oss.driver.internal.osgi.service.reactive;
 
-import com.datastax.dse.driver.api.mapper.reactive.MappedReactiveResultSet;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.mapper.reactive.MappedReactiveResultSet;
 import com.datastax.oss.driver.api.osgi.service.MailboxException;
 import com.datastax.oss.driver.api.osgi.service.MailboxMessage;
 import com.datastax.oss.driver.api.osgi.service.reactive.ReactiveMailboxService;

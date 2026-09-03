@@ -28,7 +28,6 @@
     <appender-ref ref="STDOUT"/>
   </root>
   <logger name="com.datastax.oss.driver" level="${ossDriverLevel:-ERROR}"/>
-  <logger name="com.datastax.dse.driver" level="${dseDriverLevel:-ERROR}"/>
   <!-- Set this logger to DEBUG to help debugging the Pax Exam framework-->
   <logger name="org.ops4j" level="ERROR"/>
   <!-- Set this logger to DEBUG to help debugging CCM -->

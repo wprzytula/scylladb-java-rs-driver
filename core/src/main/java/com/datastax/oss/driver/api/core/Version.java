@@ -165,14 +165,12 @@ public class Version implements Comparable<Version>, Serializable {
   }
 
   /**
-   * The DSE patch version number (will only be present for version of Cassandra in DSE).
+   * The fourth version number, if present (historically used by DataStax Enterprise to track
+   * patches applied on top of a Cassandra version; this driver does not support DSE, but the
+   * parsing and this accessor are preserved for API compatibility).
    *
-   * <p>DataStax Entreprise (DSE) adds a fourth number to the version number to track potential hot
-   * fixes and/or DSE specific patches that may have been applied to the Cassandra version. In that
-   * case, this method returns that fourth number.
-   *
-   * @return the DSE patch version number, i.e. D in X.Y.Z.D, or -1 if the version number is not
-   *     from DSE.
+   * @return the fourth version number, i.e. D in X.Y.Z.D, or -1 if the version number does not have
+   *     one.
    */
   public int getDSEPatch() {
     return dsePatch;

@@ -19,12 +19,6 @@ package com.datastax.oss.driver.internal.core.context;
 
 import static com.datastax.oss.driver.internal.core.util.Dependency.JACKSON;
 
-import com.datastax.dse.driver.api.core.config.DseDriverOption;
-import com.datastax.dse.driver.internal.core.InsightsClientLifecycleListener;
-import com.datastax.dse.driver.internal.core.type.codec.DseTypeCodecsRegistrar;
-import com.datastax.dse.protocol.internal.DseProtocolV1ClientCodecs;
-import com.datastax.dse.protocol.internal.DseProtocolV2ClientCodecs;
-import com.datastax.dse.protocol.internal.ProtocolV4ClientCodecsForDse;
 import com.datastax.oss.driver.api.core.ProtocolVersion;
 import com.datastax.oss.driver.api.core.addresstranslation.AddressTranslator;
 import com.datastax.oss.driver.api.core.auth.AuthProvider;
@@ -105,6 +99,7 @@ import com.datastax.oss.protocol.internal.Compressor;
 import com.datastax.oss.protocol.internal.FrameCodec;
 import com.datastax.oss.protocol.internal.PrimitiveCodec;
 import com.datastax.oss.protocol.internal.ProtocolV3ClientCodecs;
+import com.datastax.oss.protocol.internal.ProtocolV4ClientCodecs;
 import com.datastax.oss.protocol.internal.ProtocolV5ClientCodecs;
 import com.datastax.oss.protocol.internal.ProtocolV6ClientCodecs;
 import com.datastax.oss.protocol.internal.SegmentCodec;
@@ -262,9 +257,6 @@ public class DefaultDriverContext implements InternalDriverContext {
   private final String startupApplicationName;
   private final String startupApplicationVersion;
   private final Object metricRegistry;
-  // A stack trace captured in the constructor. Used to extract information about the client
-  // application.
-  private final StackTraceElement[] initStackTrace;
 
   public DefaultDriverContext(
       DriverConfigLoader configLoader, ProgrammaticArguments programmaticArguments) {
@@ -320,14 +312,6 @@ public class DefaultDriverContext implements InternalDriverContext {
     this.startupClientId = programmaticArguments.getStartupClientId();
     this.startupApplicationName = programmaticArguments.getStartupApplicationName();
     this.startupApplicationVersion = programmaticArguments.getStartupApplicationVersion();
-    StackTraceElement[] stackTrace;
-    try {
-      stackTrace = Thread.currentThread().getStackTrace();
-    } catch (Exception ex) {
-      // ignore and use empty
-      stackTrace = new StackTraceElement[] {};
-    }
-    this.initStackTrace = stackTrace;
     this.metricRegistry = programmaticArguments.getMetricRegistry();
   }
 
@@ -395,9 +379,8 @@ public class DefaultDriverContext implements InternalDriverContext {
     if (DefaultDependencyChecker.isPresent(JACKSON)) {
       return new DefaultDriverConfigReporter(this);
     }
-    // Logged unconditionally, unlike the Insights equivalent in #buildLifecycleListeners: reporting
-    // ships enabled, so someone who trimmed Jackson never opted out of it and would otherwise have
-    // no signal that it is off.
+    // Logged unconditionally: reporting ships enabled, so someone who trimmed Jackson never opted
+    // out of it and would otherwise have no signal that it is off.
     LOG.info(
         "Could not initialize driver configuration reporting; "
             + "this is normal if Jackson was explicitly excluded from classpath");
@@ -410,8 +393,7 @@ public class DefaultDriverContext implements InternalDriverContext {
         DefaultDriverOption.LOAD_BALANCING_POLICY_CLASS,
         DefaultDriverOption.LOAD_BALANCING_POLICY,
         LoadBalancingPolicy.class,
-        "com.datastax.oss.driver.internal.core.loadbalancing",
-        "com.datastax.dse.driver.internal.core.loadbalancing");
+        "com.datastax.oss.driver.internal.core.loadbalancing");
   }
 
   protected Map<String, RetryPolicy> buildRetryPolicies() {
@@ -630,11 +612,9 @@ public class DefaultDriverContext implements InternalDriverContext {
         getPrimitiveCodec(),
         getCompressor(),
         new ProtocolV3ClientCodecs(),
-        new ProtocolV4ClientCodecsForDse(),
+        new ProtocolV4ClientCodecs(),
         new ProtocolV5ClientCodecs(),
-        new ProtocolV6ClientCodecs(),
-        new DseProtocolV1ClientCodecs(),
-        new DseProtocolV2ClientCodecs());
+        new ProtocolV6ClientCodecs());
   }
 
   protected SegmentCodec<ByteBuf> buildSegmentCodec() {
@@ -747,7 +727,6 @@ public class DefaultDriverContext implements InternalDriverContext {
       registry = new DefaultCodecRegistry(this.sessionName);
     }
     registry.register(arguments.getTypeCodecs());
-    DseTypeCodecsRegistrar.registerDseCodecs(registry);
     return registry;
   }
 
@@ -955,21 +934,11 @@ public class DefaultDriverContext implements InternalDriverContext {
             this,
             DefaultDriverOption.AUTH_PROVIDER_CLASS,
             AuthProvider.class,
-            "com.datastax.oss.driver.internal.core.auth",
-            "com.datastax.dse.driver.internal.core.auth");
+            "com.datastax.oss.driver.internal.core.auth");
   }
 
   protected List<LifecycleListener> buildLifecycleListeners() {
-    if (DefaultDependencyChecker.isPresent(JACKSON)) {
-      return Collections.singletonList(new InsightsClientLifecycleListener(this, initStackTrace));
-    } else {
-      if (config.getDefaultProfile().getBoolean(DseDriverOption.MONITOR_REPORTING_ENABLED)) {
-        LOG.info(
-            "Could not initialize Insights monitoring; "
-                + "this is normal if Jackson was explicitly excluded from classpath");
-      }
-      return Collections.emptyList();
-    }
+    return Collections.emptyList();
   }
 
   @NonNull

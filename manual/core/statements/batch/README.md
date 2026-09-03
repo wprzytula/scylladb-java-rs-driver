@@ -30,7 +30,7 @@ Group a set of statements into an atomic operation.
 -----
 
 Use [BatchStatement] to execute a set of queries as an atomic operation (refer to 
-[Batching inserts, updates and deletes][batch_dse] to understand how to use batching effectively):
+[Batching inserts, updates and deletes][batch_docs] to understand how to use batching effectively):
 
 ```java
 PreparedStatement preparedInsertExpense =
@@ -83,5 +83,5 @@ to execute such a batch, an `IllegalArgumentException` is thrown.
 [BatchStatement]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/BatchStatement.html
 [BatchStatement.newInstance()]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/BatchStatement.html#newInstance-com.datastax.oss.driver.api.core.cql.BatchType-
 [BatchStatement.builder()]: https://docs.datastax.com/en/drivers/java/4.17/com/datastax/oss/driver/api/core/cql/BatchStatement.html#builder-com.datastax.oss.driver.api.core.cql.BatchType-
-[batch_dse]: https://docs.scylladb.com/manual/stable/cql/dml/batch.html
+[batch_docs]: https://docs.scylladb.com/manual/stable/cql/dml/batch.html
 [CASSANDRA-10246]: https://issues.apache.org/jira/browse/CASSANDRA-10246

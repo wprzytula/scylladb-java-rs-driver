@@ -5,8 +5,9 @@
         "packages": {
           "regex": true,
           "exclude": [
-            "com\\.datastax\\.(oss|dse)\\.protocol\\.internal(\\..+)?",
-            "com\\.datastax\\.(oss|dse)\\.driver\\.internal(\\..+)?",
+            "com\\.datastax\\.oss\\.protocol\\.internal(\\..+)?",
+            "com\\.datastax\\.oss\\.driver\\.internal(\\..+)?",
+            "com\\.datastax\\.dse(\\..+)?",
             "com\\.datastax\\.oss\\.driver\\.shaded(\\..+)?",
             "org\\.assertj(\\..+)?"
           ]
@@ -4837,158 +4838,11 @@
         "justification": "JAVA-2434: added @NonNull to ProgrammaticSslEngineFactory(SSLContext) constructor"
       },
       {
-        "code": "java.class.nonFinalClassInheritsFromNewClass",
-        "old": "class com.datastax.oss.driver.api.core.auth.PlainTextAuthProviderBase.PlainTextAuthenticator",
-        "new": "class com.datastax.oss.driver.api.core.auth.PlainTextAuthProviderBase.PlainTextAuthenticator",
-        "superClass": "com.datastax.dse.driver.api.core.auth.BaseDseAuthenticator",
-        "justification": "New parent doesn't add constraints for implementors"
-      },
-      {
         "code": "java.method.exception.runtimeAdded",
         "old": "method com.datastax.oss.driver.api.core.auth.Authenticator com.datastax.oss.driver.api.core.auth.PlainTextAuthProviderBase::newAuthenticator(com.datastax.oss.driver.api.core.metadata.EndPoint, java.lang.String)",
         "new": "method com.datastax.oss.driver.api.core.auth.Authenticator com.datastax.oss.driver.api.core.auth.PlainTextAuthProviderBase::newAuthenticator(com.datastax.oss.driver.api.core.metadata.EndPoint, java.lang.String) throws com.datastax.oss.driver.api.core.auth.AuthenticationException",
         "exception": "com.datastax.oss.driver.api.core.auth.AuthenticationException",
         "justification": "New exception is unchecked"
-      },
-      {
-        "code": "java.class.superTypeTypeParametersChanged",
-        "old": "class com.datastax.dse.driver.api.core.DseSessionBuilderBase<SelfT extends com.datastax.oss.driver.api.core.session.SessionBuilder, SessionT extends java.lang.Object>",
-        "new": "class com.datastax.dse.driver.api.core.DseSessionBuilderBase<SelfT extends com.datastax.dse.driver.api.core.DseSessionBuilderBase<SelfT, SessionT extends java.lang.Object>, SessionT>",
-        "oldSuperType": "com.datastax.oss.driver.api.core.session.SessionBuilder<SelfT extends com.datastax.oss.driver.api.core.session.SessionBuilder, SessionT extends java.lang.Object>",
-        "newSuperType": "com.datastax.oss.driver.api.core.session.SessionBuilder<SelfT extends com.datastax.dse.driver.api.core.DseSessionBuilderBase<SelfT, SessionT extends java.lang.Object>, SessionT>",
-        "justification": "JAVA-2411: Type parameters were wrong but it is unlikely that implementors would notice that in subclasses"
-      },
-      {
-        "code": "java.method.removed",
-        "old": "method <E> org.apache.tinkerpop.gremlin.process.remote.traversal.RemoteTraversal<?, E> org.apache.tinkerpop.gremlin.process.remote.RemoteConnection::submit(org.apache.tinkerpop.gremlin.process.traversal.Bytecode) throws org.apache.tinkerpop.gremlin.process.remote.RemoteConnectionException",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.removed",
-        "old": "method <E> java.util.Iterator<org.apache.tinkerpop.gremlin.process.traversal.Traverser.Admin<E>> org.apache.tinkerpop.gremlin.process.remote.RemoteConnection::submit(org.apache.tinkerpop.gremlin.process.traversal.Traversal<?, E>) throws org.apache.tinkerpop.gremlin.process.remote.RemoteConnectionException",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.noLongerDefault",
-        "old": "method <E> java.util.concurrent.CompletableFuture<org.apache.tinkerpop.gremlin.process.remote.traversal.RemoteTraversal<?, E>> org.apache.tinkerpop.gremlin.process.remote.RemoteConnection::submitAsync(org.apache.tinkerpop.gremlin.process.traversal.Bytecode) throws org.apache.tinkerpop.gremlin.process.remote.RemoteConnectionException",
-        "new": "method <E> java.util.concurrent.CompletableFuture<org.apache.tinkerpop.gremlin.process.remote.traversal.RemoteTraversal<?, E>> org.apache.tinkerpop.gremlin.process.remote.RemoteConnection::submitAsync(org.apache.tinkerpop.gremlin.process.traversal.Bytecode) throws org.apache.tinkerpop.gremlin.process.remote.RemoteConnectionException",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.nowAbstract",
-        "old": "method <E> java.util.concurrent.CompletableFuture<org.apache.tinkerpop.gremlin.process.remote.traversal.RemoteTraversal<?, E>> org.apache.tinkerpop.gremlin.process.remote.RemoteConnection::submitAsync(org.apache.tinkerpop.gremlin.process.traversal.Bytecode) throws org.apache.tinkerpop.gremlin.process.remote.RemoteConnectionException",
-        "new": "method <E> java.util.concurrent.CompletableFuture<org.apache.tinkerpop.gremlin.process.remote.traversal.RemoteTraversal<?, E>> org.apache.tinkerpop.gremlin.process.remote.RemoteConnection::submitAsync(org.apache.tinkerpop.gremlin.process.traversal.Bytecode) throws org.apache.tinkerpop.gremlin.process.remote.RemoteConnectionException",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.field.removedWithConstant",
-        "old": "field org.apache.tinkerpop.gremlin.process.traversal.TraversalSource.GREMLIN_REMOTE",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.field.removedWithConstant",
-        "old": "field org.apache.tinkerpop.gremlin.process.traversal.TraversalSource.GREMLIN_REMOTE_CONNECTION_CLASS",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "old": "parameter java.util.List<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>> org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategies::sortStrategies(===java.util.List<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>>===)",
-        "new": "parameter java.util.Set<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>> org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategies::sortStrategies(===java.util.Set<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>>===)",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.returnTypeChanged",
-        "old": "method java.util.List<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>> org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategies::sortStrategies(java.util.List<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>>)",
-        "new": "method java.util.Set<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>> org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategies::sortStrategies(java.util.Set<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>>)",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.numberOfParametersChanged",
-        "old": "method void org.apache.tinkerpop.gremlin.process.traversal.Traverser.Admin<T>::incrLoops(java.lang.String)",
-        "new": "method void org.apache.tinkerpop.gremlin.process.traversal.Traverser.Admin<T>::incrLoops()",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.addedToInterface",
-        "new": "method void org.apache.tinkerpop.gremlin.process.traversal.Traverser.Admin<T>::initialiseLoops(java.lang.String, java.lang.String)",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.addedToInterface",
-        "new": "method int org.apache.tinkerpop.gremlin.process.traversal.Traverser<T>::loops(java.lang.String)",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.returnTypeTypeParametersChanged",
-        "old": "method <E2 extends java.lang.Number> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::max()",
-        "new": "method <E2 extends java.lang.Comparable> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::max()",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.generics.formalTypeParameterChanged",
-        "old": "method <E2 extends java.lang.Number> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::max()",
-        "new": "method <E2 extends java.lang.Comparable> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::max()",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.returnTypeTypeParametersChanged",
-        "old": "method <E2 extends java.lang.Number> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::max(org.apache.tinkerpop.gremlin.process.traversal.Scope)",
-        "new": "method <E2 extends java.lang.Comparable> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::max(org.apache.tinkerpop.gremlin.process.traversal.Scope)",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.generics.formalTypeParameterChanged",
-        "old": "method <E2 extends java.lang.Number> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::max(org.apache.tinkerpop.gremlin.process.traversal.Scope)",
-        "new": "method <E2 extends java.lang.Comparable> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::max(org.apache.tinkerpop.gremlin.process.traversal.Scope)",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.returnTypeTypeParametersChanged",
-        "old": "method <E2 extends java.lang.Number> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::min()",
-        "new": "method <E2 extends java.lang.Comparable> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::min()",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.generics.formalTypeParameterChanged",
-        "old": "method <E2 extends java.lang.Number> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::min()",
-        "new": "method <E2 extends java.lang.Comparable> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::min()",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.returnTypeTypeParametersChanged",
-        "old": "method <E2 extends java.lang.Number> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::min(org.apache.tinkerpop.gremlin.process.traversal.Scope)",
-        "new": "method <E2 extends java.lang.Comparable> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::min(org.apache.tinkerpop.gremlin.process.traversal.Scope)",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.generics.formalTypeParameterChanged",
-        "old": "method <E2 extends java.lang.Number> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::min(org.apache.tinkerpop.gremlin.process.traversal.Scope)",
-        "new": "method <E2 extends java.lang.Comparable> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::min(org.apache.tinkerpop.gremlin.process.traversal.Scope)",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.method.returnTypeTypeParametersChanged",
-        "old": "method <E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, java.util.Map<java.lang.String, E2>> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::valueMap(java.lang.String[])",
-        "new": "method <E2> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, java.util.Map<java.lang.Object, E2>> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<S, E>::valueMap(java.lang.String[])",
-        "justification": "JAVA-2235: GraphBinary support - TinkerPop upgrade from 3.3 to 3.4"
-      },
-      {
-        "code": "java.class.externalClassExposedInAPI",
-        "new": "class org.apache.tinkerpop.gremlin.process.traversal.util.ImmutableExplanation",
-        "justification": "Upgrade to Tinkerpop 3.4.4"
-      },
-      {
-        "code": "java.class.nonFinalClassInheritsFromNewClass",
-        "old": "class org.apache.tinkerpop.gremlin.process.traversal.util.TraversalExplanation",
-        "new": "class org.apache.tinkerpop.gremlin.process.traversal.util.TraversalExplanation",
-        "superClass": "org.apache.tinkerpop.gremlin.process.traversal.util.AbstractExplanation",
-        "justification": "Upgrade to Tinkerpop 3.4.4"
-      },
-      {
-        "code": "java.class.defaultSerializationChanged",
-        "old": "class org.apache.tinkerpop.gremlin.process.traversal.util.TraversalExplanation",
-        "new": "class org.apache.tinkerpop.gremlin.process.traversal.util.TraversalExplanation",
-        "justification": "Upgrade to Tinkerpop 3.4.4"
       },
       {
         "code": "java.annotation.added",
@@ -5435,105 +5289,6 @@
         "new": "field com.fasterxml.jackson.databind.type.TypeFactory.serialVersionUID",
         "serialVersionUID": "1",
         "justification": "JAVA-2904: Jackson upgraded to 2.12.0. Caused by the exposure of ObjectMapper as a parameter in ExtraTypeCodecs.json()"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.remote.RemoteConnection",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.traversal.P",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.traversal.Path",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.apache.tinkerpop.gremlin.structure.Edge",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.apache.tinkerpop.gremlin.structure.Property",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.apache.tinkerpop.gremlin.structure.Vertex",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.apache.tinkerpop.gremlin.structure.VertexProperty",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.oldClass",
-        "old": "missing-class org.apache.tinkerpop.gremlin.process.remote.RemoteConnection",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.remote.RemoteConnection",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.oldClass",
-        "old": "missing-class org.apache.tinkerpop.gremlin.process.traversal.P",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.traversal.P",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.oldClass",
-        "old": "missing-class org.apache.tinkerpop.gremlin.process.traversal.Path",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.traversal.Path",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.oldClass",
-        "old": "missing-class org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.oldClass",
-        "old": "missing-class org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource",
-        "new": "missing-class org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.oldClass",
-        "old": "missing-class org.apache.tinkerpop.gremlin.structure.Edge",
-        "new": "missing-class org.apache.tinkerpop.gremlin.structure.Edge",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.oldClass",
-        "old": "missing-class org.apache.tinkerpop.gremlin.structure.Property",
-        "new": "missing-class org.apache.tinkerpop.gremlin.structure.Property",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.oldClass",
-        "old": "missing-class org.apache.tinkerpop.gremlin.structure.Vertex",
-        "new": "missing-class org.apache.tinkerpop.gremlin.structure.Vertex",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
-      },
-      {
-        "code": "java.missing.oldClass",
-        "old": "missing-class org.apache.tinkerpop.gremlin.structure.VertexProperty",
-        "new": "missing-class org.apache.tinkerpop.gremlin.structure.VertexProperty",
-        "justification": "JAVA-2907: switched Tinkerpop dependency to optional"
       },
       {
         "code": "java.class.nonFinalClassInheritsFromNewClass",
@@ -6830,55 +6585,55 @@
         "old": "method com.datastax.oss.driver.api.core.data.CqlVector<?> com.datastax.oss.driver.api.core.data.GettableById::getCqlVector(com.datastax.oss.driver.api.core.CqlIdentifier)",
         "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.method.removed",
        "old": "method com.datastax.oss.driver.api.core.data.CqlVector<?> com.datastax.oss.driver.api.core.data.GettableByIndex::getCqlVector(int)",
        "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.method.removed",
        "old": "method com.datastax.oss.driver.api.core.data.CqlVector<?> com.datastax.oss.driver.api.core.data.GettableByName::getCqlVector(java.lang.String)",
        "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.method.removed",
        "old": "method SelfT com.datastax.oss.driver.api.core.data.SettableById<SelfT extends com.datastax.oss.driver.api.core.data.SettableById<SelfT>>::setCqlVector(com.datastax.oss.driver.api.core.CqlIdentifier, com.datastax.oss.driver.api.core.data.CqlVector<?>)",
        "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.method.removed",
        "old": "method SelfT com.datastax.oss.driver.api.core.data.SettableByIndex<SelfT extends com.datastax.oss.driver.api.core.data.SettableByIndex<SelfT>>::setCqlVector(int, com.datastax.oss.driver.api.core.data.CqlVector<?>)",
        "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.method.removed",
        "old": "method SelfT com.datastax.oss.driver.api.core.data.SettableByName<SelfT extends com.datastax.oss.driver.api.core.data.SettableByName<SelfT>>::setCqlVector(java.lang.String, com.datastax.oss.driver.api.core.data.CqlVector<?>)",
        "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.class.removed",
        "old": "class com.datastax.oss.driver.api.core.type.CqlVectorType",
        "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.method.returnTypeChanged",
        "old": "method com.datastax.oss.driver.api.core.type.CqlVectorType com.datastax.oss.driver.api.core.type.DataTypes::vectorOf(com.datastax.oss.driver.api.core.type.DataType, int)",
        "new": "method com.datastax.oss.driver.api.core.type.VectorType com.datastax.oss.driver.api.core.type.DataTypes::vectorOf(com.datastax.oss.driver.api.core.type.DataType, int)",
        "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.method.parameterTypeChanged",
        "old": "parameter <SubtypeT> com.datastax.oss.driver.api.core.type.codec.TypeCodec<com.datastax.oss.driver.api.core.data.CqlVector<SubtypeT>> com.datastax.oss.driver.api.core.type.codec.TypeCodecs::vectorOf(===com.datastax.oss.driver.api.core.type.CqlVectorType===, com.datastax.oss.driver.api.core.type.codec.TypeCodec<SubtypeT>)",
        "new": "parameter <SubtypeT> com.datastax.oss.driver.api.core.type.codec.TypeCodec<java.util.List<SubtypeT>> com.datastax.oss.driver.api.core.type.codec.TypeCodecs::vectorOf(===com.datastax.oss.driver.api.core.type.VectorType===, com.datastax.oss.driver.api.core.type.codec.TypeCodec<SubtypeT>)",
        "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.method.returnTypeTypeParametersChanged",
        "old": "method <SubtypeT> com.datastax.oss.driver.api.core.type.codec.TypeCodec<com.datastax.oss.driver.api.core.data.CqlVector<SubtypeT>> com.datastax.oss.driver.api.core.type.codec.TypeCodecs::vectorOf(com.datastax.oss.driver.api.core.type.CqlVectorType, com.datastax.oss.driver.api.core.type.codec.TypeCodec<SubtypeT>)",
        "new": "method <SubtypeT> com.datastax.oss.driver.api.core.type.codec.TypeCodec<java.util.List<SubtypeT>> com.datastax.oss.driver.api.core.type.codec.TypeCodecs::vectorOf(com.datastax.oss.driver.api.core.type.VectorType, com.datastax.oss.driver.api.core.type.codec.TypeCodec<SubtypeT>)",
        "justification": "Refactoring in JAVA-3061"
      },
-     {
+      {
        "code": "java.method.removed",
        "old": "method <T> com.datastax.oss.driver.api.core.type.reflect.GenericType<com.datastax.oss.driver.api.core.data.CqlVector<T>> com.datastax.oss.driver.api.core.type.reflect.GenericType<T>::vectorOf(com.datastax.oss.driver.api.core.type.reflect.GenericType<T>)",
        "justification": "Refactoring in JAVA-3061"
@@ -7390,11 +7145,6 @@
       {
         "code": "java.class.nonPublicPartOfAPI",
         "old": "class com.fasterxml.jackson.databind.type.TypeParser.MyTokenizer",
-        "justification": "CASSJAVA-102: Fix spurious complaints about optional dependencies"
-      },
-      {
-        "code": "java.class.nonPublicPartOfAPI",
-        "old": "class org.apache.tinkerpop.shaded.jackson.databind.type.TypeParser.MyTokenizer",
         "justification": "CASSJAVA-102: Fix spurious complaints about optional dependencies"
       },
       {

@@ -17,7 +17,6 @@
  */
 package com.datastax.oss.driver.internal.core.metadata.schema.queries;
 
-import com.datastax.dse.driver.api.core.metadata.DseNodeProperties;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.Version;
 import com.datastax.oss.driver.api.core.metadata.Node;
@@ -224,22 +223,15 @@ public class CassandraSchemaRows implements SchemaRows {
 
     private static boolean isCassandraV3OrAbove(Node node) {
       // We already did those checks in DefaultSchemaQueriesFactory.
-      // We could pass along booleans (isCassandraV3, isDse...), but passing the whole Node is
-      // better for maintainability, in case we need to do more checks in downstream components in
-      // the future.
-      Version dseVersion = (Version) node.getExtras().get(DseNodeProperties.DSE_VERSION);
-      if (dseVersion != null) {
-        dseVersion = dseVersion.nextStable();
-        return dseVersion.compareTo(Version.V5_0_0) >= 0;
+      // We could pass along a boolean, but passing the whole Node is better for maintainability,
+      // in case we need to do more checks in downstream components in the future.
+      Version cassandraVersion = node.getCassandraVersion();
+      if (cassandraVersion == null) {
+        cassandraVersion = Version.V3_0_0;
       } else {
-        Version cassandraVersion = node.getCassandraVersion();
-        if (cassandraVersion == null) {
-          cassandraVersion = Version.V3_0_0;
-        } else {
-          cassandraVersion = cassandraVersion.nextStable();
-        }
-        return cassandraVersion.compareTo(Version.V3_0_0) >= 0;
+        cassandraVersion = cassandraVersion.nextStable();
       }
+      return cassandraVersion.compareTo(Version.V3_0_0) >= 0;
     }
 
     public Builder withKeyspaces(Iterable<AdminRow> rows) {
