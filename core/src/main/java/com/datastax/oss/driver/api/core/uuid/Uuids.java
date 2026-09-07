@@ -141,9 +141,11 @@ public final class Uuids {
       if (!initialized) {
         synchronized (ClockSeqAndNodeContainer.class) {
           if (!initialized) {
-
-            initialized = true;
+            // Publish the value before the flag, not after: a reader that sees initialized ==
+            // true skips the lock and returns val directly, so the assignment has to happen
+            // first. Writing the volatile flag last also makes val visible to that reader.
             val = makeClockSeqAndNode();
+            initialized = true;
           }
         }
       }
