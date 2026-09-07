@@ -23,12 +23,7 @@ import com.datastax.oss.protocol.internal.Compressor;
 import io.netty.buffer.ByteBuf;
 import java.util.Locale;
 
-/**
- * Provides a single entry point to create compressor instances in the driver.
- *
- * <p>Note that this class also serves as a convenient target for GraalVM substitutions, see {@link
- * CompressorSubstitutions}.
- */
+/** Provides a single entry point to create compressor instances in the driver. */
 public class BuiltInCompressors {
 
   public static Compressor<ByteBuf> newInstance(String name, DriverContext context) {

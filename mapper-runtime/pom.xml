@@ -31,7 +31,7 @@
     <version>4.19.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>java-driver-mapper-runtime</artifactId>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
   <name>Java driver for Scylla and Apache Cassandra(R) - object mapper runtime</name>
   <dependencies>
     <dependency>
@@ -160,43 +160,6 @@
             <version>${surefire.version}</version>
           </dependency>
         </dependencies>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <executions>
-          <execution>
-            <goals>
-              <goal>bundle</goal>
-            </goals>
-            <configuration>
-              <instructions>
-                <Bundle-SymbolicName>com.datastax.oss.driver.mapper-runtime</Bundle-SymbolicName>
-                <!--
-                Allow importing code from other packages
-                (so reflection-based loading of policies works)
-                -->
-                <DynamicImport-Package>*</DynamicImport-Package>
-                <Import-Package>
-                  <!--
-                  1) Don't include the packages below because they contain annotations only and are
-                  not required at runtime.
-                  -->!net.jcip.annotations.*, !edu.umd.cs.findbugs.annotations.*,
-                  <!--
-                  2) Use resolution:=optional for optional dependencies in order to make it possible
-                  to use the driver without such dependencies in an OSGi environment, as long as
-                  the application does not attempt to access their packages.
-                  Note: dependencies marked as optional are by default included with optional
-                  resolution in the manifest; we only need to manually set the resolution to
-                  optional for dependencies declared as non-optional in the pom files.
-                  -->org.reactivestreams.*;resolution:=optional, *
-                </Import-Package>
-                <Export-Package>com.datastax.*.driver.*.mapper.*</Export-Package>
-              </instructions>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>

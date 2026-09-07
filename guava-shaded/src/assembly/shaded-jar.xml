@@ -39,6 +39,14 @@
       <excludes>
         <exclude>META-INF/maven/com.scylladb/java-driver-guava-shaded/pom.xml</exclude>
         <exclude>**/module-info.class</exclude>
+        <!--
+        The shaded jar's own manifest is unpacked into the directory above; excluding it here
+        leaves maven-archiver as the single contributor of the manifest that ships. While the
+        OSGi bundle plugin was in place it rewrote that file and <archive><manifestFile> pointed
+        at it, so the two agreed by construction; without it they would be two independent
+        sources with nothing deciding which wins.
+        -->
+        <exclude>META-INF/MANIFEST.MF</exclude>
       </excludes>
       <outputDirectory/>
     </fileSet>

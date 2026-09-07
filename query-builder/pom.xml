@@ -31,7 +31,7 @@
     <version>4.19.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>java-driver-query-builder</artifactId>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
   <name>Java driver for Scylla and Apache Cassandra(R) - query builder</name>
   <description>Fluent CQL builder for the ScyllaDB Java Driver, enabling type-safe query construction.</description>
   <url>https://github.com/scylladb/java-driver</url>
@@ -124,17 +124,6 @@
               <Automatic-Module-Name>com.datastax.oss.driver.querybuilder</Automatic-Module-Name>
             </manifestEntries>
           </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <configuration>
-          <instructions>
-            <Bundle-SymbolicName>com.datastax.oss.driver.querybuilder</Bundle-SymbolicName>
-            <Import-Package>!net.jcip.annotations.*, !edu.umd.cs.findbugs.annotations.*, *</Import-Package>
-            <Export-Package>com.datastax.oss.driver.*.querybuilder.*</Export-Package>
-          </instructions>
         </configuration>
       </plugin>
       <plugin>

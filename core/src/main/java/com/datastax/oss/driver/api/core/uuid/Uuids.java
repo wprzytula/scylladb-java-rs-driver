@@ -125,12 +125,11 @@ public final class Uuids {
    */
   private static final long START_EPOCH_MILLIS = -12219292800000L;
 
-  // Lazily initialize clock seq + node value at time of first access.  Quarkus will attempt to
-  // initialize this class at deployment time which prevents us from just setting this value
-  // directly.  The "node" part of the clock seq + node includes the current PID which (for
-  // GraalVM users) we obtain via the LLVM interop.  That infrastructure isn't setup at Quarkus
-  // deployment time, however, thus we can't just call makeClockSeqAndNode() in an initializer.
-  // See JAVA-2663 for more detail on this point.
+  // Lazily initialize the clock seq + node value at first access rather than in an initializer.
+  // The reason is JAVA-2663: Quarkus initializes this class at deployment time, where the
+  // infrastructure that makeClockSeqAndNode() needs to identify the host (the PID lookup, and
+  // enumerating the local addresses) is not in place yet. Deferring to first access keeps that
+  // work out of class initialization, whenever that happens to run.
   //
   // Container impl adapted from Guava's memoized Supplier impl.
   private static class ClockSeqAndNodeContainer {
@@ -142,9 +141,11 @@ public final class Uuids {
       if (!initialized) {
         synchronized (ClockSeqAndNodeContainer.class) {
           if (!initialized) {
-
-            initialized = true;
+            // Publish the value before the flag, not after: a reader that sees initialized ==
+            // true skips the lock and returns val directly, so the assignment has to happen
+            // first. Writing the volatile flag last also makes val visible to that reader.
             val = makeClockSeqAndNode();
+            initialized = true;
           }
         }
       }

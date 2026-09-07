@@ -145,8 +145,8 @@ public class DefaultDriverConfigLoader implements DriverConfigLoader {
    *
    * <p>Application-specific classpath resources will be located using the {@linkplain
    * Thread#getContextClassLoader() the current thread's context class loader}. This might not be
-   * suitable for OSGi deployments, which should use {@link #DefaultDriverConfigLoader(ClassLoader)}
-   * instead.
+   * suitable for containers with layered class loaders (web applications, application servers),
+   * which should use {@link #DefaultDriverConfigLoader(ClassLoader)} instead.
    */
   public DefaultDriverConfigLoader() {
     this(DEFAULT_CONFIG_SUPPLIER);

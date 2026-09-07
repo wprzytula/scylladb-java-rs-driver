@@ -570,8 +570,8 @@ public class DefaultDriverConfigReporterTest {
 
   @Test
   public void should_report_a_retry_policy_subclass_as_custom() throws Exception {
-    // Real (anonymous) subclass, not a mock: DefaultRetryPolicy is not final, and a real subclass
-    // of it already exists elsewhere in this repo's test code (osgi-tests' CustomRetryPolicy).
+    // Real (anonymous) subclass, not a mock: DefaultRetryPolicy is not final, and subclassing it
+    // is something users do, so the reporter has to classify a real subclass rather than a proxy.
     RetryPolicy subclass = new DefaultRetryPolicy(policyConstructionContext(), "default") {};
     DefaultDriverConfigReporter r =
         reporterWith(

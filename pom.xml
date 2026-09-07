@@ -35,7 +35,6 @@
   <inceptionYear>2017</inceptionYear>
   <modules>
     <module>core</module>
-    <module>core-shaded</module>
     <module>query-builder</module>
     <module>mapper-runtime</module>
     <module>mapper-processor</module>
@@ -44,7 +43,6 @@
     <module>guava-shaded</module>
     <module>test-infra</module>
     <module>integration-tests</module>
-    <module>osgi-tests</module>
     <module>distribution-source</module>
     <module>distribution</module>
     <module>distribution-tests</module>
@@ -74,10 +72,6 @@
     <commons-exec.version>1.6.0</commons-exec.version>
     <junit.version>4.13.2</junit.version>
     <logback.version>1.5.32</logback.version>
-    <osgi.version>6.0.0</osgi.version>
-    <felix.version>7.0.5</felix.version>
-    <pax-exam.version>4.13.4</pax-exam.version>
-    <pax-url.version>2.6.17</pax-url.version>
     <simulacron.version>0.14.0.0</simulacron.version>
     <jsr353-api.version>1.1.4</jsr353-api.version>
     <jersey.version>2.47</jersey.version>
@@ -89,7 +83,6 @@
     <json-schema-validator.version>1.5.9</json-schema-validator.version>
     <apacheds.version>2.0.0-M19</apacheds.version>
     <surefire.version>3.5.5</surefire.version>
-    <graalapi.version>22.0.0.2</graalapi.version>
     <skipTests>false</skipTests>
     <skipUnitTests>${skipTests}</skipUnitTests>
     <release.autopublish>false</release.autopublish>
@@ -162,11 +155,6 @@
       <dependency>
         <groupId>com.scylladb</groupId>
         <artifactId>java-driver-bom</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.scylladb</groupId>
-        <artifactId>java-driver-core-shaded</artifactId>
         <version>${project.version}</version>
       </dependency>
       <!-- Regular dependencies     -->
@@ -303,46 +291,6 @@
         <version>${commons-exec.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.osgi</groupId>
-        <artifactId>org.osgi.core</artifactId>
-        <version>${osgi.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>org.apache.felix.framework</artifactId>
-        <version>${felix.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.ops4j.pax.exam</groupId>
-        <artifactId>pax-exam-junit4</artifactId>
-        <version>${pax-exam.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.ops4j.pax.exam</groupId>
-        <artifactId>pax-exam-container-forked</artifactId>
-        <version>${pax-exam.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.ops4j.pax.exam</groupId>
-        <artifactId>pax-exam-link-mvn</artifactId>
-        <version>${pax-exam.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.ops4j.pax.url</groupId>
-        <artifactId>pax-url-wrap</artifactId>
-        <version>${pax-url.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.ops4j.pax.url</groupId>
-        <artifactId>pax-url-reference</artifactId>
-        <version>${pax-url.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.ops4j.pax.tinybundles</groupId>
-        <artifactId>tinybundles</artifactId>
-        <version>4.0.1</version>
-      </dependency>
-      <dependency>
         <groupId>org.glassfish</groupId>
         <artifactId>javax.json</artifactId>
         <version>${jsr353-ri.version}</version>
@@ -452,16 +400,6 @@
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
         <version>2.25.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.graalvm.sdk</groupId>
-        <artifactId>graal-sdk</artifactId>
-        <version>${graalapi.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.graalvm.nativeimage</groupId>
-        <artifactId>svm</artifactId>
-        <version>${graalapi.version}</version>
       </dependency>
       <dependency>
         <groupId>io.micrometer</groupId>
@@ -613,11 +551,6 @@
           <version>0.8.14</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <version>5.1.9</version>
-        </plugin>
-        <plugin>
           <groupId>org.revapi</groupId>
           <artifactId>revapi-maven-plugin</artifactId>
           <version>0.15.1</version>
@@ -673,7 +606,7 @@
         <extensions>true</extensions>
         <configuration>
           <publishingServerId>central</publishingServerId>
-          <excludeArtifacts>java-driver-distribution-source,java-driver-distribution-tests,java-driver-distribution,java-driver-examples,java-driver-integration-tests,java-driver-osgi-tests</excludeArtifacts>
+          <excludeArtifacts>java-driver-distribution-source,java-driver-distribution-tests,java-driver-distribution,java-driver-examples,java-driver-integration-tests</excludeArtifacts>
           <autoPublish>${release.autopublish}</autoPublish>
           <waitUntil>validated</waitUntil>
         </configuration>
@@ -917,22 +850,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <version>1.9.5</version>
           </dependency>
         </dependencies>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Bundle-Version>${project.version}</Bundle-Version>
-            <_include>-osgi.bnd</_include>
-          </instructions>
-          <supportedProjectTypes>
-            <supportedProjectType>jar</supportedProjectType>
-            <supportedProjectType>bundle</supportedProjectType>
-            <supportedProjectType>pom</supportedProjectType>
-          </supportedProjectTypes>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.revapi</groupId>

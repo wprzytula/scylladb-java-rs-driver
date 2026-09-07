@@ -21,11 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * A checker for the presence of various {@link Dependency} instances at runtime. Predicate tests
- * for Graal substitutions should NOT use this class; see {@link GraalDependencyChecker} for more
- * information.
- */
+/** A checker for the presence of various {@link Dependency} instances at runtime. */
 public class DefaultDependencyChecker {
 
   private static final Logger LOG = LoggerFactory.getLogger(DefaultDependencyChecker.class);
@@ -44,9 +40,9 @@ public class DefaultDependencyChecker {
           dependency,
           (dep) -> {
             for (String classNameToTest : dependency.classes()) {
-              // Always use the driver class loader, assuming that the driver classes and
-              // the dependency classes are either being loaded by the same class loader,
-              // or – as in OSGi deployments – by two distinct, but compatible class loaders.
+              // Always use the driver class loader: an optional dependency is only usable by
+              // the driver if the driver's own loader can see it, whatever the application's
+              // loader can reach.
               if (Reflection.loadClass(null, classNameToTest) == null) {
                 return false;
               }

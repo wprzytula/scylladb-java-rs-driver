@@ -11,7 +11,6 @@ on:
       - "*.md"
       - "*.sh"
       - "renovate.json"
-      - ".snyk"
       - ".gitignore"
   pull_request:
     branches: [ rs ]
@@ -23,7 +22,6 @@ on:
       - "*.md"
       - "*.sh"
       - "renovate.json"
-      - ".snyk"
       - ".gitignore"
   workflow_dispatch:
 

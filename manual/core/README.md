@@ -365,7 +365,6 @@ for (ColumnDefinitions.Definition definition : row.getColumnDefinitions()) {
    control_connection/*
    custom_codecs/*
    detachable_types/*
-   graalvm/*
    idempotence/*
    integration/*
    load_balancing/*
@@ -383,7 +382,6 @@ for (ColumnDefinitions.Definition definition : row.getColumnDefinitions()) {
    reconnection/*
    request_tracker/*
    retries/*
-   shaded_jar/*
    speculative_execution/*
    ssl/*
    statements/*

@@ -59,7 +59,8 @@ public class DefaultProgrammaticDriverConfigLoaderBuilder
    * <p>Fallback configuration for options that haven't been specified programmatically will be
    * obtained from standard classpath resources. Application-specific classpath resources will be
    * located using the {@linkplain Thread#getContextClassLoader() the current thread's context class
-   * loader}. This might not be suitable for OSGi deployments, which should use {@link
+   * loader}. This might not be suitable for containers with layered class loaders (web
+   * applications, application servers), which should use {@link
    * #DefaultProgrammaticDriverConfigLoaderBuilder(ClassLoader)} instead.
    */
   public DefaultProgrammaticDriverConfigLoaderBuilder() {

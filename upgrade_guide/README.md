@@ -21,6 +21,43 @@ under the License.
 
 ### java-rs-driver (Rust-core fork)
 
+#### GraalVM native images are no longer supported
+
+The driver no longer ships GraalVM native-image support: the substitution classes (compressors,
+metrics factory, libc access, the request processors, the Guava `Unsafe` comparators in the shaded
+Guava artifact), the Graal dependency checker, the
+`org.graalvm` build dependencies, the GraalVM manual page and the `META-INF/native-image/**`
+configuration are all gone. The configuration had to go with the classes: `native-image`
+auto-applies the `Args=` line of every `native-image.properties` on the classpath, so leaving it
+behind would have kept configuring downstream native-image builds — reflection config, dynamic-proxy
+config, `--initialize-at-build-time` — while the substitutions that kept optional dependencies such
+as jnr-posix and Snappy out of the closed-world analysis no longer existed. Deleting only the Java
+half is worse than deleting neither. The `.snyk` policy file went too: all three of its ignores were
+`graal-sdk` CVEs. Bundling a native library
+into a native image is a different problem from the one those substitutions solved, and will be
+designed separately.
+
+#### The shaded core artifact is discontinued
+
+`java-driver-core-shaded` is no longer built or published. Its purpose was to relocate Netty and
+Jackson away from the application's own copies; with the networking layer moving to the Rust core,
+Netty is on its way out of the driver entirely. Applications depending on it must switch to
+`java-driver-core`.
+
+Be aware of what that gives up: applications that used the shaded artifact precisely *because* they
+pin a different Netty or Jackson major version will now see the driver's versions on the classpath,
+and have to pin compatible versions or shade the driver themselves. Jackson is the easier one to
+miss — config reporting is enabled by default and detects Jackson reflectively, so an incompatible
+application copy is what the driver will find.
+
+#### OSGi is no longer supported
+
+The driver jars are no longer OSGi bundles: their manifests do not declare
+`Bundle-SymbolicName`/`Import-Package`/`Export-Package` any more, and the `osgi-tests` module and
+OSGi manual page are gone. Deploying the driver in an OSGi container (Eclipse, Apache Karaf, ...) is
+not supported. The `ClassLoader`-taking API (`SessionBuilder.withClassLoader`,
+`DriverConfigLoader.fromClasspath(String, ClassLoader)`, ...) is unaffected and still available.
+
 #### All DataStax Enterprise (DSE) support has been removed
 
 This driver does not support DataStax Enterprise. All DSE-specific features were deliberately and
@@ -296,7 +333,8 @@ If you were building a native image for your application, please verify your nat
 configuration. Most of the extra configuration required until now is likely to not be necessary
 anymore.
 
-Refer to this [manual page](../manual/core/graalvm) for details.
+(The GraalVM manual page this entry linked to is gone: native images are no longer supported, see
+the java-rs-driver section above.)
 
 #### Registration of multiple listeners and trackers
 
