@@ -21,6 +21,42 @@ under the License.
 
 ### java-rs-driver (Rust-core fork)
 
+#### The driver's own transport layer is gone (work in progress)
+
+The Netty-based transport — connection pooling, the control connection, frame codecs, protocol
+negotiation and request handling — was removed; it is being replaced by the Rust driver. In this
+state the driver builds and its public API is intact, but nothing that needs a server works:
+building a session, executing or preparing a statement, and reading topology or schema metadata
+fail with `UnsupportedOperationException("NOT YET IMPLEMENTED (java-rs)")`.
+
+Two consequences that outlive the transition:
+
+* frame compression (`advanced.protocol.compression`) is the Rust core's business, so
+  `java-driver-core` no longer depends on `lz4-java` or `snappy-java`;
+* `InternalDriverContext` no longer exposes the transport components (`getChannelFactory`,
+  `getChannelPoolFactory`, `getControlConnection`, `getPoolManager`, `getWriteCoalescer`,
+  `getCompressor`, `getPrimitiveCodec`, `getFrameCodec`, `getSegmentCodec`), and neither do the
+  `DefaultDriverContext.build*` methods behind them. Code that overrode
+  `SessionBuilder.buildContext()` to customize any of these has nothing to hook into any more.
+
+#### The integration tests are quarantined
+
+Every class in `integration-tests` now carries the JUnit category
+`com.datastax.oss.driver.categories.BrokenTests`, which the three failsafe executions in
+`integration-tests/pom.xml` list under `<excludedGroups>`. The suite still compiles, but runs no
+tests and starts no CCM cluster, because nothing that needs a server can pass until the Rust core is
+bridged. The GitHub Actions integration-test jobs are gated on `workflow_dispatch` for the same
+reason. Tests will lose the category a group at a time as functionality is bridged, so the set of
+classes still carrying it is the compatibility-progress metric.
+
+#### The Micrometer and MicroProfile metrics modules are temporarily gone
+
+`java-driver-metrics-micrometer` and `java-driver-metrics-microprofile` are not built or published
+for now. They are pure backends over the driver's internal metrics SPI, which has no data source
+until metrics are bridged out of the Rust core; they are expected to return then. The public metrics
+API (`Session.getMetrics()`, `advanced.metrics.*`, `MetricsFactory`) and the default Dropwizard
+binding are unaffected.
+
 #### GraalVM native images are no longer supported
 
 The driver no longer ships GraalVM native-image support: the substitution classes (compressors,

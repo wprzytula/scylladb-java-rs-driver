@@ -29,6 +29,7 @@ import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
 import com.datastax.oss.driver.api.testinfra.simulacron.SimulacronRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.protocol.internal.request.Register;
 import com.datastax.oss.protocol.internal.request.Startup;
@@ -70,7 +71,7 @@ import org.junit.experimental.categories.Category;
  * before the handshake completes, and Simulacron records each such rejected attempt as a bare
  * {@code STARTUP} ({@code CQL_VERSION} only) that carries no driver identity.
  */
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class DriverConfigReportingSimulacronIT {
 
   // A single node yields one dedicated control connection plus a pool connection (local.size

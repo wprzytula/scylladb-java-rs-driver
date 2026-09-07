@@ -37,6 +37,7 @@ import com.datastax.oss.driver.api.testinfra.requirement.BackendRequirementRule;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendType;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.IsolatedTests;
 import com.datastax.oss.driver.shaded.guava.common.base.Strings;
 import com.datastax.oss.protocol.internal.Segment;
@@ -59,7 +60,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
 
-@Category(IsolatedTests.class)
+@Category({IsolatedTests.class, BrokenTests.class})
 @RunWith(MockitoJUnitRunner.class)
 public class NettyResourceLeakDetectionIT {
 

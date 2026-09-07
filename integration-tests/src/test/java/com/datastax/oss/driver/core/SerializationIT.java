@@ -31,6 +31,7 @@ import com.datastax.oss.driver.api.core.servererrors.ServerError;
 import com.datastax.oss.driver.api.core.type.DataTypes;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.simulacron.SimulacronRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.driver.internal.SerializationHelper;
 import com.datastax.oss.simulacron.common.cluster.ClusterSpec;
@@ -41,7 +42,7 @@ import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class SerializationIT {
   private static final SimulacronRule SIMULACRON_RULE =
       new SimulacronRule(ClusterSpec.builder().withNodes(1));

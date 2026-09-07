@@ -31,6 +31,7 @@ import com.datastax.oss.driver.api.core.cql.Row;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.testinfra.ccm.CcmRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.driver.shaded.guava.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
@@ -49,7 +50,7 @@ import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 @RunWith(DataProviderRunner.class)
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class PagingIterableSpliteratorIT {
 
   private static final CcmRule CCM_RULE = CcmRule.getInstance();

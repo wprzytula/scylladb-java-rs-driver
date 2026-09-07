@@ -66,20 +66,6 @@ right dependencies:
 </tr>
 <tr>
   <td>
-    Instrumenting the driver and gathering metrics using the Micrometer metrics library.
-  </td>
-  <td><code>java&#8209;driver&#8209;metrics&#8209;micrometer</code></td>
-  <td>See <a href="../metrics/">this page</a>.</td>
-</tr>
-<tr>
-  <td>
-    Instrumenting the driver and gathering metrics using the MicroProfile Metrics library.
-  </td>
-  <td><code>java&#8209;driver&#8209;metrics&#8209;microprofile</code></td>
-  <td>See <a href="../metrics/">this page</a>.</td>
-</tr>
-<tr>
-  <td>
     "Bill Of Materials": can help manage versions if you use multiple driver artifacts.
   </td>
   <td><code>java&#8209;driver&#8209;bom</code></td>

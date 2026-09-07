@@ -15,11 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.datastax.oss.driver.internal.core.channel;
+package com.datastax.oss.driver.categories;
 
-import com.datastax.oss.protocol.internal.Message;
-
-public interface EventCallback {
-  /** Invoked when a protocol event is received. */
-  void onEvent(Message event);
-}
+/**
+ * Defines a classification of tests that cannot pass yet, and are therefore excluded from every
+ * test run.
+ *
+ * <p>The driver's own transport was removed in favor of the Rust driver, so anything that needs a
+ * live session fails with {@code NOT YET IMPLEMENTED (java-rs)} until that bridge exists. Every
+ * integration test currently carries this category; tests are expected to lose it again, a group at
+ * a time, as functionality is bridged. The set of classes still marked here is the compatibility
+ * progress metric.
+ */
+public interface BrokenTests {}

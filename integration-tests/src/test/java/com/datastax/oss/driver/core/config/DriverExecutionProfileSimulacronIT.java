@@ -33,6 +33,7 @@ import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.core.servererrors.ServerError;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
 import com.datastax.oss.driver.api.testinfra.simulacron.SimulacronRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.simulacron.common.cluster.ClusterSpec;
 import com.datastax.oss.simulacron.common.cluster.QueryLog;
@@ -44,7 +45,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class DriverExecutionProfileSimulacronIT {
 
   @ClassRule

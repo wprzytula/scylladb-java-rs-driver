@@ -139,8 +139,6 @@ public class BasicLoadBalancingPolicyDcFailoverTest extends BasicLoadBalancingPo
     verify(policy, times(3)).shuffleHead(any(), eq(2));
     // should shuffle remote nodes
     verify(policy, times(3)).shuffleHead(any(), eq(4));
-    // No power of two choices with only two replicas
-    verify(session, never()).getPools();
   }
 
   @Override

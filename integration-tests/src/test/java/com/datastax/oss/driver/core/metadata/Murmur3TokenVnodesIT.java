@@ -24,10 +24,12 @@ import com.datastax.oss.driver.api.testinfra.requirement.BackendRequirement;
 import com.datastax.oss.driver.api.testinfra.requirement.BackendType;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.internal.core.metadata.token.Murmur3Token;
 import java.time.Duration;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
@@ -36,6 +38,7 @@ import org.junit.rules.TestRule;
     maxExclusive = "4.0-beta4",
     // TODO Re-enable when CASSANDRA-16364 is fixed
     description = "TODO Re-enable when CASSANDRA-16364 is fixed")
+@Category(BrokenTests.class)
 @BackendRequirement(type = BackendType.SCYLLA)
 public class Murmur3TokenVnodesIT extends TokenITBase {
 

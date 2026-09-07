@@ -264,8 +264,6 @@ public class BasicLoadBalancingPolicyQueryPlanTest extends LoadBalancingPolicyTe
         .containsExactly(node3, node5, node4, node1, node2);
 
     verify(policy, times(3)).shuffleHead(any(), eq(2));
-    // No power of two choices with only two replicas
-    verify(session, never()).getPools();
   }
 
   protected BasicLoadBalancingPolicy createAndInitPolicy() {

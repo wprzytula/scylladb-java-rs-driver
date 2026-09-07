@@ -36,6 +36,7 @@ import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.datastax.oss.driver.api.core.session.Session;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
 import com.datastax.oss.driver.api.testinfra.simulacron.SimulacronRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.IsolatedTests;
 import com.datastax.oss.driver.internal.core.session.DefaultSession;
 import com.datastax.oss.simulacron.common.cluster.ClusterSpec;
@@ -53,7 +54,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
 
-@Category(IsolatedTests.class)
+@Category({IsolatedTests.class, BrokenTests.class})
 @RunWith(MockitoJUnitRunner.class)
 public class SessionLeakIT {
 

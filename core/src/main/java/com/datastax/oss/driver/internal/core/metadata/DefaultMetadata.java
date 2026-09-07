@@ -29,6 +29,7 @@ import com.datastax.oss.driver.internal.core.metadata.token.ReplicationStrategyF
 import com.datastax.oss.driver.internal.core.metadata.token.TokenFactory;
 import com.datastax.oss.driver.internal.core.util.Loggers;
 import com.datastax.oss.driver.internal.core.util.NanoTime;
+import com.datastax.oss.driver.internal.core.util.NotYetImplemented;
 import com.datastax.oss.driver.shaded.guava.common.collect.ImmutableMap;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -104,7 +105,10 @@ public class DefaultMetadata implements Metadata {
   @NonNull
   @Override
   public Optional<String> getClusterName() {
-    return Optional.ofNullable(clusterName);
+    // TODO(java-rs): the cluster name used to come from the connection handshake, which the Rust
+    // core now owns. Nothing can set the field any more, so returning Optional.empty() would tell
+    // callers the cluster has no name rather than that the value is not bridged.
+    throw NotYetImplemented.error("cluster name");
   }
 
   /**
@@ -135,7 +139,8 @@ public class DefaultMetadata implements Metadata {
         this.keyspaces,
         rebuildTokenMap(
             newNodes, keyspaces, tokenMapEnabled, forceFullRebuild, tokenFactory, context),
-        context.getChannelFactory().getClusterName(),
+        // Always null until the Rust core bridges it back; see getClusterName().
+        this.clusterName,
         this.tabletMap == null ? DefaultTabletMap.emptyMap() : this.tabletMap);
   }
 
@@ -158,7 +163,9 @@ public class DefaultMetadata implements Metadata {
         this.nodes,
         ImmutableMap.copyOf(newKeyspaces),
         rebuildTokenMap(nodes, newKeyspaces, tokenMapEnabled, false, null, context),
-        context.getChannelFactory().getClusterName(),
+        // TODO(java-rs): the cluster name comes from the Rust core once bridged; carry over what
+        // this metadata was built with.
+        this.clusterName,
         this.tabletMap);
   }
 

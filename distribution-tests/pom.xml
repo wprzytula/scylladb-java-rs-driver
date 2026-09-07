@@ -59,16 +59,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.scylladb</groupId>
-      <artifactId>java-driver-metrics-micrometer</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.scylladb</groupId>
-      <artifactId>java-driver-metrics-microprofile</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>

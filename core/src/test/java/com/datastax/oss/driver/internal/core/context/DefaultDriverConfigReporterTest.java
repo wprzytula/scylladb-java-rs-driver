@@ -401,7 +401,8 @@ public class DefaultDriverConfigReporterTest {
     assertThat(connection.has("heartbeat")).isFalse();
     JsonNode requests = connection.get("requests");
     assertThat(requests.get("in-flight").get("max").asInt()).isEqualTo(1024);
-    assertThat(requests.get("orphaned").get("max").asInt()).isEqualTo(256);
+    // TODO(java-rs): omitted while no connection is built, see the reporter.
+    assertThat(requests.has("orphaned")).isFalse();
     assertThat(connection.get("pool").get("shard-aware").get("enabled").asBoolean()).isTrue();
 
     JsonNode socket = report.get("connection").get("socket");
@@ -1829,14 +1830,16 @@ public class DefaultDriverConfigReporterTest {
             });
     JsonNode requests = report(r).get("connection").get("requests");
     assertThat(requests.get("in-flight").get("max").asInt()).isEqualTo(2048);
-    assertThat(requests.get("orphaned").get("max").asInt()).isEqualTo(512);
+    assertThat(requests.has("orphaned")).isFalse();
   }
 
   @Test
-  public void should_report_the_corrected_orphaned_request_threshold() throws Exception {
-    // ChannelFactory requires max-orphan-requests to stay below max-requests-per-connection and
-    // silently substitutes a quarter of the latter when it doesn't. Reporting the configured 1024
-    // here would describe a threshold no connection was ever built with.
+  public void should_omit_the_orphaned_request_threshold() throws Exception {
+    // TODO(java-rs): the old transport clamped max-orphan-requests to a quarter of
+    // max-requests-per-connection when it was not below it, so the reported bound was always
+    // below in-flight.max, as the schema's description requires. Nothing enforces a bound now, and
+    // the shipped defaults are equal, so the field is omitted - which the schema allows precisely
+    // when the bound is unknown. Restore it once the Rust core bridges an effective limit.
     DefaultDriverConfigReporter r =
         defaultsReporter(
             map -> {
@@ -1844,8 +1847,9 @@ public class DefaultDriverConfigReporterTest {
               map.put(TypedDriverOption.CONNECTION_MAX_ORPHAN_REQUESTS, 1024);
             });
     JsonNode report = report(r);
-    assertThat(report.get("connection").get("requests").get("orphaned").get("max").asInt())
-        .isEqualTo(256);
+    JsonNode requests = report.get("connection").get("requests");
+    assertThat(requests.get("in-flight").get("max").asInt()).isEqualTo(1024);
+    assertThat(requests.has("orphaned")).isFalse();
     assertConformsToSchema(report);
   }
 
@@ -2029,7 +2033,7 @@ public class DefaultDriverConfigReporterTest {
     JsonNode report = report(r);
     JsonNode requests = report.get("connection").get("requests");
     assertThat(requests.get("in-flight").get("max").asInt()).isEqualTo(1024);
-    assertThat(requests.get("orphaned").get("max").asInt()).isEqualTo(256);
+    assertThat(requests.has("orphaned")).isFalse();
     assertThat(
             report.get("control-plane").get("schema").get("agreement").get("timeout-ms").asLong())
         .isEqualTo(10_000);

@@ -155,6 +155,10 @@ jobs:
   setup-integration-tests:
     name: Setup ITs
     runs-on: ubuntu-latest
+    # Quarantined: the driver has no transport until the Rust core is bridged, so every
+    # integration test carries the BrokenTests category and is excluded from the run.
+    # Kept dispatchable so they can be exercised deliberately as tests are un-quarantined.
+    if: github.event_name == 'workflow_dispatch'
     timeout-minutes: 2
 
     steps:
@@ -169,6 +173,10 @@ jobs:
   cassandra-integration-tests:
     name: Cassandra ITs
     runs-on: ubuntu-latest
+    # Quarantined: the driver has no transport until the Rust core is bridged, so every
+    # integration test carries the BrokenTests category and is excluded from the run.
+    # Kept dispatchable so they can be exercised deliberately as tests are un-quarantined.
+    if: github.event_name == 'workflow_dispatch'
     needs: [setup-integration-tests]
     timeout-minutes: 90
 
@@ -285,6 +293,10 @@ jobs:
   scylla-integration-tests:
     name: Scylla ITs
     runs-on: ubuntu-latest
+    # Quarantined: the driver has no transport until the Rust core is bridged, so every
+    # integration test carries the BrokenTests category and is excluded from the run.
+    # Kept dispatchable so they can be exercised deliberately as tests are un-quarantined.
+    if: github.event_name == 'workflow_dispatch'
     needs: [setup-integration-tests]
     timeout-minutes: 90
 

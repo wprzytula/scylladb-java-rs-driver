@@ -131,16 +131,6 @@
                   <version>3.0.2</version>
                 </additionalDependency>
                 <additionalDependency>
-                  <groupId>at.yawk.lz4</groupId>
-                  <artifactId>lz4-java</artifactId>
-                  <version>${lz4.version}</version>
-                </additionalDependency>
-                <additionalDependency>
-                  <groupId>org.xerial.snappy</groupId>
-                  <artifactId>snappy-java</artifactId>
-                  <version>${snappy.version}</version>
-                </additionalDependency>
-                <additionalDependency>
                   <groupId>org.javatuples</groupId>
                   <artifactId>javatuples</artifactId>
                   <version>1.2</version>

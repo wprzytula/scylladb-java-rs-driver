@@ -25,13 +25,16 @@ import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
 import com.datastax.oss.driver.api.testinfra.simulacron.SimulacronRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.simulacron.common.cluster.ClusterSpec;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 /** This test is separate from {@link HeartbeatIT} because it can't be parallelized. */
+@Category(BrokenTests.class)
 public class HeartbeatDisabledIT {
 
   @ClassRule

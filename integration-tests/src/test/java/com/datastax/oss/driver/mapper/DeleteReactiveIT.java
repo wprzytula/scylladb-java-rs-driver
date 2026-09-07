@@ -36,6 +36,7 @@ import com.datastax.oss.driver.api.mapper.entity.saving.NullSavingStrategy;
 import com.datastax.oss.driver.api.mapper.reactive.MappedReactiveResultSet;
 import com.datastax.oss.driver.api.testinfra.ccm.CcmRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import io.reactivex.Flowable;
 import java.util.UUID;
@@ -48,7 +49,7 @@ import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
 // Do not run LWT tests in parallel because they may interfere. Tests operate on the same row.
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class DeleteReactiveIT extends InventoryITBase {
 
   private static CcmRule ccmRule = CcmRule.getInstance();

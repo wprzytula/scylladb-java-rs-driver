@@ -102,8 +102,6 @@ public class BasicLoadBalancingPolicyPreferredRemoteDcsTest
     verify(policy, times(2)).shuffleHead(any(), eq(3));
     // should shuffle remote nodes
     verify(policy, times(6)).shuffleHead(any(), eq(2));
-    // No power of two choices with only two replicas
-    verify(session, never()).getPools();
   }
 
   @Override

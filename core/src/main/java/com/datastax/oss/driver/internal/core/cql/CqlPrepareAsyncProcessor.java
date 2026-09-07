@@ -32,6 +32,7 @@ import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
 import com.datastax.oss.driver.internal.core.metadata.schema.events.TypeChangeEvent;
 import com.datastax.oss.driver.internal.core.session.DefaultSession;
 import com.datastax.oss.driver.internal.core.session.RequestProcessor;
+import com.datastax.oss.driver.internal.core.util.NotYetImplemented;
 import com.datastax.oss.driver.internal.core.util.concurrent.CompletableFutures;
 import com.datastax.oss.driver.internal.core.util.concurrent.RunOrSchedule;
 import com.datastax.oss.driver.shaded.guava.common.base.Functions;
@@ -156,17 +157,13 @@ public class CqlPrepareAsyncProcessor
         CompletableFuture<PreparedStatement> mine = new CompletableFuture<>();
         result = cache.get(request, () -> mine);
         if (result == mine) {
-          new CqlPrepareHandler(request, session, context, sessionLogPrefix)
-              .handle()
-              .whenComplete(
-                  (preparedStatement, error) -> {
-                    if (error != null) {
-                      mine.completeExceptionally(error);
-                      cache.invalidate(request); // Make sure failure isn't cached indefinitely
-                    } else {
-                      mine.complete(preparedStatement);
-                    }
-                  });
+          // TODO(java-rs): preparation goes through the Rust core.
+          // Complete the future we published before invalidating: a concurrent caller for the same
+          // request may already have picked it up out of the cache, and would otherwise wait on a
+          // future nobody ever completes.
+          mine.completeExceptionally(NotYetImplemented.error("statement preparation"));
+          cache.invalidate(request);
+          return CompletableFutures.failedFuture(NotYetImplemented.error("statement preparation"));
         }
       }
       // If the future is already completed, return it directly to maintain a strong reference

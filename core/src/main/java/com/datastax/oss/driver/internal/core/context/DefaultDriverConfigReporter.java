@@ -27,7 +27,6 @@ import com.datastax.oss.driver.api.core.specex.SpeculativeExecutionPolicy;
 import com.datastax.oss.driver.api.core.ssl.ProgrammaticSslEngineFactory;
 import com.datastax.oss.driver.api.core.ssl.SslEngineFactory;
 import com.datastax.oss.driver.api.core.time.TimestampGenerator;
-import com.datastax.oss.driver.internal.core.channel.ChannelFactory;
 import com.datastax.oss.driver.internal.core.connection.ConstantReconnectionPolicy;
 import com.datastax.oss.driver.internal.core.connection.ExponentialReconnectionPolicy;
 import com.datastax.oss.driver.internal.core.loadbalancing.BasicLoadBalancingPolicy;
@@ -402,15 +401,12 @@ public class DefaultDriverConfigReporter implements DriverConfigReporter {
     // connection was built with, so the behavior stays defined either way.
     inFlight.put("max", maxRequests);
     n.set("in-flight", inFlight);
-    ObjectNode orphaned = OBJECT_MAPPER.createObjectNode();
-    // The effective threshold, not the configured one: ChannelFactory silently replaces a value
-    // that isn't below max-requests-per-connection with a quarter of it, so reporting the raw
-    // option would describe a limit no connection was built with.
-    orphaned.put(
-        "max",
-        ChannelFactory.effectiveMaxOrphanRequests(
-            maxRequests, config.getInt(DefaultDriverOption.CONNECTION_MAX_ORPHAN_REQUESTS, 256)));
-    n.set("orphaned", orphaned);
+    // TODO(java-rs): "orphaned" is omitted rather than reported as configured. The schema makes
+    // the field optional and absent precisely when the bound is unknown, and expects
+    // orphaned.max < in-flight.max; the old transport clamped the option to a quarter of
+    // max-requests-per-connection, whereas the shipped defaults are equal (1024 and 1024), so
+    // reporting the raw value would emit a document that breaks that invariant. Restore the field
+    // once the Rust core bridges an effective limit.
     return n;
   }
 

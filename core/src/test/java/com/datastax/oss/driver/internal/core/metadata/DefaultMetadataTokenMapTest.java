@@ -24,7 +24,6 @@ import static org.mockito.Mockito.when;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.metadata.Node;
 import com.datastax.oss.driver.api.core.metadata.schema.KeyspaceMetadata;
-import com.datastax.oss.driver.internal.core.channel.ChannelFactory;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
 import com.datastax.oss.driver.internal.core.metadata.token.DefaultReplicationStrategyFactory;
 import com.datastax.oss.driver.internal.core.metadata.token.Murmur3TokenFactory;
@@ -56,11 +55,9 @@ public class DefaultMetadataTokenMapTest {
               "class", "org.apache.cassandra.locator.SimpleStrategy", "replication_factor", "1"));
 
   @Mock private InternalDriverContext context;
-  @Mock private ChannelFactory channelFactory;
 
   @Before
   public void setup() {
-    when(context.getChannelFactory()).thenReturn(channelFactory);
     DefaultReplicationStrategyFactory replicationStrategyFactory =
         new DefaultReplicationStrategyFactory(context);
     when(context.getReplicationStrategyFactory()).thenReturn(replicationStrategyFactory);

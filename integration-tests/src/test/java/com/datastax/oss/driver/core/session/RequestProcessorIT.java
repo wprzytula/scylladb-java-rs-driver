@@ -27,6 +27,7 @@ import com.datastax.oss.driver.api.core.cql.PreparedStatement;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.testinfra.ccm.CcmRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.driver.example.guava.api.GuavaSession;
 import com.datastax.oss.driver.example.guava.api.GuavaSessionUtils;
@@ -63,7 +64,7 @@ import org.junit.rules.TestRule;
  * <p>{@link KeyRequestProcessor} is also registered for handling {@link KeyRequest}s which
  * simplifies a certain query down to 1 parameter.
  */
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class RequestProcessorIT {
 
   private static final CcmRule CCM_RULE = CcmRule.getInstance();

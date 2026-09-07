@@ -31,11 +31,10 @@ import java.util.Map;
  *
  * <p>Note that all request IDs have a parent/child relationship. A "session request ID" can loosely
  * be thought of as encompassing a sequence of a request + any attendant retries, speculative
- * executions etc. It's scope is identical to that of a {@link
- * com.datastax.oss.driver.internal.core.cql.CqlRequestHandler}. A "node request ID" represents a
- * single request within this larger scope. Note that a request corresponding to a request ID may be
- * retried; in that case the retry count will be appended to the corresponding identifier in the
- * logs.
+ * executions etc. It's scope is identical to that of the driver's request handler. A "node request
+ * ID" represents a single request within this larger scope. Note that a request corresponding to a
+ * request ID may be retried; in that case the retry count will be appended to the corresponding
+ * identifier in the logs.
  */
 public interface RequestIdGenerator {
 

@@ -23,9 +23,6 @@ import com.datastax.oss.driver.api.core.metadata.Node;
 import com.datastax.oss.driver.api.core.session.SessionBuilder;
 import com.datastax.oss.driver.internal.core.ConsistencyLevelRegistry;
 import com.datastax.oss.driver.internal.core.ProtocolVersionRegistry;
-import com.datastax.oss.driver.internal.core.channel.ChannelFactory;
-import com.datastax.oss.driver.internal.core.channel.WriteCoalescer;
-import com.datastax.oss.driver.internal.core.control.ControlConnection;
 import com.datastax.oss.driver.internal.core.metadata.LoadBalancingPolicyWrapper;
 import com.datastax.oss.driver.internal.core.metadata.MetadataManager;
 import com.datastax.oss.driver.internal.core.metadata.TopologyMonitor;
@@ -35,19 +32,12 @@ import com.datastax.oss.driver.internal.core.metadata.token.ReplicationStrategyF
 import com.datastax.oss.driver.internal.core.metadata.token.TokenFactoryRegistry;
 import com.datastax.oss.driver.internal.core.metrics.MetricIdGenerator;
 import com.datastax.oss.driver.internal.core.metrics.MetricsFactory;
-import com.datastax.oss.driver.internal.core.pool.ChannelPoolFactory;
 import com.datastax.oss.driver.internal.core.servererrors.WriteTypeRegistry;
-import com.datastax.oss.driver.internal.core.session.PoolManager;
 import com.datastax.oss.driver.internal.core.session.RequestProcessorRegistry;
 import com.datastax.oss.driver.internal.core.ssl.SslHandlerFactory;
 import com.datastax.oss.driver.internal.core.tracker.RequestLogFormatter;
-import com.datastax.oss.protocol.internal.Compressor;
-import com.datastax.oss.protocol.internal.FrameCodec;
-import com.datastax.oss.protocol.internal.PrimitiveCodec;
-import com.datastax.oss.protocol.internal.SegmentCodec;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import io.netty.buffer.ByteBuf;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -59,18 +49,6 @@ public interface InternalDriverContext extends DriverContext {
 
   @NonNull
   EventBus getEventBus();
-
-  @NonNull
-  Compressor<ByteBuf> getCompressor();
-
-  @NonNull
-  PrimitiveCodec<ByteBuf> getPrimitiveCodec();
-
-  @NonNull
-  FrameCodec<ByteBuf> getFrameCodec();
-
-  @NonNull
-  SegmentCodec<ByteBuf> getSegmentCodec();
 
   @NonNull
   ProtocolVersionRegistry getProtocolVersionRegistry();
@@ -85,16 +63,7 @@ public interface InternalDriverContext extends DriverContext {
   NettyOptions getNettyOptions();
 
   @NonNull
-  WriteCoalescer getWriteCoalescer();
-
-  @NonNull
   Optional<SslHandlerFactory> getSslHandlerFactory();
-
-  @NonNull
-  ChannelFactory getChannelFactory();
-
-  @NonNull
-  ChannelPoolFactory getChannelPoolFactory();
 
   @NonNull
   TopologyMonitor getTopologyMonitor();
@@ -104,9 +73,6 @@ public interface InternalDriverContext extends DriverContext {
 
   @NonNull
   LoadBalancingPolicyWrapper getLoadBalancingPolicyWrapper();
-
-  @NonNull
-  ControlConnection getControlConnection();
 
   @NonNull
   RequestProcessorRegistry getRequestProcessorRegistry();
@@ -122,9 +88,6 @@ public interface InternalDriverContext extends DriverContext {
 
   @NonNull
   ReplicationStrategyFactory getReplicationStrategyFactory();
-
-  @NonNull
-  PoolManager getPoolManager();
 
   @NonNull
   MetricsFactory getMetricsFactory();

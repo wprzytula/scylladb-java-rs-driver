@@ -42,6 +42,7 @@ import com.datastax.oss.driver.api.testinfra.loadbalancing.SortingLoadBalancingP
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
 import com.datastax.oss.driver.api.testinfra.simulacron.SimulacronRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.driver.internal.core.tracker.RequestLogger;
 import com.datastax.oss.simulacron.common.cluster.ClusterSpec;
@@ -67,7 +68,7 @@ import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.verification.Timeout;
 import org.slf4j.LoggerFactory;
 
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 public class RequestLoggerIT {
   private static final Pattern LOG_PREFIX_PER_REQUEST = Pattern.compile("\\[s\\d*\\|\\d*]");
 

@@ -25,7 +25,7 @@ import com.datastax.oss.driver.api.core.config.ClientRoutesConfig;
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.datastax.oss.driver.api.core.session.ProgrammaticArguments;
 import com.datastax.oss.driver.internal.core.config.typesafe.DefaultDriverConfigLoader;
-import com.datastax.oss.driver.internal.core.metadata.ClientRoutesTopologyMonitor;
+import com.datastax.oss.driver.internal.core.util.NotYetImplemented;
 import com.typesafe.config.ConfigFactory;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -220,7 +220,10 @@ public class ClientRoutesConfigFromFileTest {
                 + "]\n"
                 + "advanced.address-translator.class = PassThroughAddressTranslator");
 
-    assertThat(ctx.getTopologyMonitor()).isInstanceOf(ClientRoutesTopologyMonitor.class);
+    // The configuration is accepted; building the monitor itself is not implemented yet.
+    assertThatThrownBy(ctx::getTopologyMonitor)
+        .isInstanceOf(UnsupportedOperationException.class)
+        .hasMessageContaining(NotYetImplemented.MESSAGE);
   }
 
   @Test
@@ -235,7 +238,10 @@ public class ClientRoutesConfigFromFileTest {
                 + " com.datastax.oss.driver.internal.core.addresstranslation"
                 + ".PassThroughAddressTranslator");
 
-    assertThat(ctx.getTopologyMonitor()).isInstanceOf(ClientRoutesTopologyMonitor.class);
+    // The configuration is accepted; building the monitor itself is not implemented yet.
+    assertThatThrownBy(ctx::getTopologyMonitor)
+        .isInstanceOf(UnsupportedOperationException.class)
+        .hasMessageContaining(NotYetImplemented.MESSAGE);
   }
 
   @Test

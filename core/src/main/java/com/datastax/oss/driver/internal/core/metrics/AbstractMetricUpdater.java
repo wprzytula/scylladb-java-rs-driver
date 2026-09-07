@@ -25,7 +25,6 @@ import com.datastax.oss.driver.api.core.session.throttling.RequestThrottler;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
 import com.datastax.oss.driver.internal.core.cql.CqlPrepareAsyncProcessor;
 import com.datastax.oss.driver.internal.core.cql.CqlPrepareSyncProcessor;
-import com.datastax.oss.driver.internal.core.pool.ChannelPool;
 import com.datastax.oss.driver.internal.core.session.RequestProcessor;
 import com.datastax.oss.driver.internal.core.session.throttling.ConcurrencyLimitingRequestThrottler;
 import com.datastax.oss.driver.internal.core.session.throttling.RateLimitingRequestThrottler;
@@ -132,19 +131,18 @@ public abstract class AbstractMetricUpdater<MetricT> implements MetricUpdater<Me
     return null;
   }
 
+  // TODO(java-rs): connection-level counters live in the Rust core; report 0 until they are
+  // bridged back.
   protected int availableStreamIds(Node node) {
-    ChannelPool pool = context.getPoolManager().getPools().get(node);
-    return (pool == null) ? 0 : pool.getAvailableIds();
+    return 0;
   }
 
   protected int inFlightRequests(Node node) {
-    ChannelPool pool = context.getPoolManager().getPools().get(node);
-    return (pool == null) ? 0 : pool.getInFlight();
+    return 0;
   }
 
   protected int orphanedStreamIds(Node node) {
-    ChannelPool pool = context.getPoolManager().getPools().get(node);
-    return (pool == null) ? 0 : pool.getOrphanedIds();
+    return 0;
   }
 
   protected void startMetricsExpirationTimeout() {

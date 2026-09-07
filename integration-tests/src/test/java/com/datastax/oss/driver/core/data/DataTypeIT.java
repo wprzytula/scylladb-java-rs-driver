@@ -48,6 +48,7 @@ import com.datastax.oss.driver.api.core.type.UserDefinedType;
 import com.datastax.oss.driver.api.core.type.codec.TypeCodec;
 import com.datastax.oss.driver.api.testinfra.ccm.CcmRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.categories.ParallelizableTests;
 import com.datastax.oss.driver.internal.core.type.DefaultListType;
 import com.datastax.oss.driver.internal.core.type.DefaultMapType;
@@ -87,7 +88,7 @@ import org.junit.rules.TestName;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
-@Category(ParallelizableTests.class)
+@Category({ParallelizableTests.class, BrokenTests.class})
 @RunWith(DataProviderRunner.class)
 public class DataTypeIT {
   private static final CcmRule CCM_RULE = CcmRule.getInstance();

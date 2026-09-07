@@ -17,6 +17,7 @@ import com.datastax.oss.driver.api.testinfra.ScyllaRequirement;
 import com.datastax.oss.driver.api.testinfra.ccm.CustomCcmRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionRule;
 import com.datastax.oss.driver.api.testinfra.session.SessionUtils;
+import com.datastax.oss.driver.categories.BrokenTests;
 import com.datastax.oss.driver.internal.core.loadbalancing.BasicLoadBalancingPolicy;
 import com.datastax.oss.driver.internal.core.metadata.schema.TabletMapSchemaChangeListener;
 import java.time.Duration;
@@ -25,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 import org.mockito.ArgumentCaptor;
@@ -36,6 +38,7 @@ import org.mockito.Mockito;
     description = "Needs to support tablets")
 @ScyllaOnly(description = "Tablets are ScyllaDB-only extension")
 // Ensures that TabletMap used by MetadataManager behaves as desired on certain events
+@Category(BrokenTests.class)
 public class TabletMapSchemaChangesIT {
 
   // Same listener as the one registered on initialization by

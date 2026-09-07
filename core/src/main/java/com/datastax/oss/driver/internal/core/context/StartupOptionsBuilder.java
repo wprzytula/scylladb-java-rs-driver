@@ -21,7 +21,6 @@ import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverExecutionProfile;
 import com.datastax.oss.driver.api.core.session.Session;
 import com.datastax.oss.driver.api.core.uuid.Uuids;
-import com.datastax.oss.protocol.internal.request.Startup;
 import com.datastax.oss.protocol.internal.util.collection.NullAllowingImmutableMap;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.Map;
@@ -94,10 +93,8 @@ public class StartupOptionsBuilder {
   /**
    * Builds a map of options to send in a Startup message.
    *
-   * <p>The default set of options are built here and include {@link
-   * com.datastax.oss.protocol.internal.request.Startup#COMPRESSION_KEY} (if the context passed in
-   * has a compressor/algorithm set), the driver's {@link #DRIVER_NAME_KEY} and {@link
-   * #DRIVER_VERSION_KEY}, and the {@link #SESSION_ID_KEY}. The {@link
+   * <p>The default set of options are built here and include the driver's {@link #DRIVER_NAME_KEY}
+   * and {@link #DRIVER_VERSION_KEY}, and the {@link #SESSION_ID_KEY}. The {@link
    * com.datastax.oss.protocol.internal.request.Startup} constructor will add {@link
    * com.datastax.oss.protocol.internal.request.Startup#CQL_VERSION_KEY}.
    *
@@ -107,11 +104,9 @@ public class StartupOptionsBuilder {
     DriverExecutionProfile config = context.getConfig().getDefaultProfile();
 
     NullAllowingImmutableMap.Builder<String, String> builder = NullAllowingImmutableMap.builder(4);
-    // add compression (if configured) and driver name and version
-    String compressionAlgorithm = context.getCompressor().algorithm();
-    if (compressionAlgorithm != null && !compressionAlgorithm.trim().isEmpty()) {
-      builder.put(Startup.COMPRESSION_KEY, compressionAlgorithm.trim());
-    }
+    // TODO(java-rs): compression is negotiated by the Rust core, which owns the STARTUP message;
+    // the algorithm is not visible here yet.
+
     builder.put(DRIVER_NAME_KEY, getDriverName()).put(DRIVER_VERSION_KEY, getDriverVersion());
 
     // Identifier of this session, sent on every connection so the server can group them. Not

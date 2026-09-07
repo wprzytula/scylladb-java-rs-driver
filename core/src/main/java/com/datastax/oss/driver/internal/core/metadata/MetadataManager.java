@@ -31,15 +31,14 @@ import com.datastax.oss.driver.api.core.type.TupleType;
 import com.datastax.oss.driver.api.core.type.codec.TypeCodec;
 import com.datastax.oss.driver.internal.core.config.ConfigChangeEvent;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
-import com.datastax.oss.driver.internal.core.control.ControlConnection;
 import com.datastax.oss.driver.internal.core.metadata.schema.parsing.SchemaParserFactory;
 import com.datastax.oss.driver.internal.core.metadata.schema.queries.KeyspaceFilter;
-import com.datastax.oss.driver.internal.core.metadata.schema.queries.SchemaQueriesFactory;
 import com.datastax.oss.driver.internal.core.metadata.schema.queries.SchemaRows;
 import com.datastax.oss.driver.internal.core.metadata.schema.refresh.SchemaRefresh;
 import com.datastax.oss.driver.internal.core.protocol.TabletInfo;
 import com.datastax.oss.driver.internal.core.util.Loggers;
 import com.datastax.oss.driver.internal.core.util.NanoTime;
+import com.datastax.oss.driver.internal.core.util.NotYetImplemented;
 import com.datastax.oss.driver.internal.core.util.concurrent.CompletableFutures;
 import com.datastax.oss.driver.internal.core.util.concurrent.Debouncer;
 import com.datastax.oss.driver.internal.core.util.concurrent.RunOrSchedule;
@@ -76,7 +75,6 @@ public class MetadataManager implements AsyncAutoCloseable {
   private final EventExecutor adminExecutor;
   private final DriverExecutionProfile config;
   private final SingleThreaded singleThreaded;
-  private final ControlConnection controlConnection;
 
   private volatile DefaultMetadata metadata; // only updated from adminExecutor
   private volatile boolean schemaEnabledInConfig;
@@ -100,7 +98,6 @@ public class MetadataManager implements AsyncAutoCloseable {
     this.adminExecutor = context.getNettyOptions().adminEventExecutorGroup().next();
     this.config = context.getConfig().getDefaultProfile();
     this.singleThreaded = new SingleThreaded(context, config);
-    this.controlConnection = context.getControlConnection();
     this.schemaEnabledInConfig = config.getBoolean(DefaultDriverOption.METADATA_SCHEMA_ENABLED);
     this.refreshedKeyspaces =
         config.getStringList(
@@ -371,7 +368,6 @@ public class MetadataManager implements AsyncAutoCloseable {
     private final Debouncer<
             CompletableFuture<RefreshSchemaResult>, CompletableFuture<RefreshSchemaResult>>
         schemaRefreshDebouncer;
-    private final SchemaQueriesFactory schemaQueriesFactory;
     private final SchemaParserFactory schemaParserFactory;
 
     // We don't allow concurrent schema refreshes. If one is already running, the next one is queued
@@ -390,7 +386,6 @@ public class MetadataManager implements AsyncAutoCloseable {
               this::startSchemaRequest,
               config.getDuration(DefaultDriverOption.METADATA_SCHEMA_WINDOW),
               config.getInt(DefaultDriverOption.METADATA_SCHEMA_MAX_EVENTS));
-      this.schemaQueriesFactory = context.getSchemaQueriesFactory();
       this.schemaParserFactory = context.getSchemaParserFactory();
     }
 
@@ -507,7 +502,10 @@ public class MetadataManager implements AsyncAutoCloseable {
                     onSchemaRefreshComplete();
                   } else {
                     try {
-                      schemaQueriesFactory
+                      // TODO(java-rs): resolved here rather than in the constructor, so that
+                      // MetadataManager stays constructible while schema queries are unbridged.
+                      context
+                          .getSchemaQueriesFactory()
                           .newInstance()
                           .execute()
                           .thenApplyAsync(this::parseAndApplySchemaRows, adminExecutor)
@@ -548,18 +546,14 @@ public class MetadataManager implements AsyncAutoCloseable {
       }
     }
 
-    // To query schema tables, we need the control connection.
-    // Normally that the topology monitor has already initialized it to query node tables. But if a
-    // custom topology monitor is in place, it might not use the control connection at all.
+    // Querying schema tables used to require initializing the control connection first, and this
+    // returned firstSchemaRefreshFuture once that had happened. There is no control connection any
+    // more, so fail unconditionally: keying off firstSchemaRefreshFuture would let every refresh
+    // after the first one walk into the schema-query path and fail with a different message.
+    // TODO(java-rs): the Rust core owns the control connection; schema queries will be issued
+    // through it once metadata is bridged.
     private CompletionStage<Void> initControlConnectionForSchema() {
-      if (firstSchemaRefreshFuture.isDone()) {
-        // We tried to refresh the schema before, so we know we called init already. Don't call it
-        // again since that is cheaper.
-        return firstSchemaRefreshFuture;
-      } else {
-        // Trigger init (a no-op if the topology monitor already done so)
-        return controlConnection.init(false, true, false);
-      }
+      return CompletableFutures.failedFuture(NotYetImplemented.error("schema metadata queries"));
     }
 
     private Metadata parseAndApplySchemaRows(SchemaRows schemaRows) {

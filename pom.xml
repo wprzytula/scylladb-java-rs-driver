@@ -38,8 +38,6 @@
     <module>query-builder</module>
     <module>mapper-runtime</module>
     <module>mapper-processor</module>
-    <module>metrics/micrometer</module>
-    <module>metrics/microprofile</module>
     <module>guava-shaded</module>
     <module>test-infra</module>
     <module>integration-tests</module>
@@ -65,8 +63,6 @@
     <jackson.version>2.22.1</jackson.version>
     <legacy-jackson.version>1.9.12</legacy-jackson.version>
     <!-- optional dependencies -->
-    <snappy.version>1.1.10.8</snappy.version>
-    <lz4.version>1.11.1</lz4.version>
     <!-- test dependencies -->
     <assertj.version>3.27.7</assertj.version>
     <commons-exec.version>1.6.0</commons-exec.version>
@@ -142,18 +138,6 @@
       </dependency>
       <dependency>
         <groupId>com.scylladb</groupId>
-        <artifactId>java-driver-metrics-micrometer</artifactId>
-        <scope>test</scope>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.scylladb</groupId>
-        <artifactId>java-driver-metrics-microprofile</artifactId>
-        <scope>test</scope>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.scylladb</groupId>
         <artifactId>java-driver-bom</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -188,16 +172,6 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${logback.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.xerial.snappy</groupId>
-        <artifactId>snappy-java</artifactId>
-        <version>${snappy.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>at.yawk.lz4</groupId>
-        <artifactId>lz4-java</artifactId>
-        <version>${lz4.version}</version>
       </dependency>
       <dependency>
         <groupId>com.github.jnr</groupId>
@@ -400,21 +374,6 @@
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
         <version>2.25.0</version>
-      </dependency>
-      <dependency>
-        <groupId>io.micrometer</groupId>
-        <artifactId>micrometer-core</artifactId>
-        <version>1.15.12</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.microprofile.metrics</groupId>
-        <artifactId>microprofile-metrics-api</artifactId>
-        <version>3.0.1</version>
-      </dependency>
-      <dependency>
-        <groupId>io.smallrye</groupId>
-        <artifactId>smallrye-metrics</artifactId>
-        <version>3.0.5</version>
       </dependency>
       <dependency>
         <groupId>io.projectreactor</groupId>
@@ -819,11 +778,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <additionalparam>com.kenai.jffi</additionalparam>
                 <additionalparam>-preventleak</additionalparam>
                 <additionalparam>com.kenai.jnr</additionalparam>
-                <!-- Compression libraries: optional dependencies -->
-                <additionalparam>-preventleak</additionalparam>
-                <additionalparam>net.jpountz</additionalparam>
-                <additionalparam>-preventleak</additionalparam>
-                <additionalparam>org.xerial.snappy</additionalparam>
               </additionalJOptions>
               <useStandardDocletOptions>false</useStandardDocletOptions>
             </configuration>
