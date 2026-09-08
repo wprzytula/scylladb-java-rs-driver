@@ -14,6 +14,11 @@ CCM_SCYLLA_VERSION ?= master
 SCYLLA_EXT_OPTS ?= --smp=2 --memory=4G
 MVNCMD ?= mvn -B -X -ntp
 
+PYTHON ?= python3
+API_TRACKER ?= tools/api-tracker
+# extra flags for the api tracker, e.g. --upstream-repo ../java-driver --rust-src ../scylla-rust-driver
+API_TRACKER_ARGS ?=
+
 GET_VERSION_VERSION ?= 0.4.3
 
 MAVEN_GPG_PASSPHRASE ?=
@@ -257,6 +262,18 @@ fix:
 test-unit: .install-guava-shaded
 	$(MVNCMD) test -Dfmt.skip=true -Dclirr.skip=true -Danimal.sniffer.skip=true
 
+api-report:
+	$(PYTHON) $(API_TRACKER)/generate.py report
+
+api-import:
+	$(PYTHON) $(API_TRACKER)/generate.py import $(API_TRACKER_ARGS)
+
+api-baseline: compile-all
+	$(PYTHON) $(API_TRACKER)/generate.py baseline $(API_TRACKER_ARGS)
+
+api-check: compile-all
+	$(PYTHON) $(API_TRACKER)/generate.py check
+
 test-integration-scylla: .install-all-modules .prepare-scylla-ccm resolve-scylla-version .prepare-environment-update-aio-max-nr
 	@if [[ -z "$${SCYLLA_VERSION_RESOLVED}" ]]; then
 		SCYLLA_VERSION_RESOLVED=`cat '${SCYLLA_VERSION_FILE}'`
@@ -293,6 +310,7 @@ clean:
 	find -name 'target' -exec rm -rf {} +
 	find -name 'dependency-reduced-pom.xml' -exec rm -f {} +
 	rm -f release.properties 2>/dev/null
+	rm -rf $(API_TRACKER)/out
 	for dir in driver-core driver-examples driver-extras driver-mapping driver-tests driver-dist testing; do
 		rm -rf $$dir 2>/dev/null
 	done

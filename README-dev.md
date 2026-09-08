@@ -24,7 +24,10 @@ Most day-to-day tasks are wrapped in the top-level `Makefile` so you do not have
 - `make test-unit` runs the fast unit-test suite; use `MVNCMD` to tweak the underlying Maven command if needed.
 - `make test-integration-scylla` and `make test-integration-cassandra` execute CCM-backed integration suites. Export `SCYLLA_VERSION` or `CASSANDRA_VERSION` to pin specific server versions before invoking.
 - `make check` executes `mvn verify -DskipTests` for static analysis, while `make fix` applies code formatters via `mvn fmt:format`.
-- `make fix` executes `mvn fmt:format` to format the code.
+- `make api-report` renders the public API tracking workbook into `tools/api-tracker/out/`. It reads the committed CSVs, so it needs no build.
+- `make api-import` folds annotations you made in that workbook back into `tools/api-tracker/*.csv`, which is what you commit.
+- `make api-baseline` refreshes those CSVs from the compiled tree; run it whenever the public API changes and review the diff.
+- `make api-check` fails if the compiled tree has drifted from the committed CSVs. See [tools/api-tracker/README.md](tools/api-tracker/README.md).
 - `make clean` removes Maven targets, shaded artifacts, and release backups to reset the tree.
 
 The Makefile automatically installs the shaded Guava dependency and, for integration tests, bootstraps the appropriate CCM toolchain and raises kernel `aio-max-nr` when required. If a target fails because the toolchain is missing, rerun after installing the prerequisites highlighted in the target output.

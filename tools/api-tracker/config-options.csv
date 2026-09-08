@@ -1,0 +1,171 @@
+Option,Config path,Typed?,Default (reference.conf),Disposition,Comment
+CONTACT_POINTS,basic.contact-points,1,,,
+SESSION_NAME,basic.session-name,1,,,
+SESSION_KEYSPACE,basic.session-keyspace,1,,,
+CONFIG_RELOAD_INTERVAL,basic.config-reload-interval,1,5 minutes,,
+REQUEST_TIMEOUT,basic.request.timeout,1,2 seconds,,
+REQUEST_CONSISTENCY,basic.request.consistency,1,LOCAL_ONE,,
+REQUEST_PAGE_SIZE,basic.request.page-size,1,5000,,
+REQUEST_SERIAL_CONSISTENCY,basic.request.serial-consistency,1,SERIAL,,
+REQUEST_DEFAULT_IDEMPOTENCE,basic.request.default-idempotence,1,false,,
+LOAD_BALANCING_POLICY,basic.load-balancing-policy,0,,,
+LOAD_BALANCING_POLICY_CLASS,basic.load-balancing-policy.class,1,DefaultLoadBalancingPolicy,,
+LOAD_BALANCING_LOCAL_DATACENTER,basic.load-balancing-policy.local-datacenter,1,,,
+LOAD_BALANCING_LOCAL_RACK,basic.load-balancing-policy.local-rack,1,,,
+LOAD_BALANCING_FILTER_CLASS,basic.load-balancing-policy.filter.class,1,,,
+CONNECTION_INIT_QUERY_TIMEOUT,advanced.connection.init-query-timeout,1,5 seconds,,
+CONNECTION_SET_KEYSPACE_TIMEOUT,advanced.connection.set-keyspace-timeout,1,${datastax-java-driver.advanced.connection.init-query-timeout},,
+CONNECTION_MAX_REQUESTS,advanced.connection.max-requests-per-connection,1,1024,reinterpreted,per-shard connection model
+CONNECTION_MAX_ORPHAN_REQUESTS,advanced.connection.max-orphan-requests,1,256,,
+CONNECTION_WARN_INIT_ERROR,advanced.connection.warn-on-init-error,1,true,,
+CONNECTION_ADVANCED_SHARD_AWARENESS_ENABLED,advanced.connection.advanced-shard-awareness.enabled,1,true,,
+ADVANCED_SHARD_AWARENESS_PORT_LOW,advanced.connection.advanced-shard-awareness.port-low,1,10000,,
+ADVANCED_SHARD_AWARENESS_PORT_HIGH,advanced.connection.advanced-shard-awareness.port-high,1,65535,,
+CONNECTION_POOL_LOCAL_SIZE,advanced.connection.pool.local.size,1,1,reinterpreted,"Rust pools per shard, not per node"
+CONNECTION_POOL_REMOTE_SIZE,advanced.connection.pool.remote.size,1,1,reinterpreted,"Rust pools per shard, not per node"
+CONNECTION_POOL_INIT_BATCH_SIZE,advanced.connection.pool.init-batch-size,1,0,reinterpreted,"Rust pools per shard, not per node"
+RECONNECT_ON_INIT,advanced.reconnect-on-init,1,false,,
+RECONNECTION_POLICY_CLASS,advanced.reconnection-policy.class,1,ExponentialReconnectionPolicy,,
+RECONNECTION_BASE_DELAY,advanced.reconnection-policy.base-delay,1,1 second,,
+RECONNECTION_MAX_DELAY,advanced.reconnection-policy.max-delay,1,60 seconds,,
+RETRY_POLICY,advanced.retry-policy,0,,,
+RETRY_POLICY_CLASS,advanced.retry-policy.class,1,DefaultRetryPolicy,,
+SPECULATIVE_EXECUTION_POLICY,advanced.speculative-execution-policy,0,,,
+SPECULATIVE_EXECUTION_POLICY_CLASS,advanced.speculative-execution-policy.class,1,NoSpeculativeExecutionPolicy,,
+SPECULATIVE_EXECUTION_MAX,advanced.speculative-execution-policy.max-executions,1,,,
+SPECULATIVE_EXECUTION_DELAY,advanced.speculative-execution-policy.delay,1,,,
+AUTH_PROVIDER_CLASS,advanced.auth-provider.class,1,,,
+AUTH_PROVIDER_USER_NAME,advanced.auth-provider.username,1,,,
+AUTH_PROVIDER_PASSWORD,advanced.auth-provider.password,1,,,
+SSL_ENGINE_FACTORY_CLASS,advanced.ssl-engine-factory.class,1,,reinterpreted,"TLS terminated by the Rust stack, not JSSE"
+SSL_CIPHER_SUITES,advanced.ssl-engine-factory.cipher-suites,1,,reinterpreted,"TLS terminated by the Rust stack, not JSSE"
+SSL_HOSTNAME_VALIDATION,advanced.ssl-engine-factory.hostname-validation,1,,reinterpreted,"TLS terminated by the Rust stack, not JSSE"
+SSL_KEYSTORE_PATH,advanced.ssl-engine-factory.keystore-path,1,,reinterpreted,"TLS terminated by the Rust stack, not JSSE"
+SSL_KEYSTORE_PASSWORD,advanced.ssl-engine-factory.keystore-password,1,,reinterpreted,"TLS terminated by the Rust stack, not JSSE"
+SSL_TRUSTSTORE_PATH,advanced.ssl-engine-factory.truststore-path,1,,reinterpreted,"TLS terminated by the Rust stack, not JSSE"
+SSL_TRUSTSTORE_PASSWORD,advanced.ssl-engine-factory.truststore-password,1,,reinterpreted,"TLS terminated by the Rust stack, not JSSE"
+TIMESTAMP_GENERATOR_CLASS,advanced.timestamp-generator.class,1,AtomicTimestampGenerator,,
+TIMESTAMP_GENERATOR_FORCE_JAVA_CLOCK,advanced.timestamp-generator.force-java-clock,1,false,,
+TIMESTAMP_GENERATOR_DRIFT_WARNING_THRESHOLD,advanced.timestamp-generator.drift-warning.threshold,1,1 second,,
+TIMESTAMP_GENERATOR_DRIFT_WARNING_INTERVAL,advanced.timestamp-generator.drift-warning.interval,1,10 seconds,,
+REQUEST_TRACKER_CLASS,advanced.request-tracker.class,1,,,
+REQUEST_LOGGER_SUCCESS_ENABLED,advanced.request-tracker.logs.success.enabled,1,,,
+REQUEST_LOGGER_SLOW_THRESHOLD,advanced.request-tracker.logs.slow.threshold,1,,,
+REQUEST_LOGGER_SLOW_ENABLED,advanced.request-tracker.logs.slow.enabled,1,,,
+REQUEST_LOGGER_ERROR_ENABLED,advanced.request-tracker.logs.error.enabled,1,,,
+REQUEST_LOGGER_MAX_QUERY_LENGTH,advanced.request-tracker.logs.max-query-length,1,,,
+REQUEST_LOGGER_VALUES,advanced.request-tracker.logs.show-values,1,,,
+REQUEST_LOGGER_MAX_VALUE_LENGTH,advanced.request-tracker.logs.max-value-length,1,,,
+REQUEST_LOGGER_MAX_VALUES,advanced.request-tracker.logs.max-values,1,,,
+REQUEST_LOGGER_STACK_TRACES,advanced.request-tracker.logs.show-stack-traces,1,,,
+REQUEST_THROTTLER_CLASS,advanced.throttler.class,1,PassThroughRequestThrottler,,
+REQUEST_THROTTLER_MAX_CONCURRENT_REQUESTS,advanced.throttler.max-concurrent-requests,1,,,
+REQUEST_THROTTLER_MAX_REQUESTS_PER_SECOND,advanced.throttler.max-requests-per-second,1,,,
+REQUEST_THROTTLER_MAX_QUEUE_SIZE,advanced.throttler.max-queue-size,1,,,
+REQUEST_THROTTLER_DRAIN_INTERVAL,advanced.throttler.drain-interval,1,,,
+METADATA_NODE_STATE_LISTENER_CLASS,advanced.node-state-listener.class,1,,,
+METADATA_SCHEMA_CHANGE_LISTENER_CLASS,advanced.schema-change-listener.class,1,,,
+ADDRESS_TRANSLATOR_CLASS,advanced.address-translator.class,1,PassThroughAddressTranslator,,
+PROTOCOL_VERSION,advanced.protocol.version,1,,,
+PROTOCOL_COMPRESSION,advanced.protocol.compression,1,,honored,
+PROTOCOL_MAX_FRAME_LENGTH,advanced.protocol.max-frame-length,1,256 MiB,,
+REQUEST_WARN_IF_SET_KEYSPACE,advanced.request.warn-if-set-keyspace,1,true,,
+REQUEST_TRACE_ATTEMPTS,advanced.request.trace.attempts,1,5,,
+REQUEST_TRACE_INTERVAL,advanced.request.trace.interval,1,3 milliseconds,,
+REQUEST_TRACE_CONSISTENCY,advanced.request.trace.consistency,1,ONE,,
+METRICS_SESSION_ENABLED,advanced.metrics.session.enabled,1,,T2,metrics bridged from the Rust core in T2
+METRICS_NODE_ENABLED,advanced.metrics.node.enabled,1,,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_CQL_REQUESTS_HIGHEST,advanced.metrics.session.cql-requests.highest-latency,1,3 seconds,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_CQL_REQUESTS_DIGITS,advanced.metrics.session.cql-requests.significant-digits,1,3,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_CQL_REQUESTS_INTERVAL,advanced.metrics.session.cql-requests.refresh-interval,1,5 minutes,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_THROTTLING_HIGHEST,advanced.metrics.session.throttling.delay.highest-latency,1,3 seconds,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_THROTTLING_DIGITS,advanced.metrics.session.throttling.delay.significant-digits,1,3,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_THROTTLING_INTERVAL,advanced.metrics.session.throttling.delay.refresh-interval,1,5 minutes,T2,metrics bridged from the Rust core in T2
+METRICS_NODE_CQL_MESSAGES_HIGHEST,advanced.metrics.node.cql-messages.highest-latency,1,3 seconds,T2,metrics bridged from the Rust core in T2
+METRICS_NODE_CQL_MESSAGES_DIGITS,advanced.metrics.node.cql-messages.significant-digits,1,3,T2,metrics bridged from the Rust core in T2
+METRICS_NODE_CQL_MESSAGES_INTERVAL,advanced.metrics.node.cql-messages.refresh-interval,1,5 minutes,T2,metrics bridged from the Rust core in T2
+SOCKET_TCP_NODELAY,advanced.socket.tcp-no-delay,1,true,reinterpreted,socket options are set by the Rust core
+SOCKET_KEEP_ALIVE,advanced.socket.keep-alive,1,,reinterpreted,socket options are set by the Rust core
+SOCKET_REUSE_ADDRESS,advanced.socket.reuse-address,1,,reinterpreted,socket options are set by the Rust core
+SOCKET_LINGER_INTERVAL,advanced.socket.linger-interval,1,,reinterpreted,socket options are set by the Rust core
+SOCKET_RECEIVE_BUFFER_SIZE,advanced.socket.receive-buffer-size,1,,reinterpreted,socket options are set by the Rust core
+SOCKET_SEND_BUFFER_SIZE,advanced.socket.send-buffer-size,1,,reinterpreted,socket options are set by the Rust core
+HEARTBEAT_INTERVAL,advanced.heartbeat.interval,1,30 seconds,reinterpreted,keepalive handled by the Rust core
+HEARTBEAT_TIMEOUT,advanced.heartbeat.timeout,1,${datastax-java-driver.advanced.connection.init-query-timeout},reinterpreted,keepalive handled by the Rust core
+METADATA_ALLOW_ZERO_TOKEN_PEERS,advanced.metadata.allow-zero-token-peers,1,false,,
+METADATA_TOPOLOGY_WINDOW,advanced.metadata.topology-event-debouncer.window,1,1 second,,
+METADATA_TOPOLOGY_MAX_EVENTS,advanced.metadata.topology-event-debouncer.max-events,1,20,,
+METADATA_SCHEMA_ENABLED,advanced.metadata.schema.enabled,1,true,,
+METADATA_SCHEMA_REQUEST_TIMEOUT,advanced.metadata.schema.request-timeout,1,20 seconds,,
+METADATA_SCHEMA_REQUEST_PAGE_SIZE,advanced.metadata.schema.request-page-size,1,${datastax-java-driver.basic.request.page-size},,
+METADATA_SCHEMA_REFRESHED_KEYSPACES,advanced.metadata.schema.refreshed-keyspaces,1,"[ ""!system"", ""!/^system_.*/"" ]",,
+METADATA_SCHEMA_WINDOW,advanced.metadata.schema.debouncer.window,1,1 second,,
+METADATA_SCHEMA_MAX_EVENTS,advanced.metadata.schema.debouncer.max-events,1,20,,
+METADATA_TOKEN_MAP_ENABLED,advanced.metadata.token-map.enabled,1,true,,
+CONTROL_CONNECTION_TIMEOUT,advanced.control-connection.timeout,1,${datastax-java-driver.advanced.connection.init-query-timeout},,
+CONTROL_CONNECTION_AGREEMENT_INTERVAL,advanced.control-connection.schema-agreement.interval,1,200 milliseconds,,
+CONTROL_CONNECTION_AGREEMENT_TIMEOUT,advanced.control-connection.schema-agreement.timeout,1,10 seconds,,
+CONTROL_CONNECTION_AGREEMENT_WARN,advanced.control-connection.schema-agreement.warn-on-failure,1,true,,
+CONTROL_CONNECTION_RECONNECT_CONTACT_POINTS,advanced.control-connection.reconnection.fallback-to-original-contact-points,1,false,,
+PREPARE_ON_ALL_NODES,advanced.prepared-statements.prepare-on-all-nodes,1,true,,
+PREPARE_SKIP_CQL4_METADATA_RESOLVE_METHOD,advanced.prepared-statements.skip-cql4-metadata-resolve-method,1,smart,,
+REPREPARE_ENABLED,advanced.prepared-statements.reprepare-on-up.enabled,1,true,,
+REPREPARE_CHECK_SYSTEM_TABLE,advanced.prepared-statements.reprepare-on-up.check-system-table,1,false,,
+REPREPARE_MAX_STATEMENTS,advanced.prepared-statements.reprepare-on-up.max-statements,1,0,,
+REPREPARE_MAX_PARALLELISM,advanced.prepared-statements.reprepare-on-up.max-parallelism,1,100,,
+REPREPARE_TIMEOUT,advanced.prepared-statements.reprepare-on-up.timeout,1,${datastax-java-driver.advanced.connection.init-query-timeout},,
+NETTY_IO_SIZE,advanced.netty.io-group.size,1,0,warn-no-op,Netty is gone; the option is accepted and warned about
+NETTY_IO_SHUTDOWN_QUIET_PERIOD,advanced.netty.io-group.shutdown.quiet-period,1,,warn-no-op,Netty is gone; the option is accepted and warned about
+NETTY_IO_SHUTDOWN_TIMEOUT,advanced.netty.io-group.shutdown.timeout,1,,warn-no-op,Netty is gone; the option is accepted and warned about
+NETTY_IO_SHUTDOWN_UNIT,advanced.netty.io-group.shutdown.unit,1,,warn-no-op,Netty is gone; the option is accepted and warned about
+NETTY_ADMIN_SIZE,advanced.netty.admin-group.size,1,,warn-no-op,Netty is gone; the option is accepted and warned about
+NETTY_ADMIN_SHUTDOWN_QUIET_PERIOD,advanced.netty.admin-group.shutdown.quiet-period,1,,warn-no-op,Netty is gone; the option is accepted and warned about
+NETTY_ADMIN_SHUTDOWN_TIMEOUT,advanced.netty.admin-group.shutdown.timeout,1,,warn-no-op,Netty is gone; the option is accepted and warned about
+NETTY_ADMIN_SHUTDOWN_UNIT,advanced.netty.admin-group.shutdown.unit,1,,warn-no-op,Netty is gone; the option is accepted and warned about
+COALESCER_MAX_RUNS,advanced.coalescer.max-runs-with-no-work,1,,,
+COALESCER_INTERVAL,advanced.coalescer.reschedule-interval,1,,,
+RESOLVE_CONTACT_POINTS,advanced.resolve-contact-points,1,false,,
+NETTY_TIMER_TICK_DURATION,advanced.netty.timer.tick-duration,1,,warn-no-op,Netty is gone; the option is accepted and warned about
+NETTY_TIMER_TICKS_PER_WHEEL,advanced.netty.timer.ticks-per-wheel,1,,warn-no-op,Netty is gone; the option is accepted and warned about
+REQUEST_LOG_WARNINGS,advanced.request.log-warnings,1,true,,
+NETTY_DAEMON,advanced.netty.daemon,1,false,warn-no-op,Netty is gone; the option is accepted and warned about
+CLOUD_SECURE_CONNECT_BUNDLE,basic.cloud.secure-connect-bundle,1,,,
+LOAD_BALANCING_POLICY_SLOW_AVOIDANCE,basic.load-balancing-policy.slow-replica-avoidance,1,true,,
+CONNECTION_CONNECT_TIMEOUT,advanced.connection.connect-timeout,1,5 seconds,,
+SESSION_LEAK_THRESHOLD,advanced.session-leak.threshold,1,4,,
+METRICS_NODE_EXPIRE_AFTER,advanced.metrics.node.expire-after,1,1 hour,T2,metrics bridged from the Rust core in T2
+METRICS_FACTORY_CLASS,advanced.metrics.factory.class,1,DefaultMetricsFactory,T2,metrics bridged from the Rust core in T2
+LOAD_BALANCING_DC_FAILOVER_MAX_NODES_PER_REMOTE_DC,advanced.load-balancing-policy.dc-failover.max-nodes-per-remote-dc,1,0,,
+LOAD_BALANCING_DC_FAILOVER_ALLOW_FOR_LOCAL_CONSISTENCY_LEVELS,advanced.load-balancing-policy.dc-failover.allow-for-local-consistency-levels,1,false,,
+METRICS_ID_GENERATOR_CLASS,advanced.metrics.id-generator.class,1,DefaultMetricIdGenerator,T2,metrics bridged from the Rust core in T2
+METRICS_ID_GENERATOR_PREFIX,advanced.metrics.id-generator.prefix,1,,T2,metrics bridged from the Rust core in T2
+LOAD_BALANCING_DISTANCE_EVALUATOR_CLASS,basic.load-balancing-policy.evaluator.class,1,,,
+METRICS_SESSION_CQL_REQUESTS_LOWEST,advanced.metrics.session.cql-requests.lowest-latency,1,1 millisecond,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_CQL_REQUESTS_SLO,advanced.metrics.session.cql-requests.slo,1,,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_THROTTLING_LOWEST,advanced.metrics.session.throttling.delay.lowest-latency,1,1 millisecond,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_THROTTLING_SLO,advanced.metrics.session.throttling.delay.slo,1,,T2,metrics bridged from the Rust core in T2
+METRICS_NODE_CQL_MESSAGES_LOWEST,advanced.metrics.node.cql-messages.lowest-latency,1,1 millisecond,T2,metrics bridged from the Rust core in T2
+METRICS_NODE_CQL_MESSAGES_SLO,advanced.metrics.node.cql-messages.slo,1,,T2,metrics bridged from the Rust core in T2
+PREPARED_CACHE_WEAK_VALUES,advanced.prepared-statements.prepared-cache.weak-values,1,,,
+REQUEST_TRACKER_CLASSES,advanced.request-tracker.classes,1,,,
+METADATA_NODE_STATE_LISTENER_CLASSES,advanced.node-state-listener.classes,1,,,
+METADATA_SCHEMA_CHANGE_LISTENER_CLASSES,advanced.schema-change-listener.classes,1,,,
+METRICS_SESSION_CQL_REQUESTS_PUBLISH_PERCENTILES,advanced.metrics.session.cql-requests.publish-percentiles,1,,T2,metrics bridged from the Rust core in T2
+METRICS_NODE_CQL_MESSAGES_PUBLISH_PERCENTILES,advanced.metrics.node.cql-messages.publish-percentiles,1,,T2,metrics bridged from the Rust core in T2
+METRICS_SESSION_THROTTLING_PUBLISH_PERCENTILES,advanced.metrics.session.throttling.delay.publish-percentiles,1,,T2,metrics bridged from the Rust core in T2
+METRICS_GENERATE_AGGREGABLE_HISTOGRAMS,advanced.metrics.histograms.generate-aggregable,1,true,T2,metrics bridged from the Rust core in T2
+SSL_KEYSTORE_RELOAD_INTERVAL,advanced.ssl-engine-factory.keystore-reload-interval,1,,reinterpreted,"TLS terminated by the Rust stack, not JSSE"
+LOAD_BALANCING_DC_FAILOVER_PREFERRED_REMOTE_DCS,advanced.load-balancing-policy.dc-failover.preferred-remote-dcs,1,"[""""]",,
+LOAD_BALANCING_DEFAULT_LWT_REQUEST_ROUTING_METHOD,advanced.load-balancing-policy.default-lwt-request-routing-method,1,"""PRESERVE_REPLICA_ORDER""",,
+CLIENT_ROUTES_ENDPOINTS,advanced.client-routes.endpoints,1,,,
+CLIENT_ROUTES_NATIVE_TRANSPORT_PORT,advanced.client-routes.native-transport-port,1,9042,,
+CLIENT_ROUTES_SHARD_AWARENESS_ENABLED,advanced.client-routes.shard-awarness-enabled,1,false,,
+SSL_ALLOW_DNS_REVERSE_LOOKUP_SAN,advanced.ssl-engine-factory.allow-dns-reverse-lookup-san,1,,reinterpreted,"TLS terminated by the Rust stack, not JSSE"
+REQUEST_ID_GENERATOR_CLASS,advanced.request-id.generator.class,1,,,
+ADDRESS_TRANSLATOR_ADVERTISED_HOSTNAME,advanced.address-translator.advertised-hostname,1,,,
+ADDRESS_TRANSLATOR_SUBNET_ADDRESSES,advanced.address-translator.subnet-addresses,1,,,
+ADDRESS_TRANSLATOR_DEFAULT_ADDRESS,advanced.address-translator.default-address,1,,,
+ADDRESS_TRANSLATOR_RESOLVE_ADDRESSES,advanced.address-translator.resolve-addresses,1,,,
+DRIVER_CONFIG_REPORTING_ENABLED,advanced.driver-config-reporting.enabled,1,true,,
+APPLICATION_NAME,basic.application.name,1,,,
+APPLICATION_VERSION,basic.application.version,1,,,
