@@ -1,0 +1,114 @@
+Side,Rust type / error code,Rust kind,Variants,Java exception,Java supertype,Module,Explicitly implemented,All variants mapped,Comment
+rust,BadKeyspaceName,enum,3,,,,0,0,
+rust,BadQuery,enum,4,,,,0,0,
+rust,BrokenConnectionError,struct,,,,,0,0,
+rust,BrokenConnectionErrorKind,enum,8,,,,0,0,
+rust,ClusterStateTokenError,enum,3,,,,0,0,
+rust,ConnectionError,enum,6,,,,0,0,
+rust,ConnectionPoolError,enum,3,,,,0,0,
+rust,ConnectionSetupRequestError,struct,,,,,0,0,
+rust,ConnectionSetupRequestErrorKind,enum,15,,,,0,0,
+rust,CqlAuthChallengeParseError,re-export (),,,,,0,0,
+rust,CqlAuthSuccessParseError,re-export (),,,,,0,0,
+rust,CqlAuthenticateParseError,re-export (),,,,,0,0,
+rust,CqlErrorParseError,re-export (),,,,,0,0,
+rust,CqlEventHandlingError,enum,4,,,,0,0,
+rust,CqlEventParseError,re-export (),,,,,0,0,
+rust,CqlRequestSerializationError,re-export (),,,,,0,0,
+rust,CqlResponseParseError,re-export (),,,,,0,0,
+rust,CqlResultParseError,re-export (),,,,,0,0,
+rust,CqlSupportedParseError,re-export (),,,,,0,0,
+rust,CustomTranslationError,struct,,,,,0,0,
+rust,DbError,re-export (),,,,,0,0,
+rust,DeserializationError,re-export (),,,,,0,0,
+rust,ExecutionError,enum,9,,,,0,0,
+rust,FirstRowError,re-export (),,,,,0,0,
+rust,FrameBodyExtensionsParseError,re-export (),,,,,0,0,
+rust,FrameHeaderParseError,re-export (),,,,,0,0,
+rust,IntoRowsResultError,re-export (),,,,,0,0,
+rust,KeyspaceStrategyError,enum,4,,,,0,0,
+rust,KeyspacesMetadataError,enum,1,,,,0,0,
+rust,MaybeFirstRowError,re-export (),,,,,0,0,
+rust,MetadataError,enum,6,,,,0,0,
+rust,MetadataFetchError,struct,,,,,0,0,
+rust,MetadataFetchErrorKind,enum,4,,,,0,0,
+rust,NewSessionError,enum,4,,,,0,0,
+rust,NextPageError,re-export (),,,,,0,0,
+rust,NextRowError,re-export (),,,,,0,0,
+rust,OperationType,re-export (),,,,,0,0,
+rust,PagerExecutionError,enum,6,,,,0,0,
+rust,PeersMetadataError,enum,2,,,,0,0,
+rust,PrepareError,enum,3,,,,0,0,
+rust,RequestAttemptError,enum,12,,,,0,0,
+rust,RequestError,enum,4,,,,0,0,
+rust,ResultNotRowsError,re-export (),,,,,0,0,
+rust,RowsError,re-export (),,,,,0,0,
+rust,SchemaAgreementError,enum,7,,,,0,0,
+rust,SingleRowError,re-export (),,,,,0,0,
+rust,TablesMetadataError,enum,2,,,,0,0,
+rust,TracingError,enum,9,,,,0,0,
+rust,TranslationError,enum,4,,,,0,0,
+rust,TypeCheckError,re-export (),,,,,0,0,
+rust,UdtMetadataError,enum,2,,,,0,0,
+rust,UseKeyspaceError,enum,4,,,,0,0,
+rust,WriteType,re-export (),,,,,0,0,
+java,,,,NoNodeAvailableException,AllNodesFailedException,com.datastax.oss.driver.api.core,,,
+java,,,,ProtocolError,CoordinatorException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,QueryExecutionException (abstract),CoordinatorException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,QueryValidationException (abstract),CoordinatorException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,ServerError,CoordinatorException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,AllNodesFailedException,DriverException,com.datastax.oss.driver.api.core,,,
+java,,,,BusyConnectionException,DriverException,com.datastax.oss.driver.api.core.connection,,,
+java,,,,ClosedConnectionException,DriverException,com.datastax.oss.driver.api.core.connection,,,
+java,,,,CodecNotFoundException,DriverException,com.datastax.oss.driver.api.core.type.codec,,,
+java,,,,ConnectionInitException,DriverException,com.datastax.oss.driver.api.core.connection,,,
+java,,,,CoordinatorException (abstract),DriverException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,CrcMismatchException,DriverException,com.datastax.oss.driver.api.core.connection,,,
+java,,,,DriverExecutionException,DriverException,com.datastax.oss.driver.api.core,,,
+java,,,,DriverTimeoutException,DriverException,com.datastax.oss.driver.api.core,,,
+java,,,,FrameTooLongException,DriverException,com.datastax.oss.driver.api.core.connection,,,
+java,,,,HeartbeatException,DriverException,com.datastax.oss.driver.api.core.connection,,,
+java,,,,InvalidKeyspaceException,DriverException,com.datastax.oss.driver.api.core,,,
+java,,,,MapperException,DriverException,com.datastax.oss.driver.api.mapper,,,
+java,,,,NodeUnavailableException,DriverException,com.datastax.oss.driver.api.core,,,
+java,,,,RequestThrottlingException,DriverException,com.datastax.oss.driver.api.core,,,
+java,,,,UnsupportedProtocolVersionException,DriverException,com.datastax.oss.driver.api.core,,,
+java,,,,CASWriteUnknownException,QueryConsistencyException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,ReadFailureException,QueryConsistencyException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,ReadTimeoutException,QueryConsistencyException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,WriteFailureException,QueryConsistencyException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,WriteTimeoutException,QueryConsistencyException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,BootstrappingException,QueryExecutionException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,CDCWriteFailureException,QueryExecutionException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,FunctionFailureException,QueryExecutionException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,OverloadedException,QueryExecutionException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,QueryConsistencyException (abstract),QueryExecutionException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,TruncateException,QueryExecutionException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,UnavailableException,QueryExecutionException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,AlreadyExistsException,QueryValidationException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,InvalidConfigurationInQueryException,QueryValidationException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,InvalidQueryException,QueryValidationException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,SyntaxError,QueryValidationException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,UnauthorizedException,QueryValidationException,com.datastax.oss.driver.api.core.servererrors,,,
+java,,,,AuthenticationException,RuntimeException,com.datastax.oss.driver.api.core.auth,,,does not extend DriverException -- outlier in the hierarchy
+java,,,,DriverException (abstract),RuntimeException,com.datastax.oss.driver.api.core,,,
+wire,UNPREPARED,ErrorCode,,AssertionError,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,SERVER_ERROR,ErrorCode,,ServerError,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,PROTOCOL_ERROR,ErrorCode,,ProtocolError,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,AUTH_ERROR,ErrorCode,,ProtocolError,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,UNAVAILABLE,ErrorCode,,UnavailableException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,OVERLOADED,ErrorCode,,OverloadedException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,IS_BOOTSTRAPPING,ErrorCode,,BootstrappingException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,TRUNCATE_ERROR,ErrorCode,,TruncateException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,WRITE_TIMEOUT,ErrorCode,,WriteTimeoutException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,READ_TIMEOUT,ErrorCode,,ReadTimeoutException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,READ_FAILURE,ErrorCode,,ReadFailureException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,FUNCTION_FAILURE,ErrorCode,,FunctionFailureException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,WRITE_FAILURE,ErrorCode,,WriteFailureException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,CDC_WRITE_FAILURE,ErrorCode,,CDCWriteFailureException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,CAS_WRITE_UNKNOWN,ErrorCode,,CASWriteUnknownException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,SYNTAX_ERROR,ErrorCode,,SyntaxError,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,UNAUTHORIZED,ErrorCode,,UnauthorizedException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,INVALID,ErrorCode,,InvalidQueryException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,CONFIG_ERROR,ErrorCode,,InvalidConfigurationInQueryException,,,0,,Conversions.toThrowable -- must survive byte-for-byte
+wire,ALREADY_EXISTS,ErrorCode,,AlreadyExistsException,,,0,,Conversions.toThrowable -- must survive byte-for-byte

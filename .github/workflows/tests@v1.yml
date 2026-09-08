@@ -12,6 +12,8 @@ on:
       - "*.sh"
       - "renovate.json"
       - ".gitignore"
+      - "tools/api-tracker/*.csv"
+      - "tools/api-tracker/*.md"
   pull_request:
     branches: [ rs ]
     paths-ignore:
@@ -23,6 +25,8 @@ on:
       - "*.sh"
       - "renovate.json"
       - ".gitignore"
+      - "tools/api-tracker/*.csv"
+      - "tools/api-tracker/*.md"
   workflow_dispatch:
 
 jobs:

@@ -44,3 +44,7 @@ CLAUDE.md
 .github/agents/
 .github/prompts/
 .github/copilot-instructions.md
+
+# API tracker rendered output; the tracked state is the CSVs next to it
+tools/api-tracker/out
+__pycache__/
